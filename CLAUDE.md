@@ -19,5 +19,15 @@
 ## Feature overview
 Safety Inspection feature for MaintainD. (Details: see `docs/requirements.md`)
 
+## Terminology
+- "ผู้ใช้" / "ผู้ใช้งาน" in requirements = system users (กบค., ผู้รับจ้าง), NOT the person chatting.
+
 ## Tech stack / commands
-TBD
+- Next.js 16 (App Router, `src/`) + Tailwind 4 + TypeScript, static export. Same stack and rules as พี่นุ's prototype `../Maintanance` (read-only reference — never edit it; its `CLAUDE.md` rules apply here: components from Figma library only, colors from tokens, no hex in .tsx, say "ยานพาหนะ" not "รถ", Thai UI text, mobile = 402).
+- `npm run dev` → http://localhost:3030
+- Checks before saying done: `npm run typecheck` · `NEXT_PUBLIC_BASE_PATH=/safety-inspection npm run build` · `npm run check-wording` · no hex in `src/**/*.tsx` · click through in a real browser (desktop 1440 + mobile 402), no console errors.
+
+## Code map
+- `src/components/vms|patterns|shell` — copied from ref prototype (shell/PrototypeBar adapted: role switch กบค./ผู้รับจ้าง, "จำลองอนุมัติแผน").
+- `src/lib/mock/` — `data.ts` (vehicles, vendors, plans, upload rules) · `store.ts` (localStorage `si-next-v1`) · `plan.ts` (CRUD, no-overlap rule, docs).
+- `src/app/` — `/` plan list · `/new/` `/edit/` `/detail/` (กบค.) · `/docs/` `/docs/plan/` (ผู้รับจ้าง) · `_lib/` PlanForm, VehiclePicker, DocsTable.
