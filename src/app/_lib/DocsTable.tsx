@@ -17,6 +17,7 @@ import { downloadFile, rememberFiles } from "@/lib/fileDownload";
 import { UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, dateText, dueSub, fileOk, sizeText, type Plan } from "@/lib/mock/data";
 import { DOC_TEXT, addFiles, approveDocs, carDocs, docState, removeFile, returnDocs, vendorCanEdit } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
+import { useProtoForm } from "@/lib/protoForm";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 
 const COLS: TableColumn[] = [
@@ -81,6 +82,16 @@ function DocsModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; car
   const [touched, setTouched] = useState(false);
   const reasonErr = touched && !reason.trim();
   const decided = decision === "approve" || (decision === "return" && !!reason.trim());
+  /* ต้นแบบ: กรอกข้อมูลตัวอย่าง — ผู้รับจ้าง = แนบไฟล์ตัวอย่าง 1 ไฟล์ · กบค. = เลือกอนุมัติ */
+  useProtoForm(review ? {
+    dirty: !!decision || !!reason,
+    fill: () => { setDecision("approve"); setReason(""); },
+    clear: () => { setDecision(""); setReason(""); setTouched(false); },
+  } : !ro ? {
+    dirty: c.files.length > 0,
+    fill: () => { if (c.files.length < UPLOAD_MAX_FILES) addFiles(plan.mr, car, [{ name: "ปจ2-" + v.plate.split(" ")[0] + "-ตัวอย่าง.pdf", size: "1.2 MB" }]); setError(null); },
+    clear: () => { for (let i = c.files.length - 1; i >= 0; i--) removeFile(plan.mr, car, i); setError(null); },
+  } : null);
 
   const onFiles = (files: File[]) => {
     const bad = files.filter((f) => !fileOk(f));

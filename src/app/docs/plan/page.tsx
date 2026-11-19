@@ -17,7 +17,9 @@ import { SecondaryButton } from "@/components/vms/SecondaryButton";
 import { SectionHeader } from "@/components/vms/SectionHeader";
 import { cx } from "@/lib/cx";
 import { UPLOAD_HINT } from "@/lib/mock/data";
-import { approvedCount, readyCars, returnedCount, submitDocs } from "@/lib/mock/plan";
+import { addFiles, approvedCount, carDocs, readyCars, removeFile, returnedCount, submitDocs, vendorCanEdit } from "@/lib/mock/plan";
+import { VEHICLE_BY_ID } from "@/lib/mock/data";
+import { useProtoForm } from "@/lib/protoForm";
 import { notify, useHydrated, useMock, useQuery, useRole, vendorOf } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 
@@ -32,6 +34,14 @@ export default function VendorPlan() {
   const plan = mock.plans.find((p) => p.mr === mr && p.vendor === vendor);
   const ready = plan ? readyCars(mock, plan) : [];
   const open = !!plan && plan.status !== "closed";
+  /* ต้นแบบ: กรอกข้อมูลตัวอย่าง = แนบไฟล์ตัวอย่างให้ทุกคันที่ยังแก้ได้และยังไม่มีไฟล์ · ล้างค่า = ลบไฟล์ของคันที่ยังแก้ได้ */
+  const editableCars = plan && open ? plan.cars.filter((c) => vendorCanEdit(carDocs(mock, plan.mr, c))) : [];
+  useProtoForm(plan && open ? {
+    dirty: editableCars.some((c) => carDocs(mock, plan.mr, c).files.length),
+    fill: () => editableCars.filter((c) => !carDocs(mock, plan.mr, c).files.length)
+      .forEach((c) => addFiles(plan.mr, c, [{ name: "ปจ2-" + VEHICLE_BY_ID[c].plate.split(" ")[0] + ".pdf", size: "1.2 MB" }])),
+    clear: () => editableCars.forEach((c) => { for (let i = carDocs(mock, plan.mr, c).files.length - 1; i >= 0; i--) removeFile(plan.mr, c, i); }),
+  } : null);
   return (
     <AppFrame>
       <RoleGate vendor>

@@ -5,7 +5,10 @@
 import { useEffect, useRef, useSyncExternalStore } from "react";
 
 export interface ProtoForm { fill: () => void; clear: () => void; dirty?: boolean }
-let current: { ref: { current: ProtoForm | null } } | null = null;
+type Entry = { ref: { current: ProtoForm | null } };
+/** ซ้อนกันได้: popup เปิดทับหน้า = ใช้ฟอร์มของ popup · ปิด popup = กลับไปใช้ฟอร์มของหน้า */
+const stack: Entry[] = [];
+let current: Entry | null = null;
 const subs = new Set<() => void>();
 const emit = () => subs.forEach((f) => f());
 
@@ -19,8 +22,8 @@ export function useProtoForm(form: ProtoForm | null) {
   const on = !!form;
   useEffect(() => {
     if (!on) return;
-    const me = { ref };
-    current = me; emit();
-    return () => { if (current === me) { current = null; emit(); } };
+    const me: Entry = { ref };
+    stack.push(me); current = me; emit();
+    return () => { const i = stack.indexOf(me); if (i >= 0) stack.splice(i, 1); current = stack[stack.length - 1] ?? null; emit(); };
   }, [on]);
 }
