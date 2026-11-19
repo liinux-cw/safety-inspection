@@ -35,10 +35,10 @@ export default function PlanDetail() {
               <SecondaryButton Text="แก้ไข" LeadingIconSwap="stylus-24-300-round" onClick={() => router.push("/edit/?mr=" + plan.mr)} />
             </div> : undefined} />
           <div className="flex flex-col gap-8">
-            {pendingCount(mock, plan) > 0 && <Alert Color="Info" Text={"มีเอกสาร ปจ.2 รออนุมัติ " + pendingCount(mock, plan) + " คัน"} SupportingText="กดไอคอนพิจารณาท้ายแถว เพื่ออนุมัติหรือส่งกลับให้ผู้รับจ้างแก้ไข" />}
+            {pendingCount(mock, plan) > 0 && <Alert Color="Info" Text={"มีผลการตรวจ ปจ.2 รออนุมัติ " + pendingCount(mock, plan) + " คัน"} SupportingText="กดไอคอนพิจารณาท้ายแถว เพื่ออนุมัติหรือส่งกลับให้ผู้รับจ้างแก้ไข" />}
             <PlanInfo plan={plan} />
             <section className="flex flex-col gap-4">
-              <SectionHeader Title="ยานพาหนะและเอกสาร ปจ.2" Badge={"อนุมัติแล้ว " + approvedCount(mock, plan) + "/" + plan.cars.length + " คัน"} />
+              <SectionHeader Title="ผลการตรวจ ปจ.2 รายคัน" Badge={"อนุมัติแล้ว " + approvedCount(mock, plan) + "/" + plan.cars.length + " คัน"} />
               {plan.cars.length ? <DocsTable plan={plan} canEdit={false} canReview={plan.status !== "closed"} /> : <EmptyStateDataEmpty Graphic="vehicle" Text="ไม่มียานพาหนะในแผน" />}
             </section>
           </div>

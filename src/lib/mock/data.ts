@@ -102,6 +102,13 @@ export const VENDORS: Vendor[] = [
   { id: "ven2", name: "หจก. ช่างกลตรวจสอบ", tel: "02-555-0202" },
   { id: "ven3", name: "บจก. ไทยเครน เซอร์วิส", tel: "02-555-0303" },
 ];
+export const bahtText = (n: number) => n.toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " บาท";
+/** วันที่ + n เดือน (ISO) */
+export const addMonths = (iso: string, n: number) => {
+  const [y, m, d] = iso.split("-").map(Number);
+  const t = new Date(Date.UTC(y, m - 1 + n, d));
+  return t.toISOString().slice(0, 10);
+};
 export const VENDOR_BY_ID: Record<string, Vendor> = Object.fromEntries(VENDORS.map((v) => [v.id, v]));
 
 /* ---------- แผน ---------- */
@@ -120,21 +127,38 @@ export interface Plan {
   from: string;
   to: string;
   vendor: string;
+  /** เบอร์โทรผู้รับจ้าง (ตั้งต้นจากข้อมูลผู้รับจ้าง แก้ได้) */
+  vendorTel: string;
+  /** เลขที่สัญญา/ใบสั่งจ้าง (ถ้ามี) */
+  contract: string;
   cars: string[];
   status: PlanStatus;
 }
 
 export const PLANS: Plan[] = [
-  { mr: "MRZ7000010", name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", vendor: "ven1", cars: ["v17", "v18", "v19", "v20", "v23"], status: "approved" },
-  { mr: "MRZ7000011", name: "ตรวจ ปจ.2 ภาคตะวันออก รอบ ม.ค. – มี.ค. 2570", fy: "2570", from: "2027-01", to: "2027-03", vendor: "ven2", cars: ["v21", "v22"], status: "approved" },
-  { mr: "MRZ7000012", name: "ตรวจ ปจ.2 กระเช้าฮอทไลน์ ก.พ. 2570", fy: "2570", from: "2027-02", to: "2027-02", vendor: "ven1", cars: ["v24"], status: "review" },
-  { mr: "MRZ7000009", name: "ตรวจ ปจ.2 หลัง Overhaul รอบ ม.ค. 2570", fy: "2570", from: "2027-01", to: "2027-01", vendor: "ven1", cars: ["v16"], status: "approved" },
-  { mr: "MRZ6900020", name: "ตรวจ ปจ.2 รอบ ก.ค. – ก.ย. 2569", fy: "2569", from: "2026-07", to: "2026-09", vendor: "ven1", cars: [], status: "closed" },
+  { mr: "MRZ7000010", name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0112", cars: ["v17", "v18", "v19", "v20", "v23"], status: "approved" },
+  { mr: "MRZ7000011", name: "ตรวจ ปจ.2 ภาคตะวันออก รอบ ม.ค. – มี.ค. 2570", fy: "2570", from: "2027-01", to: "2027-03", vendor: "ven2", vendorTel: "02-555-0202", contract: "", cars: ["v21", "v22"], status: "approved" },
+  { mr: "MRZ7000012", name: "ตรวจ ปจ.2 กระเช้าฮอทไลน์ ก.พ. 2570", fy: "2570", from: "2027-02", to: "2027-02", vendor: "ven1", vendorTel: "02-555-0101", contract: "", cars: ["v24"], status: "review" },
+  { mr: "MRZ7000009", name: "ตรวจ ปจ.2 หลัง Overhaul รอบ ม.ค. 2570", fy: "2570", from: "2027-01", to: "2027-01", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0098", cars: ["v16"], status: "approved" },
+  { mr: "MRZ6900020", name: "ตรวจ ปจ.2 รอบ ก.ค. – ก.ย. 2569", fy: "2569", from: "2026-07", to: "2026-09", vendor: "ven1", vendorTel: "02-555-0101", contract: "", cars: [], status: "closed" },
 ];
 
 /* ---------- เอกสาร ปจ.2 ที่ผู้รับจ้างแนบ (รายคัน) ---------- */
 export interface DocFile { name: string; size: string }
+/* ผลการตรวจ ปจ.2 (prototype พี่มิก P5-Record) */
+export const RESULTS = ["ผ่าน", "ไม่ผ่าน", "ระงับ", "ตรวจไม่ได้"] as const;
+export type InspectResult = (typeof RESULTS)[number];
+export const RESULT_COLOR: Record<InspectResult, "Success" | "Error" | "Warning" | "Gray"> = { ผ่าน: "Success", ไม่ผ่าน: "Error", ระงับ: "Warning", ตรวจไม่ได้: "Gray" };
+/** ผลการตรวจรายคันที่ผู้รับจ้างกรอก + เอกสาร + สถานะการส่ง */
 export interface CarDocs {
+  /** วันที่ตรวจ (ISO) */
+  date?: string;
+  /** ค่าจ้างตรวจคันนี้ (บาท) */
+  cost?: number;
+  result?: InspectResult;
+  /** เหตุผลที่ตรวจไม่ได้ (ต้องระบุเมื่อผล = ตรวจไม่ได้) */
+  reason?: string;
+  /** เอกสารการตรวจ ปจ.2 · ผลตรวจไม่ได้ = หนังสือรับรองจากผู้แทนหน่วยงาน */
   files: DocFile[];
   /** วันที่ส่งอนุมัติ (ISO) — มีค่า = รอ กบค. อนุมัติ · ล็อก แก้ไข/ลบไม่ได้ */
   sentAt?: string;
@@ -148,10 +172,11 @@ export type DocsState = Record<string, Record<string, CarDocs>>;
 
 export const DOCS: DocsState = {
   MRZ7000010: {
-    v17: { files: [{ name: "ปจ2-70-8801.pdf", size: "1.4 MB" }], sentAt: "2026-11-15", approvedAt: "2026-11-16" },
-    v19: { files: [{ name: "ปจ2-74-7745.pdf", size: "980 KB" }], sentAt: "2026-11-18" },
-    v20: { files: [{ name: "ปจ2-82-9956.jpg", size: "3.1 MB" }], returnReason: "เอกสารไม่ชัด อ่านเลขตัวถังไม่ได้ กรุณาสแกนใหม่" },
-    v18: { files: [{ name: "ปจ2-72-3302.pdf", size: "1.1 MB" }, { name: "ภาพประกอบ-72-3302.jpg", size: "2.3 MB" }] },
+    v17: { date: "2026-11-12", cost: 9000, result: "ผ่าน", files: [{ name: "ปจ2-70-8801.pdf", size: "1.4 MB" }], sentAt: "2026-11-15", approvedAt: "2026-11-16" },
+    v19: { date: "2026-11-14", cost: 9500, result: "ไม่ผ่าน", files: [{ name: "ปจ2-74-7745.pdf", size: "980 KB" }], sentAt: "2026-11-18" },
+    v20: { date: "2026-11-13", cost: 9000, result: "ผ่าน", files: [{ name: "ปจ2-82-9956.jpg", size: "3.1 MB" }], returnReason: "เอกสารไม่ชัด อ่านเลขตัวถังไม่ได้ กรุณาสแกนใหม่" },
+    v18: { date: "2026-11-17", cost: 8500, result: "ตรวจไม่ได้", reason: "ยานพาหนะอยู่ระหว่างซ่อมระบบไฮดรอลิก ไม่สามารถยกกระเช้าทดสอบได้", files: [{ name: "หนังสือรับรอง-72-3302.pdf", size: "1.1 MB" }] },
+    v23: { date: "2026-11-18", files: [] },
   },
 };
 

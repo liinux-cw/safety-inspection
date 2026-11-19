@@ -68,14 +68,15 @@ export function PlanForm({ plan }: { plan?: Plan }) {
     from: touched.from && !d.from ? "กรุณาเลือกเดือนเริ่มต้น" : undefined,
     to: touched.to && !d.to ? "กรุณาเลือกเดือนสิ้นสุด" : rangeBad ? "เดือนสิ้นสุดต้องไม่ก่อนเดือนเริ่มต้น" : undefined,
     vendor: touched.vendor && !d.vendor ? "กรุณาเลือกผู้รับจ้าง" : undefined,
+    vendorTel: touched.vendorTel && !d.vendorTel.trim() ? "กรุณาระบุเบอร์โทรผู้รับจ้าง" : undefined,
   };
-  const complete = !!d.name.trim() && !!d.fy && !!d.from && !!d.to && !rangeBad && !!d.vendor && d.cars.length > 0;
+  const complete = !!d.name.trim() && !!d.fy && !!d.from && !!d.to && !rangeBad && !!d.vendor && !!d.vendorTel.trim() && d.cars.length > 0;
 
   useProtoForm({
     dirty,
     fill: () => {
       const free = VEHICLES.filter((v) => !taken[v.id]).slice(0, 4).map((v) => v.id);
-      setD({ name: "ตรวจ ปจ.2 รอบ มี.ค. – พ.ค. 2570", fy: "2570", from: "2027-03", to: "2027-05", vendor: "ven3", cars: free });
+      setD({ name: "ตรวจ ปจ.2 รอบ มี.ค. – พ.ค. 2570", fy: "2570", from: "2027-03", to: "2027-05", vendor: "ven3", vendorTel: "02-555-0303", contract: "PO-2570-0150", cars: free });
     },
     clear: () => { setD(start); setTouched({}); },
   });
@@ -138,11 +139,14 @@ export function PlanForm({ plan }: { plan?: Plan }) {
               <DropdownList>{MONTH_OPTIONS.filter((m) => !d.from || m >= d.from).map((m) => <DropdownListItem key={m} Text={monthText(m)} State={m === d.to ? "Selected" : "Default"}
                 onClick={() => { put({ to: m }); setDd(""); }} />)}</DropdownList>
             </InputDropdown>
-            <InputDropdown LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} SupportingText={vendor ? "โทร " + vendor.tel : undefined} Placeholder="เลือกผู้รับจ้าง" open={dd === "vendor"} onOpenChange={ddOpen("vendor")}
+            <InputDropdown LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} Placeholder="เลือกผู้รับจ้าง" open={dd === "vendor"} onOpenChange={ddOpen("vendor")}
               State={err.vendor ? "Error" : undefined} HelperText={err.vendor ?? "ผู้รับจ้างจะเห็นแผนนี้ทันทีหลังสร้าง เพื่ออัปโหลดเอกสาร ปจ.2 ส่งให้ กบค. อนุมัติ"}>
               <DropdownList>{VENDORS.map((v) => <DropdownListItem key={v.id} Text={v.name} SupportingText={v.tel} State={v.id === d.vendor ? "Selected" : "Default"}
-                onClick={() => { put({ vendor: v.id }); setDd(""); }} />)}</DropdownList>
+                onClick={() => { put({ vendor: v.id, vendorTel: v.tel }); setDd(""); }} />)}</DropdownList>
             </InputDropdown>
+            <TextInput LabelText="เบอร์โทรผู้รับจ้าง" Text={d.vendorTel} Placeholder="0XX-XXX-XXXX" onChange={(v) => put({ vendorTel: v })} onBlur={() => touch("vendorTel")}
+              State={err.vendorTel ? "Error" : undefined} HelperText={err.vendorTel} />
+            <TextInput LabelText="เลขที่สัญญา/ใบสั่งจ้าง" Optional Text={d.contract} Placeholder="ระบุเลขที่สัญญาหรือใบสั่งจ้าง" onChange={(v) => put({ contract: v })} />
           </div>
         </section>
 

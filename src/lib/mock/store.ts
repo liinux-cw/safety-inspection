@@ -7,7 +7,7 @@ import { DOCS, PLANS, VENDORS, type DocsState, type Plan } from "./data";
 export const KEY = "si-next-v1";
 export const ROLE_KEY = "si-next-v1:role";
 /** รุ่นข้อมูลจำลอง — รุ่นไม่ตรง = เริ่มจากค่าตั้งต้นใหม่ */
-export const MOCK_V = 4;   // 3 = กบค. อนุมัติ/ส่งกลับเอกสารรายคัน · 4 = เอาประเภทงานออก
+export const MOCK_V = 5;   // 3 = กบค. อนุมัติ/ส่งกลับ · 4 = เอาประเภทงานออก · 5 = ผลตรวจรายคัน (วันที่ ค่าจ้าง ผล เหตุผล) + เบอร์/เลขที่สัญญาผู้รับจ้าง
 
 export interface MockState {
   v: typeof MOCK_V;
