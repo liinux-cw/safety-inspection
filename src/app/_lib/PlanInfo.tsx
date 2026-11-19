@@ -9,7 +9,6 @@ export function PlanInfo({ plan }: { plan: Plan }) {
   return (
     <DisplayBox Title="ข้อมูลแผน" pairs={[
       ["เลขที่ MR", plan.mr],
-      ["ประเภทงาน", plan.jobType],
       ["ชื่อแผน", plan.name],
       ["ปีงบประมาณ", plan.fy],
       ["รอบตรวจ", rangeText(plan.from, plan.to)],

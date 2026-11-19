@@ -1,11 +1,11 @@
 "use client";
 /* ตัวช่วยของแผนตรวจ ปจ.2 — สร้าง/แก้ไข/ลบ · กฎห้ามซ้อนแผน · เอกสารของผู้รับจ้าง */
-import { TODAY, VEHICLE_BY_ID, type CarDocs, type DocFile, type JobType, type Plan } from "./data";
+import { TODAY, VEHICLE_BY_ID, type CarDocs, type DocFile, type Plan } from "./data";
 import { getMock, setMock, type MockState } from "./store";
 
-export interface Draft { jobType: JobType | ""; name: string; fy: string; from: string; to: string; vendor: string; cars: string[] }
-export const EMPTY_DRAFT: Draft = { jobType: "", name: "", fy: "", from: "", to: "", vendor: "", cars: [] };
-export const draftOf = (p: Plan): Draft => ({ jobType: p.jobType, name: p.name, fy: p.fy, from: p.from, to: p.to, vendor: p.vendor, cars: [...p.cars] });
+export interface Draft { name: string; fy: string; from: string; to: string; vendor: string; cars: string[] }
+export const EMPTY_DRAFT: Draft = { name: "", fy: "", from: "", to: "", vendor: "", cars: [] };
+export const draftOf = (p: Plan): Draft => ({ name: p.name, fy: p.fy, from: p.from, to: p.to, vendor: p.vendor, cars: [...p.cars] });
 
 /** แก้ไข/ลบได้เฉพาะแผนที่ยังไม่อนุมัติ (รออนุมัติ · ส่งกลับแก้ไข) */
 export const editable = (p: Plan) => p.status === "review" || p.status === "returned";
@@ -20,8 +20,7 @@ export function takenMap(s: MockState, exceptMr?: string): Record<string, string
   return out;
 }
 
-/** ฟอร์มที่กรอกครบแล้ว (ประเภทงานเลือกแล้ว) */
-type Done = Draft & { jobType: JobType };
+type Done = Draft;
 export function createPlan(d: Done): string {
   const s = getMock();
   const mr = "MRZ" + (s.lastMr + 1);
