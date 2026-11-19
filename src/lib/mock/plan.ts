@@ -44,32 +44,43 @@ export function approveAll() {
   setMock((x) => ({ ...x, plans: x.plans.map((p) => (p.status === "review" ? { ...p, status: "approved" } : p)) }));
 }
 
-/* ---------- เอกสาร ปจ.2 (ผู้รับจ้าง) ---------- */
+/* ---------- เอกสาร ปจ.2 (ผู้รับจ้าง แนบ/ส่ง · กบค. อนุมัติ/ส่งกลับแก้ไข) ---------- */
 export const carDocs = (s: MockState, mr: string, car: string): CarDocs => s.docs[mr]?.[car] ?? { files: [] };
-const putCar = (mr: string, car: string, fn: (c: CarDocs) => CarDocs) =>
+const setCar = (mr: string, car: string, fn: (c: CarDocs) => CarDocs) =>
   setMock((x) => {
     const cur = x.docs[mr]?.[car] ?? { files: [] };
-    if (cur.sentAt) return x;   // ส่งแล้ว = ล็อก
     return { ...x, docs: { ...x.docs, [mr]: { ...(x.docs[mr] ?? {}), [car]: fn(cur) } } };
   });
+/** ผู้รับจ้างแก้ไฟล์ได้เมื่อยังไม่ส่ง หรือ กบค. ส่งกลับแก้ไข */
+export const vendorCanEdit = (c: CarDocs) => !c.sentAt && !c.approvedAt;
+const putCar = (mr: string, car: string, fn: (c: CarDocs) => CarDocs) => setCar(mr, car, (c) => (vendorCanEdit(c) ? fn(c) : c));
 export const addFiles = (mr: string, car: string, files: DocFile[]) => putCar(mr, car, (c) => ({ ...c, files: [...c.files, ...files] }));
 export const removeFile = (mr: string, car: string, i: number) => putCar(mr, car, (c) => ({ ...c, files: c.files.filter((_, j) => j !== i) }));
-/** ส่งอนุมัติ: ทุกคันที่แนบเอกสารแล้วและยังไม่ส่ง → ล็อก */
+/** คันที่พร้อมส่ง: มีไฟล์อย่างน้อย 1 และแก้ได้อยู่ (ยังไม่ส่ง / ถูกส่งกลับ) */
+export const readyCars = (s: MockState, p: Plan) => p.cars.filter((c) => { const d = carDocs(s, p.mr, c); return d.files.length > 0 && vendorCanEdit(d); });
+/** ส่งอนุมัติ → รอ กบค. อนุมัติ (ล็อก) */
 export function submitDocs(mr: string, cars: string[]) {
-  setMock((x) => {
-    const plan = { ...(x.docs[mr] ?? {}) };
-    for (const c of cars) if (plan[c]?.files.length && !plan[c].sentAt) plan[c] = { ...plan[c], sentAt: TODAY };
-    return { ...x, docs: { ...x.docs, [mr]: plan } };
-  });
+  for (const c of cars) putCar(mr, c, (d) => (d.files.length ? { files: d.files, sentAt: TODAY } : d));
 }
+/** กบค. อนุมัติ */
+export const approveDocs = (mr: string, car: string) => setCar(mr, car, (d) => (d.sentAt ? { files: d.files, sentAt: d.sentAt, approvedAt: TODAY } : d));
+/** กบค. ส่งกลับแก้ไข (ต้องมีเหตุผล) → ผู้รับจ้างแก้ไฟล์แล้วส่งใหม่ได้ */
+export const returnDocs = (mr: string, car: string, reason: string) => setCar(mr, car, (d) => (d.sentAt ? { files: d.files, returnReason: reason } : d));
 
-export type DocState = "none" | "draft" | "sent";
-export const docState = (c: CarDocs): DocState => (c.sentAt ? "sent" : c.files.length ? "draft" : "none");
-export const DOC_TEXT: Record<DocState, [string, "Gray" | "Warning" | "Success"]> = {
+export type DocState = "none" | "draft" | "sent" | "approved" | "returned";
+export const docState = (c: CarDocs): DocState =>
+  c.approvedAt ? "approved" : c.sentAt ? "sent" : c.returnReason ? "returned" : c.files.length ? "draft" : "none";
+export const DOC_TEXT: Record<DocState, [string, "Gray" | "Warning" | "Success" | "Info" | "Error"]> = {
   none: ["ยังไม่แนบเอกสาร", "Gray"],
   draft: ["แนบแล้ว ยังไม่ส่ง", "Warning"],
-  sent: ["ส่งอนุมัติแล้ว", "Success"],
+  sent: ["รอ กบค. อนุมัติ", "Info"],
+  approved: ["อนุมัติแล้ว", "Success"],
+  returned: ["ส่งกลับแก้ไข", "Error"],
 };
-/** สรุปเอกสารของแผน: ส่งแล้ว x/ทั้งหมด */
-export const sentCount = (s: MockState, p: Plan) => p.cars.filter((c) => carDocs(s, p.mr, c).sentAt).length;
+const countOf = (s: MockState, p: Plan, st: DocState) => p.cars.filter((c) => docState(carDocs(s, p.mr, c)) === st).length;
+/** จำนวนคันที่ กบค. อนุมัติเอกสารแล้ว */
+export const approvedCount = (s: MockState, p: Plan) => countOf(s, p, "approved");
+/** จำนวนคันที่รอ กบค. อนุมัติ */
+export const pendingCount = (s: MockState, p: Plan) => countOf(s, p, "sent");
+export const returnedCount = (s: MockState, p: Plan) => countOf(s, p, "returned");
 export const carsOf = (p: Plan) => p.cars.map((c) => VEHICLE_BY_ID[c]).filter(Boolean);

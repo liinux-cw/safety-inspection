@@ -33,7 +33,7 @@ export function PrototypeBar() {
         </DropdownList>
       </InputDropdown>
       {nReview > 0 && (
-        <TertiaryButton Text={"จำลองอนุมัติแผน (" + nReview + ")"} LeadingIconSwap="check_circle-24-300-round" onClick={() => { approveAll(); notify("จำลองอนุมัติแผนแล้ว ผู้รับจ้างเห็นแผนในเมนูเอกสาร ปจ.2"); }} />
+        <TertiaryButton Text={"จำลองอนุมัติแผน (" + nReview + ")"} LeadingIconSwap="check_circle-24-300-round" onClick={() => { approveAll(); notify("จำลองอนุมัติแผนแล้ว"); }} />
       )}
       {form && (
         <span data-proto-form className="flex items-center gap-1 border-l border-gray-200 pl-3">

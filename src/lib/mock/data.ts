@@ -138,13 +138,23 @@ export const PLANS: Plan[] = [
 
 /* ---------- เอกสาร ปจ.2 ที่ผู้รับจ้างแนบ (รายคัน) ---------- */
 export interface DocFile { name: string; size: string }
-export interface CarDocs { files: DocFile[]; /** วันที่ส่งอนุมัติ (ISO) — มีค่า = ล็อก แก้ไข/ลบไม่ได้ */ sentAt?: string }
+export interface CarDocs {
+  files: DocFile[];
+  /** วันที่ส่งอนุมัติ (ISO) — มีค่า = รอ กบค. อนุมัติ · ล็อก แก้ไข/ลบไม่ได้ */
+  sentAt?: string;
+  /** กบค. อนุมัติแล้ว (ISO) — ล็อกถาวร */
+  approvedAt?: string;
+  /** กบค. ส่งกลับแก้ไข: เหตุผล — ผู้รับจ้างแก้ไฟล์แล้วส่งอนุมัติใหม่ได้ */
+  returnReason?: string;
+}
 /** คีย์ = เลขที่ MR → รหัสยานพาหนะ */
 export type DocsState = Record<string, Record<string, CarDocs>>;
 
 export const DOCS: DocsState = {
   MRZ7000010: {
-    v17: { files: [{ name: "ปจ2-70-8801.pdf", size: "1.4 MB" }], sentAt: "2026-11-15" },
+    v17: { files: [{ name: "ปจ2-70-8801.pdf", size: "1.4 MB" }], sentAt: "2026-11-15", approvedAt: "2026-11-16" },
+    v19: { files: [{ name: "ปจ2-74-7745.pdf", size: "980 KB" }], sentAt: "2026-11-18" },
+    v20: { files: [{ name: "ปจ2-82-9956.jpg", size: "3.1 MB" }], returnReason: "เอกสารไม่ชัด อ่านเลขตัวถังไม่ได้ กรุณาสแกนใหม่" },
     v18: { files: [{ name: "ปจ2-72-3302.pdf", size: "1.1 MB" }, { name: "ภาพประกอบ-72-3302.jpg", size: "2.3 MB" }] },
   },
 };

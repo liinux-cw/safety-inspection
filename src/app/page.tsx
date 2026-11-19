@@ -21,7 +21,7 @@ import { Table, type TableColumn, type TableValue } from "@/components/vms/Table
 import { TableHeader } from "@/components/vms/TableHeader";
 import { TablePagination } from "@/components/vms/TablePagination";
 import { JOB_TYPES, STATUS_TEXT, VENDORS, VENDOR_BY_ID, rangeText, type Plan, type PlanStatus } from "@/lib/mock/data";
-import { deletePlan, editable, sentCount } from "@/lib/mock/plan";
+import { approvedCount, deletePlan, editable, pendingCount } from "@/lib/mock/plan";
 import { notify, useHydrated, useMock, useRole, vendorOf } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 
@@ -33,7 +33,7 @@ const COLS: TableColumn[] = [
   { head: "รอบตรวจ", width: 190 },
   { head: "ผู้รับจ้าง", width: 220 },
   { head: "ยานพาหนะ", width: 110 },
-  { head: "เอกสาร ปจ.2", width: 130 },
+  { head: "เอกสาร ปจ.2", width: 140 },
   { head: "สถานะ", width: 140 },
   { head: "", width: 72 },
 ];
@@ -93,7 +93,7 @@ export default function PlanList() {
     rangeText(p.from, p.to),
     VENDOR_BY_ID[p.vendor]?.name ?? "-",
     p.cars.length + " คัน",
-    p.status === "approved" || p.status === "closed" ? sentCount(mock, p) + "/" + p.cars.length + " คัน" : "-",
+    { text: "อนุมัติ " + approvedCount(mock, p) + "/" + p.cars.length, sub: pendingCount(mock, p) ? "รออนุมัติ " + pendingCount(mock, p) + " คัน" : undefined },
     { pills: [STATUS_TEXT[p.status]] },
     {
       actions: [{ IconSwap: "more_horiz-20-400-round", label: "เมนู " + p.mr, onClick: (e) => setMenu({ mr: p.mr, anchor: anchorOf(e.currentTarget) }) }],

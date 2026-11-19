@@ -134,7 +134,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
               <DropdownList>{YEARS.map((y) => <DropdownListItem key={y} Text={y} State={y === d.fy ? "Selected" : "Default"} onClick={() => { put({ fy: y }); setDd(""); }} />)}</DropdownList>
             </InputDropdown>
             <InputDropdown LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} SupportingText={vendor ? "โทร " + vendor.tel : undefined} Placeholder="เลือกผู้รับจ้าง" open={dd === "vendor"} onOpenChange={ddOpen("vendor")}
-              State={err.vendor ? "Error" : undefined} HelperText={err.vendor ?? "ผู้รับจ้างจะเห็นแผนนี้เพื่ออัปโหลดเอกสาร ปจ.2 หลังแผนอนุมัติ"}>
+              State={err.vendor ? "Error" : undefined} HelperText={err.vendor ?? "ผู้รับจ้างจะเห็นแผนนี้ทันทีหลังสร้าง เพื่ออัปโหลดเอกสาร ปจ.2 ส่งให้ กบค. อนุมัติ"}>
               <DropdownList>{VENDORS.map((v) => <DropdownListItem key={v.id} Text={v.name} SupportingText={v.tel} State={v.id === d.vendor ? "Selected" : "Default"}
                 onClick={() => { put({ vendor: v.id }); setDd(""); }} />)}</DropdownList>
             </InputDropdown>
