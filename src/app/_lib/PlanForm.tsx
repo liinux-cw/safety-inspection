@@ -123,12 +123,12 @@ export function PlanForm({ plan }: { plan?: Plan }) {
         <section className="flex flex-col gap-4">
           <SectionHeader Title="ข้อมูลแผน" />
           <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-2")}>
+            <TextInput LabelText="ชื่อแผน" Text={d.name} Placeholder="ระบุชื่อแผน" onChange={(v) => put({ name: v })} onBlur={() => touch("name")}
+              State={err.name ? "Error" : undefined} HelperText={err.name} />
             <InputDropdown LabelText="ประเภทงาน" Text={d.jobType} Placeholder="เลือกประเภทงาน" open={dd === "jobType"} onOpenChange={ddOpen("jobType")}
               State={err.jobType ? "Error" : undefined} HelperText={err.jobType}>
               <DropdownList>{JOB_TYPES.map((t) => <DropdownListItem key={t} Text={t} State={t === d.jobType ? "Selected" : "Default"} onClick={() => { put({ jobType: t }); setDd(""); }} />)}</DropdownList>
             </InputDropdown>
-            <TextInput LabelText="ชื่อแผน" Text={d.name} Placeholder="ระบุชื่อแผน" onChange={(v) => put({ name: v })} onBlur={() => touch("name")}
-              State={err.name ? "Error" : undefined} HelperText={err.name} />
             <InputDropdown LabelText="ปีงบประมาณ" Text={d.fy} Placeholder="เลือกปีงบประมาณ" open={dd === "fy"} onOpenChange={ddOpen("fy")}
               State={err.fy ? "Error" : undefined} HelperText={err.fy}>
               <DropdownList>{YEARS.map((y) => <DropdownListItem key={y} Text={y} State={y === d.fy ? "Selected" : "Default"} onClick={() => { put({ fy: y }); setDd(""); }} />)}</DropdownList>
