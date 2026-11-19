@@ -10,6 +10,12 @@
 - If new info conflicts with what's recorded, ask which is correct before overwriting.
 - Commit changes to git after meaningful updates.
 
+## Collaboration
+- GitHub: https://github.com/liinux-cw/safety-inspection (collaborator: พี่นุ)
+- `main` = shared base. Each person works on their own branch.
+- User's branch: `feature/create-inspection` (the "create inspection" feature). พี่นุ works on other parts on separate branches.
+- When work is done, push the branch to GitHub so พี่นุ can see it. Pull latest `main` before starting new work.
+
 ## Feature overview
 Safety Inspection feature for MaintainD. (Details: see `docs/requirements.md`)
 
