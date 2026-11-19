@@ -22,7 +22,7 @@ import { TableHeader } from "@/components/vms/TableHeader";
 import { TablePagination } from "@/components/vms/TablePagination";
 import { TextInput } from "@/components/vms/TextInput";
 import { cx } from "@/lib/cx";
-import { MONTH_OPTIONS, VEHICLES, VEHICLE_BY_ID, VENDORS, VENDOR_BY_ID, dateText, dueSub, fiscalYearOf, monthText, type Plan } from "@/lib/mock/data";
+import { JOB_TYPES, MONTH_OPTIONS, VEHICLES, VEHICLE_BY_ID, VENDORS, VENDOR_BY_ID, dateText, dueSub, fiscalYearOf, monthText, type Plan } from "@/lib/mock/data";
 import { EMPTY_DRAFT, createPlan, draftOf, takenMap, updatePlan, type Draft } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
@@ -63,32 +63,34 @@ export function PlanForm({ plan }: { plan?: Plan }) {
   const dirty = JSON.stringify(d) !== JSON.stringify(start);
   const rangeBad = !!d.from && !!d.to && d.to < d.from;
   const err = {
+    jobType: touched.jobType && !d.jobType ? "กรุณาเลือกประเภทงาน" : undefined,
     name: touched.name && !d.name.trim() ? "กรุณาระบุชื่อแผน" : undefined,
     fy: touched.fy && !d.fy ? "กรุณาเลือกปีงบประมาณ" : undefined,
     from: touched.from && !d.from ? "กรุณาเลือกเดือนเริ่มต้น" : undefined,
     to: touched.to && !d.to ? "กรุณาเลือกเดือนสิ้นสุด" : rangeBad ? "เดือนสิ้นสุดต้องไม่ก่อนเดือนเริ่มต้น" : undefined,
     vendor: touched.vendor && !d.vendor ? "กรุณาเลือกผู้รับจ้าง" : undefined,
   };
-  const complete = !!d.name.trim() && !!d.fy && !!d.from && !!d.to && !rangeBad && !!d.vendor && d.cars.length > 0;
+  const complete = !!d.jobType && !!d.name.trim() && !!d.fy && !!d.from && !!d.to && !rangeBad && !!d.vendor && d.cars.length > 0;
 
   useProtoForm({
     dirty,
     fill: () => {
       const free = VEHICLES.filter((v) => !taken[v.id]).slice(0, 4).map((v) => v.id);
-      setD({ name: "ตรวจ ปจ.2 รอบ มี.ค. – พ.ค. 2570", fy: "2570", from: "2027-03", to: "2027-05", vendor: "ven3", cars: free });
+      setD({ jobType: "งานบำรุงรักษา", name: "ตรวจ ปจ.2 รอบ มี.ค. – พ.ค. 2570", fy: "2570", from: "2027-03", to: "2027-05", vendor: "ven3", cars: free });
     },
     clear: () => { setD(start); setTouched({}); },
   });
 
   const leave = () => (dirty ? setLeaving(true) : router.push(plan ? "/detail/?mr=" + plan.mr : "/"));
   const save = () => {
-    if (!complete) return;
+    if (!complete || !d.jobType) return;
+    const done = { ...d, jobType: d.jobType };
     if (plan) {
-      updatePlan(plan.mr, d);
+      updatePlan(plan.mr, done);
       notify("บันทึกและส่งอนุมัติแผน " + plan.mr + " สำเร็จ");
       router.push("/detail/?mr=" + plan.mr);
     } else {
-      const mr = createPlan(d);
+      const mr = createPlan(done);
       notify("สร้างแผนตรวจ ปจ.2 " + mr + " และส่งอนุมัติสำเร็จ");
       router.push("/");
     }
@@ -121,11 +123,20 @@ export function PlanForm({ plan }: { plan?: Plan }) {
         <section className="flex flex-col gap-4">
           <SectionHeader Title="ข้อมูลแผน" />
           <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-2")}>
+            <InputDropdown LabelText="ประเภทงาน" Text={d.jobType} Placeholder="เลือกประเภทงาน" open={dd === "jobType"} onOpenChange={ddOpen("jobType")}
+              State={err.jobType ? "Error" : undefined} HelperText={err.jobType}>
+              <DropdownList>{JOB_TYPES.map((t) => <DropdownListItem key={t} Text={t} State={t === d.jobType ? "Selected" : "Default"} onClick={() => { put({ jobType: t }); setDd(""); }} />)}</DropdownList>
+            </InputDropdown>
             <TextInput LabelText="ชื่อแผน" Text={d.name} Placeholder="ระบุชื่อแผน" onChange={(v) => put({ name: v })} onBlur={() => touch("name")}
               State={err.name ? "Error" : undefined} HelperText={err.name} />
             <InputDropdown LabelText="ปีงบประมาณ" Text={d.fy} Placeholder="เลือกปีงบประมาณ" open={dd === "fy"} onOpenChange={ddOpen("fy")}
               State={err.fy ? "Error" : undefined} HelperText={err.fy}>
               <DropdownList>{YEARS.map((y) => <DropdownListItem key={y} Text={y} State={y === d.fy ? "Selected" : "Default"} onClick={() => { put({ fy: y }); setDd(""); }} />)}</DropdownList>
+            </InputDropdown>
+            <InputDropdown LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} SupportingText={vendor ? "โทร " + vendor.tel : undefined} Placeholder="เลือกผู้รับจ้าง" open={dd === "vendor"} onOpenChange={ddOpen("vendor")}
+              State={err.vendor ? "Error" : undefined} HelperText={err.vendor ?? "ผู้รับจ้างจะเห็นแผนนี้เพื่ออัปโหลดเอกสาร ปจ.2 หลังแผนอนุมัติ"}>
+              <DropdownList>{VENDORS.map((v) => <DropdownListItem key={v.id} Text={v.name} SupportingText={v.tel} State={v.id === d.vendor ? "Selected" : "Default"}
+                onClick={() => { put({ vendor: v.id }); setDd(""); }} />)}</DropdownList>
             </InputDropdown>
             <InputDropdown LabelText="รอบตรวจ: เดือนเริ่มต้น" Text={d.from ? monthText(d.from) : ""} Placeholder="เลือกเดือน" open={dd === "from"} onOpenChange={ddOpen("from")}
               State={err.from ? "Error" : undefined} HelperText={err.from}>
@@ -136,11 +147,6 @@ export function PlanForm({ plan }: { plan?: Plan }) {
               State={err.to ? "Error" : undefined} HelperText={err.to}>
               <DropdownList>{MONTH_OPTIONS.filter((m) => !d.from || m >= d.from).map((m) => <DropdownListItem key={m} Text={monthText(m)} State={m === d.to ? "Selected" : "Default"}
                 onClick={() => { put({ to: m }); setDd(""); }} />)}</DropdownList>
-            </InputDropdown>
-            <InputDropdown LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} SupportingText={vendor ? "โทร " + vendor.tel : undefined} Placeholder="เลือกผู้รับจ้าง" open={dd === "vendor"} onOpenChange={ddOpen("vendor")}
-              State={err.vendor ? "Error" : undefined} HelperText={err.vendor ?? "ผู้รับจ้างจะเห็นแผนนี้เพื่ออัปโหลดเอกสาร ปจ.2 หลังแผนอนุมัติ"}>
-              <DropdownList>{VENDORS.map((v) => <DropdownListItem key={v.id} Text={v.name} SupportingText={v.tel} State={v.id === d.vendor ? "Selected" : "Default"}
-                onClick={() => { put({ vendor: v.id }); setDd(""); }} />)}</DropdownList>
             </InputDropdown>
           </div>
         </section>

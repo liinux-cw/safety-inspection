@@ -113,8 +113,12 @@ export const STATUS_TEXT: Record<PlanStatus, [string, "Warning" | "Error" | "Inf
   approved: ["อนุมัติแล้ว", "Info"],
   closed: ["ปิดงานแล้ว", "Gray"],
 };
+/* ประเภทงาน (เจ้าของงาน 19 พ.ย. 2569) — เลือกตอนสร้างแผน · กรองได้ทั้งหน้ารายการของ กบค. และผู้รับจ้าง */
+export const JOB_TYPES = ["งานซ่อม", "งานบำรุงรักษา", "งาน Overhaul"] as const;
+export type JobType = (typeof JOB_TYPES)[number];
 export interface Plan {
   mr: string;
+  jobType: JobType;
   name: string;
   fy: string;
   from: string;
@@ -125,10 +129,11 @@ export interface Plan {
 }
 
 export const PLANS: Plan[] = [
-  { mr: "MRZ7000010", name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", vendor: "ven1", cars: ["v17", "v18", "v19", "v20", "v23"], status: "approved" },
-  { mr: "MRZ7000011", name: "ตรวจ ปจ.2 ภาคตะวันออก รอบ ม.ค. – มี.ค. 2570", fy: "2570", from: "2027-01", to: "2027-03", vendor: "ven2", cars: ["v21", "v22"], status: "approved" },
-  { mr: "MRZ7000012", name: "ตรวจ ปจ.2 กระเช้าฮอทไลน์ ก.พ. 2570", fy: "2570", from: "2027-02", to: "2027-02", vendor: "ven1", cars: ["v24"], status: "review" },
-  { mr: "MRZ6900020", name: "ตรวจ ปจ.2 รอบ ก.ค. – ก.ย. 2569", fy: "2569", from: "2026-07", to: "2026-09", vendor: "ven1", cars: [], status: "closed" },
+  { mr: "MRZ7000010", jobType: "งานบำรุงรักษา", name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", vendor: "ven1", cars: ["v17", "v18", "v19", "v20", "v23"], status: "approved" },
+  { mr: "MRZ7000011", jobType: "งานซ่อม", name: "ตรวจ ปจ.2 ภาคตะวันออก รอบ ม.ค. – มี.ค. 2570", fy: "2570", from: "2027-01", to: "2027-03", vendor: "ven2", cars: ["v21", "v22"], status: "approved" },
+  { mr: "MRZ7000012", jobType: "งาน Overhaul", name: "ตรวจ ปจ.2 กระเช้าฮอทไลน์ ก.พ. 2570", fy: "2570", from: "2027-02", to: "2027-02", vendor: "ven1", cars: ["v24"], status: "review" },
+  { mr: "MRZ7000009", jobType: "งาน Overhaul", name: "ตรวจ ปจ.2 หลัง Overhaul รอบ ม.ค. 2570", fy: "2570", from: "2027-01", to: "2027-01", vendor: "ven1", cars: ["v16"], status: "approved" },
+  { mr: "MRZ6900020", jobType: "งานบำรุงรักษา", name: "ตรวจ ปจ.2 รอบ ก.ค. – ก.ย. 2569", fy: "2569", from: "2026-07", to: "2026-09", vendor: "ven1", cars: [], status: "closed" },
 ];
 
 /* ---------- เอกสาร ปจ.2 ที่ผู้รับจ้างแนบ (รายคัน) ---------- */

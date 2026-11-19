@@ -20,7 +20,7 @@ import { SecondaryButton } from "@/components/vms/SecondaryButton";
 import { Table, type TableColumn, type TableValue } from "@/components/vms/Table";
 import { TableHeader } from "@/components/vms/TableHeader";
 import { TablePagination } from "@/components/vms/TablePagination";
-import { STATUS_TEXT, VENDORS, VENDOR_BY_ID, rangeText, type Plan, type PlanStatus } from "@/lib/mock/data";
+import { JOB_TYPES, STATUS_TEXT, VENDORS, VENDOR_BY_ID, rangeText, type Plan, type PlanStatus } from "@/lib/mock/data";
 import { deletePlan, editable, sentCount } from "@/lib/mock/plan";
 import { notify, useHydrated, useMock, useRole, vendorOf } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
@@ -28,6 +28,7 @@ import { useBreakpoint } from "@/lib/useBreakpoint";
 const PER = 10;
 const COLS: TableColumn[] = [
   { head: "เลขที่ MR", width: 140, Style: "Lead text" },
+  { head: "ประเภทงาน", width: 150 },
   { head: "ชื่อแผน" },
   { head: "รอบตรวจ", width: 190 },
   { head: "ผู้รับจ้าง", width: 220 },
@@ -56,20 +57,21 @@ export default function PlanList() {
   const [page, setPage] = useState(1);
   const [menu, setMenu] = useState<{ mr: string; anchor: MenuAnchor } | null>(null);
   const [del, setDel] = useState<string | null>(null);
-  type F = { status: string[]; vendor: string[] };
-  const NONE: F = { status: [], vendor: [] };
+  type F = { job: string[]; status: string[]; vendor: string[] };
+  const NONE: F = { job: [], status: [], vendor: [] };
   const [applied, setApplied] = useState<F>(NONE);
   const [panel, setPanel] = useState(false);
   const [fd, setFd] = useState<F>(NONE);
   const [dd, setDd] = useState("");
   const flip = (k: keyof F, v: string) => setFd((f) => ({ ...f, [k]: f[k].includes(v) ? f[k].filter((x) => x !== v) : [...f[k], v] }));
   const drop = (k: keyof F) => (v: string) => setFd((f) => ({ ...f, [k]: f[k].filter((x) => x !== v) }));
-  const chips = [...applied.status, ...applied.vendor];
-  const removeChip = (c: string) => { setApplied((a) => ({ status: a.status.filter((x) => x !== c), vendor: a.vendor.filter((x) => x !== c) })); setPage(1); };
+  const chips = [...applied.job, ...applied.status, ...applied.vendor];
+  const removeChip = (c: string) => { setApplied((a) => ({ job: a.job.filter((x) => x !== c), status: a.status.filter((x) => x !== c), vendor: a.vendor.filter((x) => x !== c) })); setPage(1); };
 
   const rows = useMemo(() => {
     const q = query.trim();
     return mock.plans.filter((p) => (!q || p.mr.includes(q) || p.name.includes(q))
+      && (!applied.job.length || applied.job.includes(p.jobType))
       && (!applied.status.length || applied.status.includes(STATUS_TEXT[p.status][0]))
       && (!applied.vendor.length || applied.vendor.includes(VENDOR_BY_ID[p.vendor]?.name ?? "")));
   }, [mock.plans, query, applied]);
@@ -86,6 +88,7 @@ export default function PlanList() {
 
   const data: TableValue[][] = shown.map((p) => [
     p.mr,
+    { pills: [[p.jobType, "Brand"]] },
     { text: p.name, sub: "ปีงบประมาณ " + p.fy },
     rangeText(p.from, p.to),
     VENDOR_BY_ID[p.vendor]?.name ?? "-",
@@ -123,6 +126,9 @@ export default function PlanList() {
       )}
       <RowMenu anchor={menu?.anchor ?? null} items={items} onClose={() => setMenu(null)} />
       <FilterShell open={panel} onClose={() => { setDd(""); setPanel(false); }} onClear={() => setFd(NONE)} onApply={() => { setApplied(fd); setPage(1); setDd(""); setPanel(false); }}>
+        <InputDropdownWithBadges LabelText="ประเภทงาน" Optional values={fd.job} Placeholder="ทั้งหมด" onRemove={drop("job")} open={dd === "job"} onOpenChange={(v) => setDd(v ? "job" : "")}>
+          <DropdownList>{JOB_TYPES.map((t) => <DropdownListItem key={t} Text={t} State={fd.job.includes(t) ? "Selected" : "Default"} onClick={() => flip("job", t)} />)}</DropdownList>
+        </InputDropdownWithBadges>
         <InputDropdownWithBadges LabelText="สถานะ" Optional values={fd.status} Placeholder="ทั้งหมด" onRemove={drop("status")} open={dd === "status"} onOpenChange={(v) => setDd(v ? "status" : "")}>
           <DropdownList>{STATUSES.map((s) => STATUS_TEXT[s][0]).map((t) => <DropdownListItem key={t} Text={t} State={fd.status.includes(t) ? "Selected" : "Default"} onClick={() => flip("status", t)} />)}</DropdownList>
         </InputDropdownWithBadges>

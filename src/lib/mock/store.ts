@@ -7,7 +7,7 @@ import { DOCS, PLANS, VENDORS, type DocsState, type Plan } from "./data";
 export const KEY = "si-next-v1";
 export const ROLE_KEY = "si-next-v1:role";
 /** รุ่นข้อมูลจำลอง — รุ่นไม่ตรง = เริ่มจากค่าตั้งต้นใหม่ */
-export const MOCK_V = 1;
+export const MOCK_V = 2;   // 2 = เพิ่มประเภทงาน (jobType) ในแผน
 
 export interface MockState {
   v: typeof MOCK_V;
