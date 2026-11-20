@@ -31,6 +31,8 @@ export const dateText = (iso: string) => {
   const [y, m, d] = iso.split("-").map(Number);
   return String(d).padStart(2, "0") + "/" + String(m).padStart(2, "0") + "/" + (y + 543);
 };
+/** ช่วงวันที่ (ISO) → "10/11/2569 – 20/12/2569" · วันเดียว = วันเดียว */
+export const dayRange = (d1: string, d2: string) => (!d1 ? "-" : d1 === d2 || !d2 ? dateText(d1) : dateText(d1) + " – " + dateText(d2));
 export const daysFromToday = (iso: string) => Math.round((Date.parse(iso) - Date.parse(TODAY)) / 86400000);
 export const dueSub = (iso: string) => {
   const d = daysFromToday(iso);
@@ -148,17 +150,15 @@ export const HEAD_BY_ID: Record<string, Head> = Object.fromEntries(HEADS.map((h)
 export const VENDOR_BY_ID: Record<string, Vendor> = Object.fromEntries(VENDORS.map((v) => [v.id, v]));
 
 /* ---------- แผน ---------- */
-/** review = รออนุมัติ · returned = ส่งกลับแก้ไข · approved = อนุมัติแล้ว (ผู้รับจ้างเห็น) · closed = ปิดงานแล้ว */
-/** ปิดงาน 3 ขั้น (เจ้าของงาน 20 พ.ย. 2569): ผู้รับจ้างขอปิด (closing) → กบค. ขออนุมัติปิดงาน (closeReview) → หัวหน้า กบค. อนุมัติ (closed)
-    review = รอหัวหน้า กบค. อนุมัติแผน · returned = ส่งกลับแก้ไข · approved = อนุมัติแล้ว (ผู้รับจ้างเห็น) */
-export type PlanStatus = "review" | "returned" | "approved" | "closing" | "closeReview" | "closed";
+/** flow ใหม่ (เจ้าของงาน 20 พ.ย. 2569): แผนหลักมีแค่ข้อมูลแผน + ยานพาหนะ · ผู้รับจ้าง ค่าจ้าง และการปิดงานอยู่ที่แผนเดินทาง
+    review = รอหัวหน้า กบค. อนุมัติแผน · returned = ส่งกลับแก้ไข · approved = อนุมัติแล้ว (สร้างแผนเดินทางได้)
+    closed = เสร็จสิ้น — ระบบตั้งเองเมื่อยานพาหนะทุกคันอยู่ในแผนเดินทางที่ปิดงานแล้ว (ไม่มีขั้นปิดแผนหลัก) */
+export type PlanStatus = "review" | "returned" | "approved" | "closed";
 export const STATUS_TEXT: Record<PlanStatus, [string, "Warning" | "Error" | "Info" | "Gray" | "Purple"]> = {
   review: ["รออนุมัติ", "Warning"],
   returned: ["ส่งกลับแก้ไข", "Error"],
   approved: ["อนุมัติแล้ว", "Info"],
-  closing: ["ผู้รับจ้างขอปิดงาน", "Warning"],
-  closeReview: ["รออนุมัติปิดงาน", "Purple"],
-  closed: ["ปิดงานแล้ว", "Gray"],
+  closed: ["เสร็จสิ้น", "Gray"],
 };
 export interface Plan {
   mr: string;
@@ -166,13 +166,6 @@ export interface Plan {
   fy: string;
   from: string;
   to: string;
-  vendor: string;
-  /** เบอร์โทรผู้รับจ้าง (ตั้งต้นจากข้อมูลผู้รับจ้าง แก้ได้) */
-  vendorTel: string;
-  /** เลขที่สัญญา/ใบสั่งจ้าง (ถ้ามี) */
-  contract: string;
-  /** ค่าจ้างตรวจตามสัญญารายคัน (บาท) — กบค. กำหนดทีละคันตอนสร้างแผน · คีย์ = รหัสยานพาหนะ */
-  costs: Record<string, number>;
   cars: string[];
   status: PlanStatus;
   /** วันที่ส่งให้หัวหน้า กบค. อนุมัติแผน (ISO) */
@@ -182,24 +175,71 @@ export interface Plan {
   /** หัวหน้า กบค. ที่อนุมัติแผน + วันที่ */
   approvedBy?: string;
   approvedAt?: string;
-  /** ขอปิดงาน: หัวหน้า กบค. ที่ กบค. เลือก · หมายเหตุ · วันที่ขอ */
-  closeApprover?: string;
-  closeNote?: string;
-  closeRequestedAt?: string;
-  /** กบค. ส่งกลับคำขอปิดงานของผู้รับจ้าง: เหตุผล (แผนกลับเป็นอนุมัติแล้ว) */
-  closeReturnReason?: string;
-  /** หัวหน้า กบค. ไม่อนุมัติปิดงาน: เหตุผล (กลับไปให้ กบค. ตรวจสอบ) */
-  headReturnReason?: string;
   closedAt?: string;
 }
 
 export const PLANS: Plan[] = [
-  { mr: "MRZ7000010", name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0112", costs: { v17: 9000, v18: 9000, v19: 9500, v20: 9000, v23: 9000 }, cars: ["v17", "v18", "v19", "v20", "v23"], status: "approved", approvedBy: "head1", approvedAt: "2026-11-10" },
-  { mr: "MRZ7000011", name: "ตรวจ ปจ.2 ภาคตะวันออก รอบ ม.ค. – มี.ค. 2570", fy: "2570", from: "2027-01", to: "2027-03", vendor: "ven2", vendorTel: "02-555-0202", contract: "", costs: { v21: 8500, v22: 9200 }, cars: ["v21", "v22"], status: "approved", approvedBy: "head2", approvedAt: "2026-11-12" },
-  { mr: "MRZ7000012", name: "ตรวจ ปจ.2 กระเช้าฮอทไลน์ ก.พ. 2570", fy: "2570", from: "2027-02", to: "2027-02", vendor: "ven1", vendorTel: "02-555-0101", contract: "", costs: { v24: 9000 }, cars: ["v24"], status: "review", submittedAt: "2026-11-18" },
-  { mr: "MRZ7000008", name: "ตรวจ ปจ.2 เครน ภาคใต้ มี.ค. 2570", fy: "2570", from: "2027-03", to: "2027-03", vendor: "ven3", vendorTel: "02-555-0303", contract: "", costs: { v09: 9800 }, cars: ["v09"], status: "review", submittedAt: "2026-11-19" },
-  { mr: "MRZ7000009", name: "ตรวจ ปจ.2 หลัง Overhaul รอบ ม.ค. 2570", fy: "2570", from: "2027-01", to: "2027-01", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0098", costs: { v16: 12000 }, cars: ["v16"], status: "closing", approvedBy: "head1", approvedAt: "2026-11-05" },
-  { mr: "MRZ6900020", name: "ตรวจ ปจ.2 รอบ ก.ค. – ก.ย. 2569", fy: "2569", from: "2026-07", to: "2026-09", vendor: "ven1", vendorTel: "02-555-0101", contract: "", costs: {  }, cars: [], status: "closed" },
+  { mr: "MRZ7000010", name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", cars: ["v17", "v18", "v19", "v20", "v23"], status: "approved", approvedBy: "head1", approvedAt: "2026-11-10" },
+  { mr: "MRZ7000011", name: "ตรวจ ปจ.2 ภาคตะวันออก รอบ ม.ค. – มี.ค. 2570", fy: "2570", from: "2027-01", to: "2027-03", cars: ["v21", "v22"], status: "approved", approvedBy: "head2", approvedAt: "2026-11-12" },
+  { mr: "MRZ7000012", name: "ตรวจ ปจ.2 กระเช้าฮอทไลน์ ก.พ. 2570", fy: "2570", from: "2027-02", to: "2027-02", cars: ["v24"], status: "review", submittedAt: "2026-11-18" },
+  { mr: "MRZ7000008", name: "ตรวจ ปจ.2 เครน ภาคใต้ มี.ค. 2570", fy: "2570", from: "2027-03", to: "2027-03", cars: ["v09"], status: "review", submittedAt: "2026-11-19" },
+  { mr: "MRZ7000009", name: "ตรวจ ปจ.2 หลัง Overhaul รอบ ม.ค. 2570", fy: "2570", from: "2027-01", to: "2027-01", cars: ["v16"], status: "approved", approvedBy: "head1", approvedAt: "2026-11-05" },
+  { mr: "MRZ6900020", name: "ตรวจ ปจ.2 รอบ ก.ค. – ก.ย. 2569", fy: "2569", from: "2026-07", to: "2026-09", cars: [], status: "closed", closedAt: "2026-10-02" },
+];
+
+/* ---------- แผนเดินทาง (สร้างหลังแผนอนุมัติ · หัวหน้า กบค. อนุมัติ · แบบจ้างดำเนินการของต้นแบบบำรุงรักษา) ---------- */
+/** review = รอหัวหน้า กบค. อนุมัติ · returned = ส่งกลับแก้ไข · active = อนุมัติแล้ว ดำเนินการ (ผู้รับจ้างเห็นและบันทึกผลได้)
+    closing = ผู้รับจ้างขอปิดงาน รอ กบค. อนุมัติ · closed = ปิดงานแล้ว */
+export type TripStatus = "review" | "returned" | "active" | "closing" | "closed";
+export const TRIP_STATUS_TEXT: Record<TripStatus, [string, "Warning" | "Info" | "Gray" | "Error"]> = {
+  review: ["รออนุมัติ", "Warning"],
+  returned: ["ส่งกลับแก้ไข", "Error"],
+  active: ["ดำเนินการ", "Info"],
+  closing: ["รออนุมัติปิดงาน", "Warning"],
+  closed: ["ปิดงานแล้ว", "Gray"],
+};
+export interface Trip {
+  id: string;
+  /** แผนตรวจที่เป็นเจ้าของ */
+  mr: string;
+  name: string;
+  vendor: string;
+  vendorTel: string;
+  /** เลขที่สัญญา/ใบสั่งจ้าง (ถ้ามี) */
+  contract: string;
+  /** ค่าจ้างตรวจตามสัญญารายคัน (บาท) · คีย์ = รหัสยานพาหนะ */
+  costs: Record<string, number>;
+  cars: string[];
+  /** ช่วงวันทำงาน (ISO) */
+  d1: string;
+  d2: string;
+  /** แก้รายคัน: สถานที่ตรวจ · เบอร์ติดต่อ · ผู้ดูแลยานพาหนะ · วันดำเนินการ (ไม่ระบุ = ค่าเริ่มต้น) */
+  locs: Record<string, string>;
+  phones: Record<string, string>;
+  names: Record<string, string>;
+  works: Record<string, [string, string]>;
+  status: TripStatus;
+  createdAt: string;
+  /** วันที่ส่งให้หัวหน้า กบค. อนุมัติ · ส่งกลับแก้ไข: เหตุผล · หัวหน้าที่อนุมัติ + วันที่ */
+  submittedAt?: string;
+  returnReason?: string;
+  approvedBy?: string;
+  approvedAt?: string;
+  closeRequestedAt?: string;
+  /** กบค. ส่งกลับคำขอปิดงาน: เหตุผล (แผนเดินทางกลับเป็นดำเนินการ) */
+  closeReturnReason?: string;
+  closedAt?: string;
+}
+export const TRIPS: Trip[] = [
+  { id: "MRZ7000010-1", mr: "MRZ7000010", name: "ตรวจ ปจ.2 ภาคเหนือและภาคกลาง", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0112",
+    costs: { v17: 9000, v18: 9000, v19: 9500, v20: 9000 }, cars: ["v17", "v18", "v19", "v20"], d1: "2026-11-10", d2: "2026-12-20",
+    locs: {}, phones: {}, names: {}, works: { v19: ["2026-11-14", "2026-11-14"] }, status: "active", createdAt: "2026-11-10", submittedAt: "2026-11-10", approvedBy: "head1", approvedAt: "2026-11-11" },
+  { id: "MRZ7000009-1", mr: "MRZ7000009", name: "ตรวจ ปจ.2 หลัง Overhaul เพชรบุรี", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0098",
+    costs: { v16: 12000 }, cars: ["v16"], d1: "2026-11-06", d2: "2026-11-10", locs: { v16: "ศูนย์ซ่อมบำรุง กฟต.1 เพชรบุรี" }, phones: {}, names: {}, works: {},
+    status: "closing", createdAt: "2026-11-05", submittedAt: "2026-11-05", approvedBy: "head1", approvedAt: "2026-11-06", closeRequestedAt: "2026-11-12" },
+  { id: "MRZ7000011-1", mr: "MRZ7000011", name: "ตรวจ ปจ.2 ชลบุรีและอุดรธานี", vendor: "ven2", vendorTel: "02-555-0202", contract: "",
+    costs: { v21: 8500, v22: 9200 }, cars: ["v21", "v22"], d1: "2027-01-11", d2: "2027-01-22", locs: {}, phones: {}, names: {}, works: {},
+    status: "review", createdAt: "2026-11-19", submittedAt: "2026-11-19" },
 ];
 
 /* ---------- เอกสาร ปจ.2 ที่ผู้รับจ้างแนบ (รายคัน) ---------- */
@@ -212,7 +252,7 @@ export const RESULT_COLOR: Record<InspectResult, "Success" | "Error" | "Warning"
 export interface CarDocs {
   /** วันที่ตรวจ (ISO) */
   date?: string;
-  /** ค่าจ้างตรวจคันนี้ (บาท) — ไม่มีค่า = ตามสัญญาของคันนั้น (costs ของแผน) */
+  /** ค่าจ้างตรวจคันนี้ (บาท) — ไม่มีค่า = ตามสัญญาของคันนั้น (costs ของแผนเดินทาง) */
   cost?: number;
   /** เหตุผลที่ค่าจ้างต่างจากสัญญา (ต้องระบุเมื่อ cost ≠ ค่าตามสัญญาของคันนั้น) */
   costReason?: string;
@@ -240,7 +280,6 @@ export const DOCS: DocsState = {
     v19: { date: "2026-11-14", cost: 10500, costReason: "ต้องใช้เครื่องยกเสริมเพราะพื้นที่ลาดชัน", result: "ไม่ผ่าน", files: [{ name: "ปจ2-74-7745.pdf", size: "980 KB" }], sentAt: "2026-11-18" },
     v20: { date: "2026-11-13", cost: 9000, result: "ผ่าน", files: [{ name: "ปจ2-82-9956.jpg", size: "3.1 MB" }], returnReason: "เอกสารไม่ชัด อ่านเลขตัวถังไม่ได้ กรุณาสแกนใหม่" },
     v18: { date: "2026-11-17", cost: 9000, result: "ตรวจไม่ได้", reason: "ยานพาหนะอยู่ระหว่างซ่อมระบบไฮดรอลิก ไม่สามารถยกกระเช้าทดสอบได้", files: [{ name: "หนังสือรับรอง-72-3302.pdf", size: "1.1 MB" }] },
-    v23: { date: "2026-11-18", cost: 9000, files: [] },
   },
 };
 

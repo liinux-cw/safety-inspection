@@ -43,5 +43,5 @@ Every piece on screen must trace back to a real component in Figma. Exceptions: 
 ## Code map
 - `figma-spec/` — Figma component specs (`<name>.json`) · `components.json` list · `svg/` graphics · `COMPOSED.md` composed pieces.
 - `src/components/vms|patterns|shell` — copied from ref prototype (shell/PrototypeBar adapted: role switch กบค./ผู้รับจ้าง, "จำลองอนุมัติแผน").
-- `src/lib/mock/` — `data.ts` (vehicles, vendors, plans, upload rules) · `store.ts` (localStorage `si-next-v1`) · `plan.ts` (CRUD, no-overlap rule, docs).
-- `src/app/` — `/` plan list · `/new/` `/edit/` `/detail/` (กบค.) · `/docs/` `/docs/plan/` (ผู้รับจ้าง) · `_lib/` PlanForm, VehiclePicker, DocsTable.
+- `src/lib/mock/` — `data.ts` (vehicles, vendors, plans, travel plans, upload rules) · `cycle.ts` (inspection cycle rules, Excel v3) · `store.ts` (localStorage `si-next-v1`) · `plan.ts` (plan + travel plan CRUD, no-overlap rule, docs).
+- `src/app/` — `/` plan list · `/new/` `/edit/` `/detail/` (กบค.) · `/trip/` `/trip/new/` `/trip/edit/` travel plans (กบค.) · `/approvals/` (หัวหน้า กบค.) · `/docs/` `/docs/trip/` (ผู้รับจ้าง) · `_lib/` PlanForm, TripForm, VehiclePicker, DocsTable.

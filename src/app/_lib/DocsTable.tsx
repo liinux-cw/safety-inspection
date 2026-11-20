@@ -1,5 +1,5 @@
 "use client";
-/* ตารางยานพาหนะในแผน + ผลการตรวจ ปจ.2 รายคัน · popup กรอกผล/ดู/พิจารณา
+/* ตารางยานพาหนะในแผนเดินทาง + ผลการตรวจ ปจ.2 รายคัน · popup กรอกผล/ดู/พิจารณา
    ช่องที่ผู้รับจ้างกรอกต่อคัน (prototype พี่มิก P5-Record): วันที่ตรวจ · ค่าจ้างตรวจคันนี้ (บาท) · ผลการตรวจ (ผ่าน / ไม่ผ่าน / ระงับ / ตรวจไม่ได้)
      · เอกสารการตรวจ ปจ.2 (ต้องแนบ) — ผลตรวจไม่ได้ = เหตุผล (ต้องระบุ) + หนังสือรับรองจากผู้แทนหน่วยงาน (ต้องแนบ)
    ผู้รับจ้าง (canEdit): ยังไม่ส่ง หรือ กบค. ส่งกลับแก้ไข = แก้ได้ · ส่งแล้ว (รอ กบค.) หรืออนุมัติแล้ว = ล็อก ดูและดาวน์โหลดได้อย่างเดียว
@@ -27,9 +27,9 @@ import { TextInput } from "@/components/vms/TextInput";
 import { downloadFile, rememberFiles } from "@/lib/fileDownload";
 import {
   RESULTS, RESULT_COLOR, TODAY, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, bahtText, dateText, dueSub, fileOk, sizeText,
-  type CarDocs, type InspectResult, type Plan,
+  type CarDocs, type InspectResult, type Trip,
 } from "@/lib/mock/data";
-import { DOC_TEXT, approveDocs, carCost, carDocs, contractCost, costDiffers, docState, missing, returnDocs, submitDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
+import { DOC_TEXT, approveDocs, carCost, carDocs, contractCost, costDiffers, docState, missing, returnDocs, submitDocs, tripOpen, updateResult, vendorCanEdit } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
 import { TH_PICKER } from "@/lib/thaiDate";
@@ -51,19 +51,19 @@ const toDate = (iso: string) => { const [y, m, d] = iso.split("-").map(Number); 
 const toIso = (d: Date) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
 const docLabel = (c: CarDocs) => (c.result === "ตรวจไม่ได้" ? "หนังสือรับรองจากผู้แทนหน่วยงาน" : "เอกสารการตรวจ ปจ.2");
 
-/** canEdit = บทบาทผู้รับจ้าง (แก้ได้จริงเมื่อแผนอนุมัติแล้ว) · ticked/onTicked = กบค. ติ๊กหลายคันที่รออนุมัติเพื่ออนุมัติพร้อมกัน */
-export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan: Plan; canEdit: boolean; canReview?: boolean; ticked?: string[]; onTicked?: (next: string[]) => void }) {
+/** canEdit = บทบาทผู้รับจ้าง (แก้ได้จริงเมื่อแผนเดินทางยังดำเนินการ) · ticked/onTicked = กบค. ติ๊กหลายคันที่รออนุมัติเพื่ออนุมัติพร้อมกัน */
+export function DocsTable({ trip, canEdit, canReview, ticked, onTicked }: { trip: Trip; canEdit: boolean; canReview?: boolean; ticked?: string[]; onTicked?: (next: string[]) => void }) {
   const mob = useBreakpoint() === "Mobile";
   const mock = useMock();
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState<string | null>(null);
-  const last = Math.max(1, Math.ceil(plan.cars.length / PER)), pg = Math.min(page, last);
+  const last = Math.max(1, Math.ceil(trip.cars.length / PER)), pg = Math.min(page, last);
 
-  const rows: TableValue[][] = plan.cars.slice((pg - 1) * PER, pg * PER).map((id) => {
+  const rows: TableValue[][] = trip.cars.slice((pg - 1) * PER, pg * PER).map((id) => {
     const v = VEHICLE_BY_ID[id];
-    const c = carDocs(mock, plan.mr, id);
-    const st = docState(c, plan, id);
-    const editHere = canEdit && vendorCanWork(plan) && vendorCanEdit(c);
+    const c = carDocs(mock, trip.mr, id);
+    const st = docState(c, trip, id);
+    const editHere = canEdit && tripOpen(trip) && vendorCanEdit(c);
     const reviewHere = !!canReview && st === "sent";
     const act = editHere ? { IconSwap: "edit_note-24-300-round", label: "บันทึกผลตรวจ " + v.plate, onClick: () => setOpen(id) }
       : reviewHere ? { IconSwap: "fact_check-24-300-round", label: "พิจารณาผลตรวจ " + v.plate, onClick: () => setOpen(id) }
@@ -72,15 +72,15 @@ export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan
       { text: v.plate, sub: v.code + " · " + v.type }, v.org, { text: dateText(v.due), sub: dueSub(v.due) },
       c.date ? dateText(c.date) : "-",
       c.result ? { pills: [[c.result, RESULT_COLOR[c.result]]] } : "-",
-      { text: bahtText(carCost(plan, c, id)), sub: costDiffers(plan, c, id) ? "ต่างจากสัญญา (" + bahtText(contractCost(plan, id)) + ")" : st === "none" ? "ตามสัญญา" : undefined },
+      { text: bahtText(carCost(trip, c, id)), sub: costDiffers(trip, c, id) ? "ต่างจากสัญญา (" + bahtText(contractCost(trip, id)) + ")" : st === "none" ? "ตามสัญญา" : undefined },
       { pills: [DOC_TEXT[st]] },
       { actions: [act], mobileActions: [act] },
     ];
   });
-  const pageCars = plan.cars.slice((pg - 1) * PER, pg * PER);
+  const pageCars = trip.cars.slice((pg - 1) * PER, pg * PER);
   const checkRows = rows.map((r, i) => {
     const id = pageCars[i], v = VEHICLE_BY_ID[id], a = r[7] as { actions: { IconSwap: string; label: string; onClick?: () => void }[] };
-    return { key: id, text: v.plate, sub: v.code + " · " + v.type, disabled: docState(carDocs(mock, plan.mr, id), plan, id) !== "sent", cells: r.slice(1), mobileActions: a.actions };
+    return { key: id, text: v.plate, sub: v.code + " · " + v.type, disabled: docState(carDocs(mock, trip.mr, id), trip, id) !== "sent", cells: r.slice(1), mobileActions: a.actions };
   });
   const rowKey = (r: TableValue[]) => { const v = r[0]; return v && typeof v === "object" && "text" in v ? v.text : String(v); };
 
@@ -88,15 +88,15 @@ export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan
     <>
       {ticked && onTicked ? (
         <CheckTable columns={COLS} rows={checkRows} ticked={ticked} onTicked={onTicked}
-          scope={plan.cars.map((id) => ({ key: id, disabled: docState(carDocs(mock, plan.mr, id), plan, id) !== "sent" }))}
-          Pagination={<TablePagination total={plan.cars.length} page={pg} perPage={PER} onPage={setPage} />} />
+          scope={trip.cars.map((id) => ({ key: id, disabled: docState(carDocs(mock, trip.mr, id), trip, id) !== "sent" }))}
+          Pagination={<TablePagination total={trip.cars.length} page={pg} perPage={PER} onPage={setPage} />} />
       ) : mob ? (
         <div className="flex flex-col gap-5">
           <MobileCards columns={COLS} rows={rows} rowKey={rowKey} />
-          <TablePagination total={plan.cars.length} page={pg} perPage={PER} onPage={setPage} />
+          <TablePagination total={trip.cars.length} page={pg} perPage={PER} onPage={setPage} />
         </div>
-      ) : <Table columns={COLS} rows={rows} rowKey={rowKey} Pagination={<TablePagination total={plan.cars.length} page={pg} perPage={PER} onPage={setPage} />} />}
-      {open && <ResultModal plan={plan} car={open} canEdit={canEdit} canReview={!!canReview} onClose={() => setOpen(null)} />}
+      ) : <Table columns={COLS} rows={rows} rowKey={rowKey} Pagination={<TablePagination total={trip.cars.length} page={pg} perPage={PER} onPage={setPage} />} />}
+      {open && <ResultModal trip={trip} car={open} canEdit={canEdit} canReview={!!canReview} onClose={() => setOpen(null)} />}
     </>
   );
 }
@@ -105,15 +105,14 @@ type Draft = Pick<CarDocs, "date" | "cost" | "costReason" | "result" | "reason" 
 const draftOf = (c: CarDocs): Draft => ({ date: c.date, cost: c.cost, costReason: c.costReason, result: c.result, reason: c.reason, files: c.files });
 const EMPTY: Draft = { date: undefined, cost: undefined, costReason: undefined, result: undefined, reason: undefined, files: [] };
 
-function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; car: string; canEdit: boolean; canReview: boolean; onClose: () => void }) {
+function ResultModal({ trip, car, canEdit, canReview, onClose }: { trip: Trip; car: string; canEdit: boolean; canReview: boolean; onClose: () => void }) {
   const mob = useBreakpoint() === "Mobile";
   const mock = useMock();
   const v = VEHICLE_BY_ID[car];
-  const saved = carDocs(mock, plan.mr, car);
-  const st = docState(saved, plan, car);
-  const contract = contractCost(plan, car);
-  const waitPlan = canEdit && (plan.status === "review" || plan.status === "returned");
-  const ro = !canEdit || !vendorCanWork(plan) || !vendorCanEdit(saved);
+  const saved = carDocs(mock, trip.mr, car);
+  const st = docState(saved, trip, car);
+  const contract = contractCost(trip, car);
+  const ro = !canEdit || !tripOpen(trip) || !vendorCanEdit(saved);
   /* แก้ในร่างก่อน · ตกลง = บันทึกลงแผน · ยกเลิก = ทิ้งร่าง */
   const [draft, setDraft] = useState<Draft>(() => draftOf(saved));
   const put = (patch: Partial<Draft>) => setDraft((d) => ({ ...d, ...patch }));
@@ -133,7 +132,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const dateRef = useRef<HTMLDivElement>(null);
   const closeCal = useCallback(() => { setCal(false); setTouched((t) => ({ ...t, date: true })); }, []);
   useOutside(dateRef, cal && !mob, closeCal);
-  const [costText, setCostText] = useState(String(carCost(plan, c, car)));
+  const [costText, setCostText] = useState(String(carCost(trip, c, car)));
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const touch = (k: string) => setTouched((t) => ({ ...t, [k]: true }));
   const [decision, setDecision] = useState<"" | "approve" | "return">("");
@@ -141,13 +140,13 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const [rTouched, setRTouched] = useState(false);
   const reasonErr = rTouched && !reason.trim();
   const decided = decision === "approve" || (decision === "return" && !!reason.trim());
-  const differs = costDiffers(plan, c, car);
+  const differs = costDiffers(trip, c, car);
 
   const sample = () => {
-    if (!carCost(plan, c, car)) setCostText(String(contract));
+    if (!carCost(trip, c, car)) setCostText(String(contract));
     put({
       date: c.date ?? TODAY,
-      cost: carCost(plan, c, car) ? c.cost : undefined,
+      cost: carCost(trip, c, car) ? c.cost : undefined,
       result: c.result ?? "ผ่าน",
       reason: c.result === "ตรวจไม่ได้" && !c.reason ? "ยานพาหนะอยู่ระหว่างซ่อม ไม่สามารถทดสอบได้" : c.reason,
       files: c.files.length ? c.files : [{ name: "ปจ2-" + v.plate.split(" ")[0] + "-ตัวอย่าง.pdf", size: "1.2 MB" }],
@@ -177,22 +176,22 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
     setUploading((u) => ({ ...u, ...Object.fromEntries(take.map((f) => [f.name, 0])) }));
   };
   const save = () => {
-    updateResult(plan.mr, car, draft);
-    const left = missing({ ...saved, ...draft }, plan, car);
+    updateResult(trip.mr, car, draft);
+    const left = missing({ ...saved, ...draft }, trip, car);
     notify(left.length ? "บันทึกผลการตรวจ ปจ.2 ของ " + v.plate + " แล้ว ยังขาด: " + left.join(", ") : "บันทึกผลการตรวจ ปจ.2 ของ " + v.plate + " แล้ว");
     onClose();
   };
   /* ส่งอนุมัติรายคัน: กรอกครบแล้วเท่านั้น · บันทึกร่างแล้วส่งให้ กบค. */
-  const sendable = !ro && !busy && !missing({ ...saved, ...draft }, plan, car).length;
+  const sendable = !ro && !busy && !missing({ ...saved, ...draft }, trip, car).length;
   const send = () => {
-    updateResult(plan.mr, car, draft);
-    submitDocs(plan, [car]);
+    updateResult(trip.mr, car, draft);
+    submitDocs(trip, [car]);
     notify("ส่งผลการตรวจ ปจ.2 ของ " + v.plate + " เพื่ออนุมัติแล้ว");
     onClose();
   };
   const confirm = () => {
-    if (decision === "approve") { approveDocs(plan.mr, car); notify("อนุมัติผลตรวจ ปจ.2 ของ " + v.plate + " แล้ว"); }
-    else { returnDocs(plan.mr, car, reason.trim()); notify("ส่งกลับให้ผู้รับจ้างแก้ไขผลตรวจของ " + v.plate + " แล้ว"); }
+    if (decision === "approve") { approveDocs(trip.mr, car); notify("อนุมัติผลตรวจ ปจ.2 ของ " + v.plate + " แล้ว"); }
+    else { returnDocs(trip.mr, car, reason.trim()); notify("ส่งกลับให้ผู้รับจ้างแก้ไขผลตรวจของ " + v.plate + " แล้ว"); }
     onClose();
   };
   /* วันที่ตรวจเลือกได้ทุกวันจนถึงวันนี้ */
@@ -214,12 +213,11 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
         {st === "sent" && <Alert Color="Info" Text={"ส่งอนุมัติแล้วเมื่อ " + dateText(c.sentAt!) + " · รอ กบค. อนุมัติ"} SupportingText={canEdit ? "ระหว่างรออนุมัติแก้ไขหรือลบไม่ได้ ดูและดาวน์โหลดได้" : undefined} />}
         {st === "returned" && <Alert Color="Error" Text="กบค. ส่งกลับแก้ไข" SupportingText={c.returnReason + (canEdit ? " · แก้ไขแล้วกดส่งอนุมัติอีกครั้ง" : "")} />}
         {!canEdit && !c.sentAt && !c.approvedAt && st !== "none" && <Alert Color="Warning" Text="ผู้รับจ้างยังไม่ส่งอนุมัติ" SupportingText="ข้อมูลอาจเปลี่ยนแปลงจนกว่าผู้รับจ้างจะส่ง" />}
-        {waitPlan && <Alert Color="Warning" Text="แผนยังไม่อนุมัติ" SupportingText="ดูรายละเอียดได้ก่อน บันทึกและส่งผลตรวจได้เมื่อแผนอนุมัติแล้ว" />}
 
         {ro ? (
           <DisplayBox perRow={2} pairs={[
             ["วันที่ตรวจ", c.date ? dateText(c.date) : "-"],
-            ["ค่าจ้างตรวจคันนี้", st === "none" ? "ตามสัญญา " + bahtText(contract) : bahtText(carCost(plan, c, car)) + (differs ? " (สัญญา " + bahtText(contract) + ")" : "")],
+            ["ค่าจ้างตรวจคันนี้", st === "none" ? "ตามสัญญา " + bahtText(contract) : bahtText(carCost(trip, c, car)) + (differs ? " (สัญญา " + bahtText(contract) + ")" : "")],
             ...(differs ? [["เหตุผลที่ค่าจ้างต่างจากสัญญา", c.costReason || "-"] as [string, string]] : []),
             ["ผลการตรวจ", c.result ? <PillOutline key="r" Text={c.result} Color={RESULT_COLOR[c.result]} /> : "-"],
             ["ครบกำหนดตรวจเดิม", dateText(v.due)],
@@ -236,7 +234,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
               {cal && (mob ? <div className="flex justify-center">{picker}</div> : <div className="absolute top-full left-0 z-30 mt-1">{picker}</div>)}
             </div>
             <TextInput className="min-w-0 flex-1" LabelText="ค่าจ้างตรวจคันนี้ (บาท)" Text={costText} Placeholder="0.00" State="Disabled" disabled
-              HelperText="ตามสัญญา กำหนดตอนสร้างแผน" />
+              HelperText="ตามสัญญา กำหนดตอนสร้างแผนเดินทาง" />
           </div>
           {differs && <TextArea LabelText="เหตุผลที่ค่าจ้างต่างจากสัญญา" Text={c.costReason ?? ""} Placeholder="เช่น ต้องใช้อุปกรณ์เสริม" onChange={(x) => put({ costReason: x })}
             onBlur={() => touch("costReason")} State={touched.costReason && !c.costReason?.trim() ? "Error" : undefined} HelperText={touched.costReason && !c.costReason?.trim() ? "กรุณาระบุเหตุผล" : undefined} />}

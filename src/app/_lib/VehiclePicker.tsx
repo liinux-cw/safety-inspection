@@ -34,14 +34,15 @@ export function VehiclePicker({ open, ...p }: PickerProps & { open: boolean }) {
   if (!open) return null;
   return <Picker {...p} />;
 }
-interface PickerProps { pool: Vehicle[]; taken: Record<string, string>; onAdd: (ids: string[]) => void; onCancel: () => void; /** รอบตรวจของแผน (YYYY-MM) — มีค่า = ตั้งตัวกรองครบกำหนดในรอบนี้ + เกินกำหนดให้ตั้งแต่เปิด */ from?: string; to?: string }
+interface PickerProps { pool: Vehicle[]; taken: Record<string, string>; onAdd: (ids: string[]) => void; onCancel: () => void; /** รอบตรวจของแผน (YYYY-MM) — มีค่า = ตั้งตัวกรองครบกำหนดในรอบนี้ + เกินกำหนดให้ตั้งแต่เปิด */ from?: string; to?: string;
+  /** เลือกเข้าแผนเดินทาง (ชื่อแผนเดินทาง) — คันมาจากแผนที่อนุมัติแล้ว ไม่ตั้งตัวกรองครบกำหนดให้ */ trip?: string }
 
-function Picker({ pool, taken, onAdd, onCancel, from = "", to = "" }: PickerProps) {
+function Picker({ pool, taken, onAdd, onCancel, from = "", to = "", trip }: PickerProps) {
   const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
   const [ticked, setTicked] = useState<string[]>([]);
   const hasRange = !!from && !!to;
-  const START: F = hasRange ? { ...NONE, due: ["ครบกำหนดในรอบนี้", "เกินกำหนด"] } : NONE;
+  const START: F = hasRange && trip == null ? { ...NONE, due: ["ครบกำหนดในรอบนี้", "เกินกำหนด"] } : NONE;
   const [f, setF] = useState<F>(START);
   const dueMatch = (v: Vehicle) => f.due.some((x) => (x === "ครบกำหนดในรอบนี้" ? dueInRange(v.due, from, to) : dueBucket(v.due) === x));
   /* ตัวกรองวางใต้ช่องค้นหาในตัว popup (ไม่เปิดแผงซ้อน popup · เจ้าของงาน 20 พ.ย. 2569) — เลือกแล้วกรองทันที */
@@ -87,7 +88,7 @@ function Picker({ pool, taken, onAdd, onCancel, from = "", to = "" }: PickerProp
   </>;
 
   const body = !pool.length
-    ? <EmptyStateDataEmpty Graphic="vehicle" Text="ไม่มียานพาหนะที่เพิ่มเข้าแผนได้" SupportingText="ยานพาหนะประเภท 09 ทุกคันอยู่ในแผนนี้แล้ว" />
+    ? <EmptyStateDataEmpty Graphic="vehicle" Text={trip != null ? "ไม่มียานพาหนะที่เพิ่มเข้าแผนเดินทางได้" : "ไม่มียานพาหนะที่เพิ่มเข้าแผนได้"} SupportingText={trip != null ? "ยานพาหนะทุกคันของแผนนี้อยู่ในแผนเดินทางแล้ว" : "ยานพาหนะประเภท 09 ทุกคันอยู่ในแผนนี้แล้ว"} />
     : <>
       <TableHeader query={q} Placeholder={SEARCH} onQuery={(v) => { setQ(v); setPage(1); }} FilterButton={false}
         Actions={nFilters ? <TertiaryBrandButton Text="ล้างตัวกรอง" onClick={() => { setF(NONE); setPage(1); }} /> : undefined} />
@@ -100,9 +101,10 @@ function Picker({ pool, taken, onAdd, onCancel, from = "", to = "" }: PickerProp
 
   return (
     <>
-      <PopupModal open width={1140} title="เพิ่มยานพาหนะเข้าแผน"
-        sub={"แสดงเฉพาะยานพาหนะประเภท 09 ที่ต้องตรวจ ปจ.2" + (hasRange ? " · ตั้งตัวกรองให้: ครบกำหนดในรอบ " + rangeText(from, to) + " และเกินกำหนด" : "") + (nTaken ? " · " + nTaken + " คันอยู่ในแผนอื่นที่ยังไม่ปิด เลือกไม่ได้" : "")}
-        ok={"เพิ่ม " + n + " คันเข้าแผน"} okDisabled={!n} onCancel={onCancel}
+      <PopupModal open width={1140} title={trip != null ? "เพิ่มยานพาหนะเข้าแผนเดินทาง" : "เพิ่มยานพาหนะเข้าแผน"}
+        sub={trip != null ? "แสดงเฉพาะยานพาหนะในแผนนี้ที่ยังไม่อยู่ในแผนเดินทางใด"
+          : "แสดงเฉพาะยานพาหนะประเภท 09 ที่ต้องตรวจ ปจ.2" + (hasRange ? " · ตั้งตัวกรองให้: ครบกำหนดในรอบ " + rangeText(from, to) + " และเกินกำหนด" : "") + (nTaken ? " · " + nTaken + " คันอยู่ในแผนอื่นที่ยังไม่ปิด เลือกไม่ได้" : "")}
+        ok={"เพิ่ม " + n + " คันเข้าแผน" + (trip != null ? "เดินทาง" : "")} okDisabled={!n} onCancel={onCancel}
         onOk={() => onAdd(ticked.filter((id) => !taken[id]))}>
         {body}
       </PopupModal>
