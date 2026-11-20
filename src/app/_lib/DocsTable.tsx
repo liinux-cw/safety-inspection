@@ -26,9 +26,9 @@ import { TextInput } from "@/components/vms/TextInput";
 import { downloadFile, rememberFiles } from "@/lib/fileDownload";
 import {
   RESULTS, RESULT_COLOR, TODAY, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, addMonths, bahtText, dateText, dueSub, fileOk, rangeText, sizeText,
-  type CarDocs, type InspectResult, type Plan, type Vehicle,
+  type CarDocs, type InspectResult, type Plan,
 } from "@/lib/mock/data";
-import { DOC_TEXT, addFiles, approveDocs, carCost, carDocs, contractCost, costDiffers, docState, missing, removeFile, returnDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
+import { DOC_TEXT, approveDocs, carCost, carDocs, contractCost, costDiffers, docState, missing, returnDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
 import { TH_PICKER } from "@/lib/thaiDate";
@@ -99,23 +99,23 @@ export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan
   );
 }
 
-/** ข้อความผลที่จะเกิดหลังบันทึก (prototype พี่มิก P5-Record) */
-function outcome(v: Vehicle, c: CarDocs): { Color: "Info" | "Warning" | "Gray"; Text: string } | null {
-  if (!c.result) return null;
-  if (c.result === "ผ่าน") return { Color: "Info", Text: "ทะเบียน ปจ.2 อัปเดตครบกำหนดครั้งถัดไปเป็น " + (c.date ? dateText(addMonths(c.date, v.cycle)) : "วันที่ตรวจ + " + v.cycle + " เดือน") + " (วันที่ตรวจ + " + v.cycle + " เดือน)" };
-  if (c.result === "ตรวจไม่ได้") return { Color: "Gray", Text: "ต้องระบุเหตุผลและแนบหนังสือรับรองจากผู้แทนหน่วยงาน · ทะเบียน ปจ.2 คงวันครบกำหนดเดิม (" + dateText(v.due) + ")" };
-  return { Color: "Warning", Text: "ผล" + c.result + ": ระบบแจ้งผู้ดูแลยานพาหนะให้เปิดงานซ่อม (งานซ่อมไม่ผูกกับแผนนี้)" };
-}
+type Draft = Pick<CarDocs, "date" | "cost" | "costReason" | "result" | "reason" | "files">;
+const draftOf = (c: CarDocs): Draft => ({ date: c.date, cost: c.cost, costReason: c.costReason, result: c.result, reason: c.reason, files: c.files });
+const EMPTY: Draft = { date: undefined, cost: undefined, costReason: undefined, result: undefined, reason: undefined, files: [] };
 
 function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; car: string; canEdit: boolean; canReview: boolean; onClose: () => void }) {
   const mob = useBreakpoint() === "Mobile";
   const mock = useMock();
   const v = VEHICLE_BY_ID[car];
-  const c = carDocs(mock, plan.mr, car);
-  const st = docState(c, plan, car);
+  const saved = carDocs(mock, plan.mr, car);
+  const st = docState(saved, plan, car);
   const contract = contractCost(plan, car);
   const waitPlan = canEdit && !vendorCanWork(plan) && plan.status !== "closed";
-  const ro = !canEdit || !vendorCanWork(plan) || !vendorCanEdit(c);
+  const ro = !canEdit || !vendorCanWork(plan) || !vendorCanEdit(saved);
+  /* แก้ในร่างก่อน · ตกลง = บันทึกลงแผน · ยกเลิก = ทิ้งร่าง */
+  const [draft, setDraft] = useState<Draft>(() => draftOf(saved));
+  const put = (patch: Partial<Draft>) => setDraft((d) => ({ ...d, ...patch }));
+  const c: CarDocs = ro ? saved : { ...saved, ...draft };
   const review = canReview && st === "sent";
   const [error, setError] = useState<string | null>(null);
   const [cal, setCal] = useState(false);
@@ -127,7 +127,6 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const [rTouched, setRTouched] = useState(false);
   const reasonErr = rTouched && !reason.trim();
   const decided = decision === "approve" || (decision === "return" && !!reason.trim());
-  const left = missing(c, plan, car);
   const differs = costDiffers(plan, c, car);
 
   const setCost = (t: string) => {
@@ -135,27 +134,26 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
     setCostText(clean);
     const n = Number(clean);
     /* B: เท่ากับสัญญา = ไม่เก็บค่า (ใช้ค่าตามสัญญา) · ว่าง = 0 (ต้องกรอก) */
-    updateResult(plan.mr, car, { cost: !clean || Number.isNaN(n) ? 0 : n === contract ? undefined : n });
+    put({ cost: !clean || Number.isNaN(n) ? 0 : n === contract ? undefined : n });
   };
   const sample = () => {
-    if (!c.date) updateResult(plan.mr, car, { date: TODAY });
-    if (!carCost(plan, c, car)) setCost(String(contract));
-    if (!c.result) updateResult(plan.mr, car, { result: "ผ่าน" });
-    if (c.result === "ตรวจไม่ได้" && !c.reason) updateResult(plan.mr, car, { reason: "ยานพาหนะอยู่ระหว่างซ่อม ไม่สามารถทดสอบได้" });
-    if (!c.files.length) addFiles(plan.mr, car, [{ name: "ปจ2-" + v.plate.split(" ")[0] + "-ตัวอย่าง.pdf", size: "1.2 MB" }]);
+    if (!carCost(plan, c, car)) setCostText(String(contract));
+    put({
+      date: c.date ?? TODAY,
+      cost: carCost(plan, c, car) ? c.cost : undefined,
+      result: c.result ?? "ผ่าน",
+      reason: c.result === "ตรวจไม่ได้" && !c.reason ? "ยานพาหนะอยู่ระหว่างซ่อม ไม่สามารถทดสอบได้" : c.reason,
+      files: c.files.length ? c.files : [{ name: "ปจ2-" + v.plate.split(" ")[0] + "-ตัวอย่าง.pdf", size: "1.2 MB" }],
+    });
     setError(null);
   };
-  const clearAll = () => {
-    updateResult(plan.mr, car, { date: undefined, cost: undefined, costReason: undefined, result: undefined, reason: undefined });
-    for (let i = c.files.length - 1; i >= 0; i--) removeFile(plan.mr, car, i);
-    setCostText(String(contract)); setTouched({}); setError(null);
-  };
+  const clearAll = () => { setDraft(EMPTY); setCostText(String(contract)); setTouched({}); setError(null); };
   /* ต้นแบบ: กรอกข้อมูลตัวอย่าง — ผู้รับจ้าง = กรอกผลผ่าน + ไฟล์ตัวอย่าง · กบค. = เลือกอนุมัติ */
   useProtoForm(review ? {
     dirty: !!decision || !!reason,
     fill: () => { setDecision("approve"); setReason(""); },
     clear: () => { setDecision(""); setReason(""); setRTouched(false); },
-  } : !ro ? { dirty: st !== "none" && st !== "returned", fill: sample, clear: clearAll } : null);
+  } : !ro ? { dirty: !!(draft.date || draft.cost != null || draft.costReason || draft.result || draft.reason || draft.files.length), fill: sample, clear: clearAll } : null);
 
   const onFiles = (files: File[]) => {
     const bad = files.filter((f) => !fileOk(f));
@@ -168,15 +166,19 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
     setError(msgs.length ? msgs.join(" · ") : null);
     if (!take.length) return;
     rememberFiles(take);
-    addFiles(plan.mr, car, take.map((f) => ({ name: f.name, size: sizeText(f.size) })));
-    notify("แนบเอกสาร " + take.length + " ไฟล์แล้ว");
+    setDraft((d) => ({ ...d, files: [...d.files, ...take.map((f) => ({ name: f.name, size: sizeText(f.size) }))] }));
+  };
+  const save = () => {
+    updateResult(plan.mr, car, draft);
+    const left = missing({ ...saved, ...draft }, plan, car);
+    notify(left.length ? "บันทึกผลการตรวจ ปจ.2 ของ " + v.plate + " แล้ว ยังขาด: " + left.join(", ") : "บันทึกผลการตรวจ ปจ.2 ของ " + v.plate + " แล้ว");
+    onClose();
   };
   const confirm = () => {
     if (decision === "approve") { approveDocs(plan.mr, car); notify("อนุมัติผลตรวจ ปจ.2 ของ " + v.plate + " แล้ว"); }
     else { returnDocs(plan.mr, car, reason.trim()); notify("ส่งกลับให้ผู้รับจ้างแก้ไขผลตรวจของ " + v.plate + " แล้ว"); }
     onClose();
   };
-  const out = outcome(v, c);
   /* D: วันที่ตรวจเลือกได้ตั้งแต่ 1 เดือนก่อนรอบตรวจ ถึงวันนี้ · นอกรอบตรวจ = เตือน ไม่บล็อก */
   const minDate = addMonths(plan.from + "-01", -1);
   const inRound = (iso: string) => iso.slice(0, 7) >= plan.from && iso.slice(0, 7) <= plan.to;
@@ -185,8 +187,8 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
 
   return (
     <PopupModal open width={640} title={review ? "พิจารณาผลการตรวจ ปจ.2" : ro ? "ผลการตรวจ ปจ.2" : "บันทึกผลการตรวจ ปจ.2"} sub={summary}
-      showOk={review} ok="ยืนยันผลการพิจารณา" okDisabled={!decided} onOk={confirm} cancel={review ? "ยกเลิก" : "ปิด"}
-      onCancel={() => { if (!ro && st !== "none" && left.length) notify("บันทึกไว้แล้ว ยังขาด: " + left.join(", ")); onClose(); }}>
+      showOk={review || !ro} ok={review ? "ยืนยันผลการพิจารณา" : "ตกลง"} okDisabled={review && !decided} onOk={review ? confirm : save}
+      cancel={review || !ro ? "ยกเลิก" : "ปิด"} onCancel={onClose}>
       <div className="flex flex-col gap-4">
         {mob && <ContentItemRow perRow={2} items={[["ทะเบียน", v.plate], ["รหัส", v.code], ["ประเภทยานพาหนะ", v.type], ["วาระการตรวจ", v.cycle + " เดือน"]]} />}
         {st === "approved" && <Alert Color="Success" Text={"กบค. อนุมัติแล้วเมื่อ " + dateText(c.approvedAt!)} SupportingText="ผลที่อนุมัติแล้วแก้ไขหรือลบไม่ได้ ดูและดาวน์โหลดได้" />}
@@ -217,30 +219,26 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
               State={touched.cost && !carCost(plan, c, car) ? "Error" : undefined}
               HelperText={touched.cost && !carCost(plan, c, car) ? "กรุณาระบุค่าจ้างตรวจ" : differs ? "ต่างจากสัญญา (" + bahtText(contract) + ") ต้องระบุเหตุผล" : "ตามสัญญา แก้ได้ถ้าจำเป็น"} />
           </div>
-          {differs && <TextArea LabelText="เหตุผลที่ค่าจ้างต่างจากสัญญา" Text={c.costReason ?? ""} Placeholder="เช่น ต้องใช้อุปกรณ์เสริม" onChange={(x) => updateResult(plan.mr, car, { costReason: x })}
+          {differs && <TextArea LabelText="เหตุผลที่ค่าจ้างต่างจากสัญญา" Text={c.costReason ?? ""} Placeholder="เช่น ต้องใช้อุปกรณ์เสริม" onChange={(x) => put({ costReason: x })}
             onBlur={() => touch("costReason")} State={touched.costReason && !c.costReason?.trim() ? "Error" : undefined} HelperText={touched.costReason && !c.costReason?.trim() ? "กรุณาระบุเหตุผล" : undefined} />}
           {c.date && !inRound(c.date) && <Alert Color="Warning" Text={"วันที่ตรวจอยู่นอกรอบตรวจของแผน (" + rangeText(plan.from, plan.to) + ")"} SupportingText="ส่งได้ แต่ กบค. จะเห็นคำเตือนนี้ตอนพิจารณา" />}
           {cal && <div className="flex"><DatePicker Type="Single" {...TH_PICKER} min={toDate(minDate)} max={toDate(TODAY)} today={toDate(TODAY)}
             value={{ start: toDate(c.date ?? TODAY), end: toDate(c.date ?? TODAY) }} month={toDate(c.date ?? TODAY)}
-            onCancel={() => { setCal(false); touch("date"); }} onApply={(r) => { if (r.start) updateResult(plan.mr, car, { date: toIso(r.start) }); setCal(false); touch("date"); }} /></div>}
+            onCancel={() => { setCal(false); touch("date"); }} onApply={(r) => { if (r.start) put({ date: toIso(r.start) }); setCal(false); touch("date"); }} /></div>}
           <div className="flex flex-col gap-2">
             <InputLabel LabelText="ผลการตรวจ" />
             <RadioTextCards row={!mob} options={RESULTS.map((r) => ({ Text: r }))} value={c.result ?? null}
-              onChange={(x) => updateResult(plan.mr, car, { result: x as InspectResult })} />
+              onChange={(x) => put({ result: x as InspectResult })} />
           </div>
           {c.result === "ตรวจไม่ได้" && (
-            <TextArea LabelText="เหตุผลที่ตรวจไม่ได้" Text={c.reason ?? ""} Placeholder="ระบุเหตุผล เช่น ยานพาหนะอยู่ระหว่างซ่อม" onChange={(x) => updateResult(plan.mr, car, { reason: x })}
+            <TextArea LabelText="เหตุผลที่ตรวจไม่ได้" Text={c.reason ?? ""} Placeholder="ระบุเหตุผล เช่น ยานพาหนะอยู่ระหว่างซ่อม" onChange={(x) => put({ reason: x })}
               onBlur={() => touch("reason")} State={touched.reason && !c.reason?.trim() ? "Error" : undefined} HelperText={touched.reason && !c.reason?.trim() ? "กรุณาระบุเหตุผลที่ตรวจไม่ได้" : undefined} />
           )}
         </>}
 
         {!(ro && !c.files.length) && <FileUpload LabelText={docLabel(c)} files={c.files} hint={UPLOAD_HINT} max={UPLOAD_MAX_FILES} accept={UPLOAD_ACCEPT} readonly={ro}
               HelperText={error ?? fileErr ?? undefined} Error={!!error || !!fileErr}
-              onFiles={(f) => { touch("files"); onFiles(f); }} onDelete={(i) => { removeFile(plan.mr, car, i); setError(null); touch("files"); }} onDownload={(i) => downloadFile(c.files[i].name)} />}
-        {!ro && out && <Alert Color={out.Color} Text={out.Text} />}
-        {!ro && st !== "none" && (left.length
-          ? <Alert Color="Gray" Text={"ยังขาด: " + left.join(", ")} />
-          : <Alert Color="Success" Text="ข้อมูลครบ พร้อมส่งอนุมัติ" SupportingText="กดปุ่มส่งอนุมัติที่หน้าแผน" />)}
+              onFiles={(f) => { touch("files"); onFiles(f); }} onDelete={(i) => { put({ files: c.files.filter((_, j) => j !== i) }); setError(null); touch("files"); }} onDownload={(i) => downloadFile(c.files[i].name)} />}
 
         {review && <>
           <ContentDivider />

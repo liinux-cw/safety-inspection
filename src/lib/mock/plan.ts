@@ -66,8 +66,8 @@ export const vendorCanEdit = (c: CarDocs) => !c.sentAt && !c.approvedAt;
 const putCar = (mr: string, car: string, fn: (c: CarDocs) => CarDocs) => setCar(mr, car, (c) => (vendorCanEdit(c) ? fn(c) : c));
 export const addFiles = (mr: string, car: string, files: DocFile[]) => putCar(mr, car, (c) => ({ ...c, files: [...c.files, ...files] }));
 export const removeFile = (mr: string, car: string, i: number) => putCar(mr, car, (c) => ({ ...c, files: c.files.filter((_, j) => j !== i) }));
-/** ผู้รับจ้างกรอกผลการตรวจ (วันที่ ค่าจ้าง ผล เหตุผล) */
-export const updateResult = (mr: string, car: string, patch: Partial<Pick<CarDocs, "date" | "cost" | "costReason" | "result" | "reason">>) => putCar(mr, car, (c) => ({ ...c, ...patch }));
+/** ผู้รับจ้างกรอกผลการตรวจ (วันที่ ค่าจ้าง ผล เหตุผล เอกสาร) */
+export const updateResult = (mr: string, car: string, patch: Partial<Pick<CarDocs, "date" | "cost" | "costReason" | "result" | "reason" | "files">>) => putCar(mr, car, (c) => ({ ...c, ...patch }));
 /** ข้อที่ยังขาดก่อนส่งได้ (ว่าง = ครบ) · p = แผน (ค่าจ้างตามสัญญา) */
 export function missing(c: CarDocs, p?: Plan, car?: string): string[] {
   const m: string[] = [];
