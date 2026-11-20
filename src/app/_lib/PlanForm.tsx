@@ -151,7 +151,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
   return (
     <>
       <PageHeader Title={heading} SupportingText={plan?.mr} onBack={leave}
-        crumbs={[{ Text: "Safety Inspection" }, { Text: "แผนตรวจ ปจ.2", onClick: leave }, { Text: heading }]} />
+        crumbs={[{ Text: "งานซ่อมและบำรุงรักษา" }, { Text: "แผนตรวจ ปจ.2", onClick: leave }, { Text: heading }]} />
       <div className="flex flex-col gap-8">
         {plan?.status === "returned" && <Alert Color="Error" Text="ผู้อนุมัติส่งกลับให้แก้ไข" SupportingText="แก้ไขแล้วกดบันทึกและส่งอนุมัติอีกครั้ง" />}
         <section className="flex flex-col gap-4">

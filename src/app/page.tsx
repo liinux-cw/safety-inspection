@@ -102,7 +102,7 @@ export default function PlanList() {
 
   return (
     <AppFrame>
-      <PageHeader Title="แผนตรวจ ปจ.2" crumbs={[{ Text: "Safety Inspection" }, { Text: "แผนตรวจ ปจ.2" }]} />
+      <PageHeader Title="แผนตรวจ ปจ.2" crumbs={[{ Text: "งานซ่อมและบำรุงรักษา" }, { Text: "แผนตรวจ ปจ.2" }]} />
       {hydrated && !mock.plans.length ? (
         <EmptyStateDataEmpty Text="ยังไม่มีแผนตรวจ ปจ.2" SupportingText="เมื่อสร้างแผนตรวจ ปจ.2 รายการแผนจะแสดงที่นี่" Actions={create} />
       ) : (

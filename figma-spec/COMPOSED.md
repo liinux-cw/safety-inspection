@@ -22,14 +22,17 @@
 | `patterns/CheckTable` (ตาราง "รายการตรวจสภาพ") | Section header (Title + Badge) + Table header cell + Table cell วางเป็นคอลัมน์ (ค่าเดียวกับ `_checklist` ของ ReceiptChecklist/InspectionChecklist) · คอลัมน์ รายการ (ยืด) · ปกติ 100 · แก้ไข 100 (Radio button) · หมายเหตุ 448 (Text input ไม่มีป้าย) · แถวท้าย Secondary button md "เพิ่มรายการ" · มือถือ การ์ดรายข้อ (กรอบ/พื้นของ Mobile table มุม 12) + Section label + Radio text card 2 ใบ + ปุ่ม lg เต็มกว้าง | InspectionChecklist ของไฟล์ Maintain-D มี 25 แถวตายตัว + ส่วนสาเหตุส่งซ่อม (เพิ่มแถวไม่ได้) จอ Figma จึงประกอบเองด้วย checkTable/checkCard · การ์ดมือถือไม่มีช่องหมายเหตุตามจอ |
 | ลิงก์เลขทะเบียน (`patterns/PlateLink` · 6 พ.ย. 2569) | ค่าลิงก์ใน _Content item base ของ UI Release#2 หน้า Replacement Vehicle ("BRD005678") #444CE7 ขีดเส้นใต้ · Variable Color/text/info | `info-700` (#3538CD ใกล้สุด) + `underline` — ต้นทาง design-system tokens.css ยังไม่มี token #444CE7 (BACKLOG ค.) |
 
-## ข. หน้าของ Safety Inspection ที่ยังไม่ได้ตรวจกับไลบรารี
+## ข. หน้าของ Safety Inspection (ตรวจกับไลบรารีแล้ว 20 พ.ย. 2569)
 
-ชิ้นที่ประกอบจาก component ไลบรารี แต่ยังไม่ได้เทียบค่ากับ `figma-spec/` ทีละตัว ตรวจแล้วย้ายขึ้นหัวข้อ ก หรือจดเหตุผลแยก
+ทุกหน้าใช้ component ของไลบรารีและ pattern ในหัวข้อ ก ไม่มีสี hex ไม่มี `style=` ไม่มีข้อความลอยนอก component (ยกเว้นบรรทัดสรุปยานพาหนะบนมือถือของ popup ผลตรวจ ซึ่งทำแบบเดียวกับ popup การตรวจ ปจ.2 ของต้นแบบบำรุงรักษา)
 
-| ส่วน | ที่อยู่ |
-|---|---|
-| ฟอร์มแผนตรวจ | `src/app/_lib/PlanForm.tsx` |
-| ข้อมูลแผน | `src/app/_lib/PlanInfo.tsx` |
-| popup เลือกยานพาหนะ | `src/app/_lib/VehiclePicker.tsx` |
-| ตารางเอกสารผู้รับจ้าง | `src/app/_lib/DocsTable.tsx` |
-| แถบต้นแบบ สลับ กบค./ผู้รับจ้าง และ "จำลองอนุมัติแผน" | `src/components/shell/PrototypeBar.tsx` |
+| ส่วน | ประกอบจาก | หมายเหตุ |
+|---|---|---|
+| เมนู "แผนตรวจ ปจ.2" · "เอกสาร ปจ.2" ใน Sidebar navigation | Nav list item ต่อท้ายกลุ่ม "งานซ่อมและบำรุงรักษา" ของเมนูจริง (หน้า "Sidebar Navigation" 277:230639 ของ UI Release#2) · เมนูอื่นแสดงแต่ไม่พาไปไหน | แบบเดียวกับต้นแบบบำรุงรักษา (เดิมเป็นกลุ่ม "Safety Inspection" ที่ตั้งเอง) · กบค. เห็นแผนตรวจ ผู้รับจ้างเห็นเอกสาร · **รอเคาะตำแหน่งและชื่อเมนู** |
+| Breadcrumb หน้าแรก | "งานซ่อมและบำรุงรักษา" | ตามกลุ่มเมนูและหน้าการตรวจ ปจ.2 ของต้นแบบบำรุงรักษา (เดิม "Safety Inspection" ภาษาอังกฤษ) |
+| ฟอร์มแผนตรวจ (`src/app/_lib/PlanForm.tsx`) | Section header + Text input / Input dropdown 2 คอลัมน์ (มือถือ 1) + Table header + CheckTable + Table pagination + ปุ่มล่าง Secondary/Primary lg · popup ค่าจ้าง = FormModal · ออกจากหน้า = ConfirmDialog | โครงเดียวกับฟอร์มสร้างแผนของต้นแบบบำรุงรักษา |
+| ข้อมูลแผน (`src/app/_lib/PlanInfo.tsx`) | DisplayBox 2 กล่อง + Pill outline | |
+| popup เลือกยานพาหนะ (`src/app/_lib/VehiclePicker.tsx`) | PopupModal 1140 + Table header + CheckTable + Table pagination + FilterShell | แบบเดียวกับ popup เพิ่มยานพาหนะเข้าแผนเดินทางของต้นแบบบำรุงรักษา |
+| ตารางและ popup ผลตรวจ (`src/app/_lib/DocsTable.tsx`) | Table / CheckTable / Mobile table + PopupModal 640 + Alert + DisplayBox + Text input + Date picker + Radio text card + File upload + Text area + Section label | "ยังขาด…" และ "ข้อมูลครบ" เป็น Alert (เดิมข้อความลอย) · ยังไม่มีเอกสาร = แถวใน DisplayBox |
+| ปุ่มหัวหน้ารายละเอียดแผน | Secondary danger button + Secondary button ใน Page header (มือถือ lg ใต้หัวข้อ) | เดิมห่อด้วยกล่องของตัวเองทำให้ปุ่มบนมือถือไม่เต็มแถว |
+| แถบต้นแบบ (`src/components/shell/PrototypeBar.tsx`) | Input dropdown + Dropdown list (บทบาท กบค./ผู้รับจ้าง) · Tertiary button "จำลองอนุมัติแผน" | ของต้นแบบเท่านั้น |

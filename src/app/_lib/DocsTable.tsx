@@ -203,6 +203,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
             ["ครบกำหนดตรวจเดิม", dateText(v.due)],
             ...(c.date && !inRound(c.date) ? [["หมายเหตุ", "วันที่ตรวจอยู่นอกรอบตรวจของแผน"] as [string, string]] : []),
             ...(c.result === "ตรวจไม่ได้" ? [["เหตุผลที่ตรวจไม่ได้", c.reason || "-"] as [string, string]] : []),
+            ...(!c.files.length ? [[docLabel(c), "ยังไม่มีเอกสาร"] as [string, string]] : []),
           ]} />
         ) : <>
           <div className="flex flex-col gap-4 sm:flex-row">
@@ -232,15 +233,13 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
           )}
         </>}
 
-        {ro && !c.files.length
-          ? <p className="text-sm text-gray-600">ยังไม่มีเอกสาร</p>
-          : <FileUpload LabelText={docLabel(c)} files={c.files} hint={UPLOAD_HINT} max={UPLOAD_MAX_FILES} accept={UPLOAD_ACCEPT} readonly={ro}
+        {!(ro && !c.files.length) && <FileUpload LabelText={docLabel(c)} files={c.files} hint={UPLOAD_HINT} max={UPLOAD_MAX_FILES} accept={UPLOAD_ACCEPT} readonly={ro}
               HelperText={error ?? fileErr ?? undefined} Error={!!error || !!fileErr}
               onFiles={(f) => { touch("files"); onFiles(f); }} onDelete={(i) => { removeFile(plan.mr, car, i); setError(null); touch("files"); }} onDownload={(i) => downloadFile(c.files[i].name)} />}
         {!ro && out && <Alert Color={out.Color} Text={out.Text} />}
         {!ro && st !== "none" && (left.length
-          ? <p className="text-sm text-gray-600">{"ยังขาด: " + left.join(", ")}</p>
-          : <p className="text-sm font-semibold text-success-700">ข้อมูลครบ พร้อมส่งอนุมัติ (กดปุ่มส่งอนุมัติที่หน้าแผน)</p>)}
+          ? <Alert Color="Gray" Text={"ยังขาด: " + left.join(", ")} />
+          : <Alert Color="Success" Text="ข้อมูลครบ พร้อมส่งอนุมัติ" SupportingText="กดปุ่มส่งอนุมัติที่หน้าแผน" />)}
 
         {review && <>
           <ContentDivider />
