@@ -104,6 +104,18 @@ export const VENDORS: Vendor[] = [
   { id: "ven2", name: "หจก. ช่างกลตรวจสอบ", tel: "02-555-0202" },
   { id: "ven3", name: "บจก. ไทยเครน เซอร์วิส", tel: "02-555-0303" },
 ];
+/* ช่องเงิน (เจ้าของงาน 20 พ.ย. 2569): พิมพ์ได้เฉพาะตัวเลขและจุดเดียว · ออกจากช่อง = ใส่ , หลักพัน + ทศนิยม 2 ตำแหน่งเสมอ
+   ไม่ใส่ทศนิยม = .00 · ทศนิยมขาด = เติม 0 · เกิน 2 ตำแหน่ง = ปัดเป็น 2 ตำแหน่ง */
+/** ข้อความที่พิมพ์ → เหลือเฉพาะตัวเลขกับจุดแรก (ลบ , ที่จัดรูปไว้) */
+export const moneyInput = (raw: string) => {
+  const t = raw.replace(/[^\d.]/g, "");
+  const i = t.indexOf(".");
+  return i < 0 ? t : t.slice(0, i + 1) + t.slice(i + 1).replace(/\./g, "");
+};
+/** ตัวเลขจากข้อความ ปัดทศนิยม 2 ตำแหน่ง · ว่าง/ไม่ใช่ตัวเลข = 0 */
+export const moneyValue = (raw: string) => { const n = Number(moneyInput(raw)); return Number.isFinite(n) ? Math.round(n * 100) / 100 : 0; };
+/** แสดงในช่อง: 9000 → "9,000.00" · 0/ว่าง = "" */
+export const moneyText = (n: number | undefined) => (n && n > 0 ? n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "");
 export const bahtText = (n: number) => n.toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " บาท";
 /** วันที่ + n เดือน (ISO) */
 export const addMonths = (iso: string, n: number) => {

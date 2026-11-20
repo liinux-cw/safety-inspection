@@ -25,7 +25,7 @@ import { TextArea } from "@/components/vms/TextArea";
 import { TextInput } from "@/components/vms/TextInput";
 import { downloadFile, rememberFiles } from "@/lib/fileDownload";
 import {
-  RESULTS, RESULT_COLOR, TODAY, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, addMonths, bahtText, dateText, dueSub, fileOk, rangeText, sizeText,
+  RESULTS, RESULT_COLOR, TODAY, moneyInput, moneyText, moneyValue, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, addMonths, bahtText, dateText, dueSub, fileOk, rangeText, sizeText,
   type CarDocs, type InspectResult, type Plan, type Vehicle,
 } from "@/lib/mock/data";
 import { DOC_TEXT, addFiles, approveDocs, carCost, carDocs, contractCost, costDiffers, docState, missing, removeFile, returnDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
@@ -118,7 +118,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const review = canReview && st === "sent";
   const [error, setError] = useState<string | null>(null);
   const [cal, setCal] = useState(false);
-  const [costText, setCostText] = useState(String(carCost(plan, c, car)));
+  const [costText, setCostText] = useState(moneyText(carCost(plan, c, car)));
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const touch = (k: string) => setTouched((t) => ({ ...t, [k]: true }));
   const [decision, setDecision] = useState<"" | "approve" | "return">("");
@@ -130,15 +130,15 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const differs = costDiffers(plan, c, car);
 
   const setCost = (t: string) => {
-    const clean = t.replace(/[^\d.]/g, "");
+    const clean = moneyInput(t);
     setCostText(clean);
-    const n = Number(clean);
+    const n = moneyValue(clean);
     /* B: เท่ากับสัญญา = ไม่เก็บค่า (ใช้ค่าตามสัญญา) · ว่าง = 0 (ต้องกรอก) */
-    updateResult(plan.mr, car, { cost: !clean || Number.isNaN(n) ? 0 : n === contract ? undefined : n });
+    updateResult(plan.mr, car, { cost: !(n > 0) ? 0 : n === contract ? undefined : n });
   };
   const sample = () => {
     if (!c.date) updateResult(plan.mr, car, { date: TODAY });
-    if (!carCost(plan, c, car)) setCost(String(contract));
+    if (!carCost(plan, c, car)) { setCost(String(contract)); setCostText(moneyText(contract)); }
     if (!c.result) updateResult(plan.mr, car, { result: "ผ่าน" });
     if (c.result === "ตรวจไม่ได้" && !c.reason) updateResult(plan.mr, car, { reason: "ยานพาหนะอยู่ระหว่างซ่อม ไม่สามารถทดสอบได้" });
     if (!c.files.length) addFiles(plan.mr, car, [{ name: "ปจ2-" + v.plate.split(" ")[0] + "-ตัวอย่าง.pdf", size: "1.2 MB" }]);
@@ -147,7 +147,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const clearAll = () => {
     updateResult(plan.mr, car, { date: undefined, cost: undefined, costReason: undefined, result: undefined, reason: undefined });
     for (let i = c.files.length - 1; i >= 0; i--) removeFile(plan.mr, car, i);
-    setCostText(String(contract)); setTouched({}); setError(null);
+    setCostText(moneyText(contract)); setTouched({}); setError(null);
   };
   /* ต้นแบบ: กรอกข้อมูลตัวอย่าง — ผู้รับจ้าง = กรอกผลผ่าน + ไฟล์ตัวอย่าง · กบค. = เลือกอนุมัติ */
   useProtoForm(review ? {
@@ -211,7 +211,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
                 State={cal ? "Focused" : touched.date && !c.date ? "Error" : c.date ? "Filled" : "Default"} HelperText={touched.date && !c.date ? "กรุณาเลือกวันที่ตรวจ" : undefined}
                 onClick={() => setCal(true)} />
             </div>
-            <TextInput className="min-w-0 flex-1" LabelText="ค่าจ้างตรวจคันนี้ (บาท)" Text={costText} Placeholder="0.00" inputMode="decimal" onChange={setCost} onBlur={() => touch("cost")}
+            <TextInput className="min-w-0 flex-1" LabelText="ค่าจ้างตรวจคันนี้ (บาท)" Text={costText} Placeholder="0.00" inputMode="decimal" onChange={setCost} onBlur={() => { touch("cost"); setCostText(moneyText(moneyValue(costText))); }}
               State={touched.cost && !carCost(plan, c, car) ? "Error" : undefined}
               HelperText={touched.cost && !carCost(plan, c, car) ? "กรุณาระบุค่าจ้างตรวจ" : differs ? "ต่างจากสัญญา (" + bahtText(contract) + ") ต้องระบุเหตุผล" : "ตามสัญญา แก้ได้ถ้าจำเป็น"} />
           </div>

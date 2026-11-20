@@ -23,7 +23,7 @@ import { TableHeader } from "@/components/vms/TableHeader";
 import { TablePagination } from "@/components/vms/TablePagination";
 import { TextInput } from "@/components/vms/TextInput";
 import { cx } from "@/lib/cx";
-import { MONTH_OPTIONS, VEHICLES, VEHICLE_BY_ID, VENDORS, VENDOR_BY_ID, bahtText, dateText, dueSub, fiscalYearOf, monthText, rangeText, type Plan } from "@/lib/mock/data";
+import { MONTH_OPTIONS, VEHICLES, moneyInput, moneyText, moneyValue, VEHICLE_BY_ID, VENDORS, VENDOR_BY_ID, bahtText, dateText, dueSub, fiscalYearOf, monthText, rangeText, type Plan } from "@/lib/mock/data";
 import { EMPTY_DRAFT, budget, contractCost, createPlan, draftOf, fyRange, hasWork, takenMap, updatePlan, type Draft } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
@@ -65,21 +65,23 @@ export function PlanForm({ plan }: { plan?: Plan }) {
   const [costFor, setCostFor] = useState<string[] | null>(null);
   const [costText, setCostText] = useState("");
   /* ช่องค่าจ้างในตาราง: ข้อความที่พิมพ์ของแต่ละคัน · touched = ออกจากช่องแล้ว (ว่าง = Error) */
-  const toInputs = (c: Record<string, number>) => Object.fromEntries(Object.entries(c).map(([k, v]) => [k, String(v)]));
+  const toInputs = (c: Record<string, number>) => Object.fromEntries(Object.entries(c).map(([k, v]) => [k, moneyText(v)]));
   const [costIn, setCostIn] = useState<Record<string, string>>(() => toInputs(start.costs));
   const [costTouched, setCostTouched] = useState<Record<string, boolean>>({});
   const typeCost = (id: string, raw: string) => {
-    const t = raw.replace(/[^\d.]/g, "");
+    const t = moneyInput(raw);
     setCostIn((x) => ({ ...x, [id]: t }));
-    const n = Number(t);
-    setD((x) => { const costs = { ...x.costs }; if (t && n > 0) costs[id] = n; else delete costs[id]; return { ...x, costs }; });
+    const n = moneyValue(t);
+    setD((x) => { const costs = { ...x.costs }; if (n > 0) costs[id] = n; else delete costs[id]; return { ...x, costs }; });
   };
-  const openCost = (ids: string[]) => { setCostFor(ids); setCostText(ids.length === 1 && d.costs[ids[0]] ? String(d.costs[ids[0]]) : ""); };
-  const costN = Number(costText);
+  /* ออกจากช่อง = จัดรูปเป็น 9,000.00 */
+  const blurCost = (id: string) => { setCostTouched((x) => ({ ...x, [id]: true })); setCostIn((x) => ({ ...x, [id]: moneyText(moneyValue(x[id] ?? "")) })); };
+  const openCost = (ids: string[]) => { setCostFor(ids); setCostText(ids.length === 1 ? moneyText(d.costs[ids[0]]) : ""); };
+  const costN = moneyValue(costText);
   const applyCost = () => {
     if (!costFor || !(costN > 0)) return;
     put({ costs: { ...d.costs, ...Object.fromEntries(costFor.map((id) => [id, costN])) } });
-    setCostIn((x) => ({ ...x, ...Object.fromEntries(costFor.map((id) => [id, String(costN)])) }));
+    setCostIn((x) => ({ ...x, ...Object.fromEntries(costFor.map((id) => [id, moneyText(costN)])) }));
     notify("กำหนดค่าจ้างตรวจ " + bahtText(costN) + " ให้ " + costFor.length + " คันแล้ว");
     setCostFor(null); setTicked([]);
   };
@@ -114,7 +116,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
       const free = VEHICLES.filter((v) => !taken[v.id]).slice(0, 4).map((v) => v.id);
       setD({ name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", vendor: "ven3", vendorTel: "02-555-0303", contract: "PO-2570-0150", costs: Object.fromEntries(free.map((id, i) => [id, i % 2 ? 9500 : 9000])), cars: free });
       setNameEdited(false);
-      setCostIn(Object.fromEntries(free.map((id, i) => [id, i % 2 ? "9500" : "9000"])));
+      setCostIn(Object.fromEntries(free.map((id, i) => [id, moneyText(i % 2 ? 9500 : 9000)])));
     },
     clear: () => { setD(start); setTouched({}); setNameEdited(edit); setTicked([]); setCostIn(toInputs(start.costs)); setCostTouched({}); },
   });
@@ -146,7 +148,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
     const acts = [{ IconSwap: "delete-24-300-round", label: "เอาออก " + v.plate, onClick: () => removeCar(v.id) }];
     const err = costTouched[v.id] && !(cost > 0);
     const input = <TextInput Label={false} LabelText={"ค่าจ้างตรวจ " + v.plate} aria-label={"ค่าจ้างตรวจ " + v.plate} Text={costIn[v.id] ?? ""} Placeholder="0.00" inputMode="decimal"
-      onChange={(t) => typeCost(v.id, t)} onBlur={() => setCostTouched((x) => ({ ...x, [v.id]: true }))}
+      onChange={(t) => typeCost(v.id, t)} onBlur={() => blurCost(v.id)}
       State={err ? "Error" : undefined} HelperText={err ? "กรุณาระบุค่าจ้าง" : undefined} />;
     return {
       key: v.id, text: v.plate, sub: worked(v.id) ? v.code + " · มีผลตรวจแล้ว เอาออกไม่ได้" : v.code + " · " + v.type,
@@ -226,7 +228,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
       <FormModal open={!!costFor} title={"กำหนดค่าจ้างตรวจ" + (costFor && costFor.length === 1 ? " · " + VEHICLE_BY_ID[costFor[0]].plate : " · " + (costFor?.length ?? 0) + " คัน")}
         sub={costFor && costFor.length > 1 ? "ใส่ค่าเดียวกันให้ทุกคันที่ติ๊ก" : "ค่าจ้างตามสัญญาของยานพาหนะคันนี้"}
         fields={[{ label: "ค่าจ้างตรวจ (บาท)", value: costText, placeholder: "0.00", error: costText && !(costN > 0) ? "กรุณาระบุจำนวนเงินมากกว่า 0" : undefined }]}
-        onField={(_, v) => setCostText(v.replace(/[^\d.]/g, ""))} ok="บันทึก" okDisabled={!(costN > 0)} onOk={applyCost} onCancel={() => setCostFor(null)} />
+        onField={(_, v) => setCostText(moneyInput(v))} ok="บันทึก" okDisabled={!(costN > 0)} onOk={applyCost} onCancel={() => setCostFor(null)} />
       <ConfirmDialog spec={leaving ? LEAVE : null} onCancel={() => setLeaving(false)} onOk={() => { setLeaving(false); router.push(plan ? "/detail/?mr=" + plan.mr : "/"); }} />
     </>
   );
