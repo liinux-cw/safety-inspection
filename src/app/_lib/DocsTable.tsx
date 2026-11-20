@@ -5,7 +5,7 @@
    ผู้รับจ้าง (canEdit): ยังไม่ส่ง หรือ กบค. ส่งกลับแก้ไข = แก้ได้ · ส่งแล้ว (รอ กบค.) หรืออนุมัติแล้ว = ล็อก ดูและดาวน์โหลดได้อย่างเดียว
    กบค. (canReview): คันที่รออนุมัติ = เลือกผลการพิจารณา อนุมัติ / ส่งกลับแก้ไข (ต้องมีเหตุผล) · อื่นๆ ดูอย่างเดียว
    เงื่อนไขไฟล์: PDF/PNG/JPG · ไฟล์ละไม่เกิน 10 MB · 1–10 ไฟล์ต่อคัน */
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CheckTable } from "@/components/patterns/CheckTable";
 import { DisplayBox } from "@/components/patterns/DisplayBox";
 import { ConfirmDialog } from "@/components/patterns/ConfirmDialog";
@@ -122,6 +122,14 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const [error, setError] = useState<string | null>(null);
   const [cal, setCal] = useState(false);
   const [ask, setAsk] = useState(false);
+  /* อัปโหลดจำลอง: ชื่อไฟล์ → % ที่อัปโหลดแล้ว · ครบ 100 = เอาออกจากรายการกำลังอัปโหลด */
+  const [uploading, setUploading] = useState<Record<string, number>>({});
+  const busy = Object.keys(uploading).length > 0;
+  useEffect(() => {
+    if (!busy) return;
+    const t = setTimeout(() => setUploading((u) => Object.fromEntries(Object.entries(u).map(([k, n]) => [k, Math.min(100, n + 25)] as const).filter(([, n]) => n < 100))), 250);
+    return () => clearTimeout(t);
+  }, [uploading, busy]);
   const dateRef = useRef<HTMLDivElement>(null);
   const closeCal = useCallback(() => { setCal(false); setTouched((t) => ({ ...t, date: true })); }, []);
   useOutside(dateRef, cal && !mob, closeCal);
@@ -173,6 +181,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
     if (!take.length) return;
     rememberFiles(take);
     setDraft((d) => ({ ...d, files: [...d.files, ...take.map((f) => ({ name: f.name, size: sizeText(f.size) }))] }));
+    setUploading((u) => ({ ...u, ...Object.fromEntries(take.map((f) => [f.name, 0])) }));
   };
   const save = () => {
     updateResult(plan.mr, car, draft);
@@ -181,7 +190,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
     onClose();
   };
   /* ส่งอนุมัติรายคัน: กรอกครบแล้วเท่านั้น · บันทึกร่างแล้วส่งให้ กบค. */
-  const sendable = !ro && !missing({ ...saved, ...draft }, plan, car).length;
+  const sendable = !ro && !busy && !missing({ ...saved, ...draft }, plan, car).length;
   const send = () => {
     updateResult(plan.mr, car, draft);
     submitDocs(plan, [car]);
@@ -253,9 +262,9 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
           )}
         </>}
 
-        {!(ro && !c.files.length) && <FileUpload LabelText={docLabel(c)} files={c.files} hint={UPLOAD_HINT} max={UPLOAD_MAX_FILES} accept={UPLOAD_ACCEPT} readonly={ro}
+        {!(ro && !c.files.length) && <FileUpload LabelText={docLabel(c)} files={c.files.map((f) => (uploading[f.name] != null ? { ...f, progress: uploading[f.name] } : f))} bar={!ro} hint={UPLOAD_HINT} max={UPLOAD_MAX_FILES} accept={UPLOAD_ACCEPT} readonly={ro}
               HelperText={error ?? fileErr ?? undefined} Error={!!error || !!fileErr}
-              onFiles={(f) => { touch("files"); onFiles(f); }} onDelete={(i) => { put({ files: c.files.filter((_, j) => j !== i) }); setError(null); touch("files"); }} onDownload={(i) => downloadFile(c.files[i].name)} />}
+              onFiles={(f) => { touch("files"); onFiles(f); }} onDelete={(i) => { const gone = c.files[i]?.name; put({ files: c.files.filter((_, j) => j !== i) }); setUploading((u) => Object.fromEntries(Object.entries(u).filter(([k]) => k !== gone))); setError(null); touch("files"); }} onDownload={(i) => downloadFile(c.files[i].name)} />}
 
         {review && <>
           <ContentDivider />
