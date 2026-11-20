@@ -72,7 +72,7 @@ export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan
       c.date ? dateText(c.date) : "-",
       c.result ? { pills: [[c.result, RESULT_COLOR[c.result]]] } : "-",
       { text: bahtText(carCost(plan, c, id)), sub: costDiffers(plan, c, id) ? "ต่างจากสัญญา (" + bahtText(contractCost(plan, id)) + ")" : st === "none" ? "ตามสัญญา" : undefined },
-      { pills: [DOC_TEXT[st]] },
+      st === "draft" ? { text: DOC_TEXT.draft[0], sub: "ยังขาด: " + missing(c, plan, id).join(", ") } : { pills: [DOC_TEXT[st]] },
       { actions: [act], mobileActions: [act] },
     ];
   });
