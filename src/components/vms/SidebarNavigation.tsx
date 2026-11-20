@@ -30,6 +30,7 @@ export const MT_LABEL = "แผนตรวจ ปจ.2";
 export const DOCS_LABEL = "เอกสาร ปจ.2";
 export const SI_GROUP = "Safety Inspection";
 export const APPROVE_LABEL = "แผนรออนุมัติ";
+export const REG_LABEL = "ทะเบียน ปจ.2";
 export const SIDEBAR_MENU: SideGroup[] = [
   { IconSwap: "home-24-300-round", Text: "หน้าหลัก" },
   { IconSwap: "car_rental-24-300-round", Text: "ระบบจองยานพาหนะ", items: [{ Text: "คำขอใช้ยานพาหนะ" }, { Text: "อนุมัติคำขอ" }] },
@@ -37,7 +38,7 @@ export const SIDEBAR_MENU: SideGroup[] = [
   { IconSwap: "database-24-300-round", Text: "ข้อมูลพนักงานและยานพาหนะ", items: [{ Text: "ผู้ดูแลยานพาหนะ" }, { Text: "ข้อมูลพนักงานขับยานพาหนะ" }, { Text: "ข้อมูลยานพาหนะ" }, { Text: "กลุ่มยานพาหนะ" }, { Text: "บริหารสัญญา" }] },
   { IconSwap: "ev_station", Text: "การอัดประจุไฟฟ้า", items: [{ Text: "สถานีอัดประจุไฟฟ้า" }, { Text: "อัตราค่าไฟฟ้า" }, { Text: "ค่าใช้จ่ายอัดประจุยานพาหนะ" }, { Text: "บันทึกการอัดประจุ Wall Charger" }, { Text: "ต้นทุนและค่าใช้จ่ายในการอัดประจุ" }] },
   { IconSwap: "build", Text: "งานซ่อมและบำรุงรักษา", items: [{ Text: "ภาพรวมการซ่อมบำรุง" }, { Text: "ตารางบำรุงรักษา" }, { Text: "นัดหมายบำรุงรักษา" }, { Text: "งานซ่อม" }, { Text: "ยานพาหนะทดแทน" }] },
-  { IconSwap: "verified_user-24-300-round", Text: SI_GROUP, items: [{ Text: MT_LABEL, href: "/" }, { Text: APPROVE_LABEL, href: "/approvals/" }, { Text: DOCS_LABEL, href: "/docs/" }] },
+  { IconSwap: "verified_user-24-300-round", Text: SI_GROUP, items: [{ Text: MT_LABEL, href: "/" }, { Text: APPROVE_LABEL, href: "/approvals/" }, { Text: REG_LABEL, href: "/registry/" }, { Text: DOCS_LABEL, href: "/docs/" }] },
   { IconSwap: "e911_emergency", Text: "จัดการเหตุการณ์", items: [{ Text: "จัดการเหตุยานพาหนะเสีย" }, { Text: "จัดการเหตุอุบัติเหตุ" }] },
   { IconSwap: "news", Text: "รายงาน" },
 ];

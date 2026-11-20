@@ -26,6 +26,7 @@ import { cx } from "@/lib/cx";
 import { MONTH_OPTIONS, VEHICLES, moneyInput, moneyText, moneyValue, VEHICLE_BY_ID, VENDORS, VENDOR_BY_ID, bahtText, dateText, dueSub, fiscalYearOf, monthText, rangeText, type Plan } from "@/lib/mock/data";
 import { EMPTY_DRAFT, budget, contractCost, createPlan, draftOf, hasWork, takenMap, updatePlan, type Draft } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
+import { vehiclesNow, withDue } from "@/lib/mock/registry";
 import { useProtoForm } from "@/lib/protoForm";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 import { VehiclePicker } from "./VehiclePicker";
@@ -136,7 +137,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
     }
   };
 
-  const cars = d.cars.map((id) => VEHICLE_BY_ID[id]).filter(Boolean);
+  const cars = d.cars.map((id) => VEHICLE_BY_ID[id]).filter(Boolean).map((v) => withDue(mock, v));   /* ครบกำหนดปัจจุบันจากทะเบียน ปจ.2 */
   const k = query.trim();
   const shownCars = cars.filter((v) => !k || v.plate.includes(k) || v.code.includes(k) || v.org.includes(k));
   const last = Math.max(1, Math.ceil(shownCars.length / PER)), pg = Math.min(page, last);
@@ -222,7 +223,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
           <PrimaryButton Text="บันทึกและส่งอนุมัติ" Size="lg" State={complete ? "Default" : "Disabled"} onClick={save} />
         </div>
       </div>
-      <VehiclePicker open={picker} from={d.from} to={d.to} pool={VEHICLES.filter((v) => !d.cars.includes(v.id))} taken={taken} onCancel={() => setPicker(false)}
+      <VehiclePicker open={picker} from={d.from} to={d.to} pool={vehiclesNow(mock).filter((v) => !d.cars.includes(v.id))} taken={taken} onCancel={() => setPicker(false)}
         onAdd={(ids) => { put({ cars: [...d.cars, ...ids] }); setPicker(false); notify("เพิ่มยานพาหนะเข้าแผน " + ids.length + " คันแล้ว"); }} />
       <FormModal open={!!costFor} title={"กำหนดค่าจ้างตรวจ" + (costFor && costFor.length === 1 ? " · " + VEHICLE_BY_ID[costFor[0]].plate : " · " + (costFor?.length ?? 0) + " คัน")}
         sub={costFor && costFor.length > 1 ? "ใส่ค่าเดียวกันให้ทุกคันที่ติ๊ก" : "ค่าจ้างตามสัญญาของยานพาหนะคันนี้"}

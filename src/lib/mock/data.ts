@@ -222,7 +222,7 @@ export const DOCS: DocsState = {
   },
   MRZ7000010: {
     v17: { date: "2026-11-12", cost: 9000, result: "ผ่าน", files: [{ name: "ปจ2-70-8801.pdf", size: "1.4 MB" }], sentAt: "2026-11-15", approvedAt: "2026-11-16" },
-    v19: { date: "2026-11-14", cost: 10500, costReason: "ต้องใช้เครื่องยกเสริมเพราะพื้นที่ลาดชัน", result: "ไม่ผ่าน", files: [{ name: "ปจ2-74-7745.pdf", size: "980 KB" }], sentAt: "2026-11-18" },
+    v19: { date: "2026-11-14", result: "ไม่ผ่าน", files: [{ name: "ปจ2-74-7745.pdf", size: "980 KB" }], sentAt: "2026-11-18" },
     v20: { date: "2026-11-13", cost: 9000, result: "ผ่าน", files: [{ name: "ปจ2-82-9956.jpg", size: "3.1 MB" }], returnReason: "เอกสารไม่ชัด อ่านเลขตัวถังไม่ได้ กรุณาสแกนใหม่" },
     v18: { date: "2026-11-17", cost: 9000, result: "ตรวจไม่ได้", reason: "ยานพาหนะอยู่ระหว่างซ่อมระบบไฮดรอลิก ไม่สามารถยกกระเช้าทดสอบได้", files: [{ name: "หนังสือรับรอง-72-3302.pdf", size: "1.1 MB" }] },
     v23: { date: "2026-11-18", cost: 9000, files: [] },
@@ -236,3 +236,27 @@ export const UPLOAD_MAX_MB = 10;
 export const UPLOAD_HINT = "PDF, PNG, JPG · ไฟล์ละไม่เกิน " + UPLOAD_MAX_MB + " MB · สูงสุด " + UPLOAD_MAX_FILES + " ไฟล์";
 export const fileOk = (f: File) => /\.(pdf|png|jpe?g)$/i.test(f.name) && f.size <= UPLOAD_MAX_MB * 1024 * 1024;
 export const sizeText = (bytes: number) => (bytes >= 1024 * 1024 ? (bytes / 1024 / 1024).toFixed(1) + " MB" : Math.max(1, Math.round(bytes / 1024)) + " KB");
+
+/* ---------- ทะเบียน ปจ.2 (ประวัติการตรวจรายคัน · ตัวช่วยอยู่ใน registry.ts) ---------- */
+export interface RegEntry {
+  date: string;
+  result: InspectResult;
+  /** ครบกำหนดครั้งถัดไปหลังการตรวจครั้งนี้ */
+  nextDue: string;
+  /** ที่มา: เลขที่ MR ของแผน หรือ "นอกแผน" */
+  source: string;
+  files: DocFile[];
+  reason?: string;
+}
+/** คีย์ = รหัสยานพาหนะ · เรียงเก่า → ใหม่ */
+export type RegistryState = Record<string, RegEntry[]>;
+
+const E = (date: string, result: InspectResult, nextDue: string, source: string, file: string): RegEntry => ({ date, result, nextDue, source, files: [{ name: file, size: "1.1 MB" }] });
+export const REGISTRY_SEED: RegistryState = {
+  v17: [E("2025-12-05", "ผ่าน", "2026-12-05", "MRZ6800031", "ปจ2-70-8801-2568.pdf")],
+  v02: [E("2025-12-15", "ผ่าน", "2026-12-15", "MRZ6800031", "ปจ2-70-1053-2568.pdf")],
+  v05: [E("2026-01-25", "ผ่าน", "2027-01-25", "MRZ6900004", "ปจ2-82-6789-2569.pdf")],
+  v12: [E("2026-04-02", "ผ่าน", "2027-04-02", "นอกแผน", "ปจ2-74-5521-2569.pdf")],
+  v07: [E("2025-10-28", "ผ่าน", "2026-04-28", "MRZ6800012", "ปจ2-75-3381-2568.pdf"), { ...E("2026-04-20", "ไม่ผ่าน", "2026-10-28", "MRZ6900011", "ปจ2-75-3381-2569.pdf") }],
+};
+

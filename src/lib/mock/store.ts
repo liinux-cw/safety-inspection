@@ -2,12 +2,12 @@
 /* ที่เก็บข้อมูลจำลอง — localStorage คีย์ si-next-v1 · บทบาทเก็บแยกคีย์ si-next-v1:role
    อ่านด้วย useMock() · เขียนด้วย setMock() · ล้างด้วย resetMock() */
 import { useSyncExternalStore } from "react";
-import { DOCS, HEADS, PLANS, VENDORS, type DocsState, type Plan } from "./data";
+import { DOCS, HEADS, PLANS, REGISTRY_SEED, VENDORS, type DocsState, type Plan, type RegistryState } from "./data";
 
 export const KEY = "si-next-v1";
 export const ROLE_KEY = "si-next-v1:role";
 /** รุ่นข้อมูลจำลอง — รุ่นไม่ตรง = เริ่มจากค่าตั้งต้นใหม่ */
-export const MOCK_V = 9;   // 9 = ปิดงาน 3 ขั้น (closing = ผู้รับจ้างขอปิด · closeReview = รอหัวหน้า กบค.) ·   // 8 = หัวหน้า กบค. อนุมัติแผน/ปิดงาน (สถานะ closing) ·   // 7 = ค่าจ้างตามสัญญารายคัน (costs) แทนค่าเดียวทั้งแผน ·   // 6 = ค่าจ้างต่อคันตามสัญญา (unitCost) + เหตุผลค่าจ้างต่างจากสัญญา ·   // 3 = กบค. อนุมัติ/ส่งกลับ · 4 = เอาประเภทงานออก · 5 = ผลตรวจรายคัน (วันที่ ค่าจ้าง ผล เหตุผล) + เบอร์/เลขที่สัญญาผู้รับจ้าง
+export const MOCK_V = 10;   // 10 = ทะเบียน ปจ.2 (registry) + ข้อมูลตัวอย่างค่าจ้างตามสัญญา ·   // 9 = ปิดงาน 3 ขั้น (closing = ผู้รับจ้างขอปิด · closeReview = รอหัวหน้า กบค.) ·   // 8 = หัวหน้า กบค. อนุมัติแผน/ปิดงาน (สถานะ closing) ·   // 7 = ค่าจ้างตามสัญญารายคัน (costs) แทนค่าเดียวทั้งแผน ·   // 6 = ค่าจ้างต่อคันตามสัญญา (unitCost) + เหตุผลค่าจ้างต่างจากสัญญา ·   // 3 = กบค. อนุมัติ/ส่งกลับ · 4 = เอาประเภทงานออก · 5 = ผลตรวจรายคัน (วันที่ ค่าจ้าง ผล เหตุผล) + เบอร์/เลขที่สัญญาผู้รับจ้าง
 
 export interface MockState {
   v: typeof MOCK_V;
@@ -15,6 +15,8 @@ export interface MockState {
   docs: DocsState;
   /** เลขที่ MR ล่าสุดที่ออกไปแล้ว (ไม่นำเลขของแผนที่ลบกลับมาใช้) */
   lastMr: number;
+  /** ทะเบียน ปจ.2: ประวัติการตรวจรายคัน */
+  registry: RegistryState;
 }
 
 const initial = (): MockState => ({
@@ -22,6 +24,7 @@ const initial = (): MockState => ({
   plans: PLANS.map((p) => ({ ...p, cars: [...p.cars] })),
   docs: JSON.parse(JSON.stringify(DOCS)) as DocsState,
   lastMr: 7000012,
+  registry: JSON.parse(JSON.stringify(REGISTRY_SEED)) as RegistryState,
 });
 
 let state: MockState | null = null;
