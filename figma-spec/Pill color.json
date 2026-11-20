@@ -1,0 +1,555 @@
+{
+ "component": "Pill color",
+ "source": "(Component) VMS Plus",
+ "fileKey": "VmOC07pKEsDkHZagOgcSU2",
+ "page": "✅ Badge",
+ "node": "2:13",
+ "props": {
+  "Text#695:3": {
+   "type": "TEXT",
+   "defaultValue": "Badge"
+  },
+  "Color": {
+   "type": "VARIANT",
+   "defaultValue": "Brand",
+   "variantOptions": [
+    "Brand",
+    "Gray",
+    "Info",
+    "Success",
+    "Warning",
+    "Error",
+    "Disabled"
+   ]
+  }
+ },
+ "set": {
+  "name": "Pill color",
+  "type": "COMPONENT_SET",
+  "w": 517,
+  "h": 64,
+  "sizing": [
+   "HUG",
+   "HUG"
+  ],
+  "pl": 20,
+  "pr": 20,
+  "pt": 20,
+  "pb": 20,
+  "gap": 20,
+  "r": 5,
+  "dir": "HORIZONTAL",
+  "justify": "CENTER",
+  "align": "CENTER",
+  "fill": [
+   "#FFFFFF"
+  ],
+  "stroke": [
+   "#9747FF"
+  ],
+  "sw": 1,
+  "strokeAlign": "INSIDE",
+  "vars": {
+   "fills": "Color/surface/primary"
+  }
+ },
+ "variants": [
+  {
+   "name": "Color=Brand",
+   "type": "COMPONENT",
+   "w": 51,
+   "h": 24,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 8,
+   "pr": 8,
+   "pt": 4,
+   "pb": 4,
+   "r": 9999,
+   "dir": "VERTICAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#A80689"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/none",
+    "paddingLeft": "Spacing/200",
+    "paddingTop": "Spacing/100",
+    "paddingRight": "Spacing/200",
+    "paddingBottom": "Spacing/100",
+    "topLeftRadius": "Radius/full",
+    "topRightRadius": "Radius/full",
+    "bottomLeftRadius": "Radius/full",
+    "bottomRightRadius": "Radius/full",
+    "fills": "Color/surface/brand"
+   },
+   "variant": {
+    "Color": "Brand"
+   },
+   "kids": [
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 35,
+     "h": 18,
+     "sizing": [
+      "HUG",
+      "HUG"
+     ],
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/text/primary-on-brand",
+      "letterSpacing": "IBM/Label/04/letter-spacing",
+      "fontSize": "IBM/Label/04/font-size",
+      "fontFamily": "IBM/font-family",
+      "paragraphSpacing": "IBM/Label/04/letter-spacing",
+      "fontWeight": "IBM/Label/04/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 12,
+      "lh": null,
+      "ls": -0.20000000298023224
+     },
+     "text": "Badge"
+    }
+   ]
+  },
+  {
+   "name": "Color=Gray",
+   "type": "COMPONENT",
+   "w": 51,
+   "h": 24,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 8,
+   "pr": 8,
+   "pt": 4,
+   "pb": 4,
+   "r": 9999,
+   "dir": "VERTICAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#EAECF0"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/none",
+    "paddingLeft": "Spacing/200",
+    "paddingTop": "Spacing/100",
+    "paddingRight": "Spacing/200",
+    "paddingBottom": "Spacing/100",
+    "topLeftRadius": "Radius/full",
+    "topRightRadius": "Radius/full",
+    "bottomLeftRadius": "Radius/full",
+    "bottomRightRadius": "Radius/full",
+    "fills": "Color/surface/tertiary"
+   },
+   "variant": {
+    "Color": "Gray"
+   },
+   "kids": [
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 35,
+     "h": 18,
+     "sizing": [
+      "HUG",
+      "HUG"
+     ],
+     "fill": [
+      "#475467"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/text/secondary",
+      "letterSpacing": "IBM/Label/04/letter-spacing",
+      "fontSize": "IBM/Label/04/font-size",
+      "fontFamily": "IBM/font-family",
+      "paragraphSpacing": "IBM/Label/04/letter-spacing",
+      "fontWeight": "IBM/Label/04/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 12,
+      "lh": null,
+      "ls": -0.20000000298023224
+     },
+     "text": "Badge"
+    }
+   ]
+  },
+  {
+   "name": "Color=Info",
+   "type": "COMPONENT",
+   "w": 51,
+   "h": 24,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 8,
+   "pr": 8,
+   "pt": 4,
+   "pb": 4,
+   "r": 9999,
+   "dir": "VERTICAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#6172F3"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/none",
+    "paddingLeft": "Spacing/200",
+    "paddingTop": "Spacing/100",
+    "paddingRight": "Spacing/200",
+    "paddingBottom": "Spacing/100",
+    "topLeftRadius": "Radius/full",
+    "topRightRadius": "Radius/full",
+    "bottomLeftRadius": "Radius/full",
+    "bottomRightRadius": "Radius/full",
+    "fills": "Color/surface/info"
+   },
+   "variant": {
+    "Color": "Info"
+   },
+   "kids": [
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 35,
+     "h": 18,
+     "sizing": [
+      "HUG",
+      "HUG"
+     ],
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/text/primary-on-brand",
+      "letterSpacing": "IBM/Label/04/letter-spacing",
+      "fontSize": "IBM/Label/04/font-size",
+      "fontFamily": "IBM/font-family",
+      "paragraphSpacing": "IBM/Label/04/letter-spacing",
+      "fontWeight": "IBM/Label/04/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 12,
+      "lh": null,
+      "ls": -0.20000000298023224
+     },
+     "text": "Badge"
+    }
+   ]
+  },
+  {
+   "name": "Color=Success",
+   "type": "COMPONENT",
+   "w": 51,
+   "h": 24,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 8,
+   "pr": 8,
+   "pt": 4,
+   "pb": 4,
+   "r": 9999,
+   "dir": "VERTICAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#17B26A"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/none",
+    "paddingLeft": "Spacing/200",
+    "paddingTop": "Spacing/100",
+    "paddingRight": "Spacing/200",
+    "paddingBottom": "Spacing/100",
+    "topLeftRadius": "Radius/full",
+    "topRightRadius": "Radius/full",
+    "bottomLeftRadius": "Radius/full",
+    "bottomRightRadius": "Radius/full",
+    "fills": "Color/surface/success"
+   },
+   "variant": {
+    "Color": "Success"
+   },
+   "kids": [
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 35,
+     "h": 18,
+     "sizing": [
+      "HUG",
+      "HUG"
+     ],
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/text/primary-on-brand",
+      "letterSpacing": "IBM/Label/04/letter-spacing",
+      "fontSize": "IBM/Label/04/font-size",
+      "fontFamily": "IBM/font-family",
+      "paragraphSpacing": "IBM/Label/04/letter-spacing",
+      "fontWeight": "IBM/Label/04/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 12,
+      "lh": null,
+      "ls": -0.20000000298023224
+     },
+     "text": "Badge"
+    }
+   ]
+  },
+  {
+   "name": "Color=Warning",
+   "type": "COMPONENT",
+   "w": 51,
+   "h": 24,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 8,
+   "pr": 8,
+   "pt": 4,
+   "pb": 4,
+   "r": 9999,
+   "dir": "VERTICAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#F79009"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/none",
+    "paddingLeft": "Spacing/200",
+    "paddingTop": "Spacing/100",
+    "paddingRight": "Spacing/200",
+    "paddingBottom": "Spacing/100",
+    "topLeftRadius": "Radius/full",
+    "topRightRadius": "Radius/full",
+    "bottomLeftRadius": "Radius/full",
+    "bottomRightRadius": "Radius/full",
+    "fills": "Color/surface/warning"
+   },
+   "variant": {
+    "Color": "Warning"
+   },
+   "kids": [
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 35,
+     "h": 18,
+     "sizing": [
+      "HUG",
+      "HUG"
+     ],
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/text/primary-on-brand",
+      "letterSpacing": "IBM/Label/04/letter-spacing",
+      "fontSize": "IBM/Label/04/font-size",
+      "fontFamily": "IBM/font-family",
+      "paragraphSpacing": "IBM/Label/04/letter-spacing",
+      "fontWeight": "IBM/Label/04/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 12,
+      "lh": null,
+      "ls": -0.20000000298023224
+     },
+     "text": "Badge"
+    }
+   ]
+  },
+  {
+   "name": "Color=Error",
+   "type": "COMPONENT",
+   "w": 51,
+   "h": 24,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 8,
+   "pr": 8,
+   "pt": 4,
+   "pb": 4,
+   "r": 9999,
+   "dir": "VERTICAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#F04438"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/none",
+    "paddingLeft": "Spacing/200",
+    "paddingTop": "Spacing/100",
+    "paddingRight": "Spacing/200",
+    "paddingBottom": "Spacing/100",
+    "topLeftRadius": "Radius/full",
+    "topRightRadius": "Radius/full",
+    "bottomLeftRadius": "Radius/full",
+    "bottomRightRadius": "Radius/full",
+    "fills": "Color/surface/error"
+   },
+   "variant": {
+    "Color": "Error"
+   },
+   "kids": [
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 35,
+     "h": 18,
+     "sizing": [
+      "HUG",
+      "HUG"
+     ],
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/text/primary-on-brand",
+      "letterSpacing": "IBM/Label/04/letter-spacing",
+      "fontSize": "IBM/Label/04/font-size",
+      "fontFamily": "IBM/font-family",
+      "paragraphSpacing": "IBM/Label/04/letter-spacing",
+      "fontWeight": "IBM/Label/04/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 12,
+      "lh": null,
+      "ls": -0.20000000298023224
+     },
+     "text": "Badge"
+    }
+   ]
+  },
+  {
+   "name": "Color=Disabled",
+   "type": "COMPONENT",
+   "w": 51,
+   "h": 24,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 8,
+   "pr": 8,
+   "pt": 4,
+   "pb": 4,
+   "r": 9999,
+   "dir": "VERTICAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#F2F4F7"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/none",
+    "paddingLeft": "Spacing/200",
+    "paddingTop": "Spacing/100",
+    "paddingRight": "Spacing/200",
+    "paddingBottom": "Spacing/100",
+    "topLeftRadius": "Radius/full",
+    "topRightRadius": "Radius/full",
+    "bottomLeftRadius": "Radius/full",
+    "bottomRightRadius": "Radius/full",
+    "fills": "Color/surface/disabled"
+   },
+   "variant": {
+    "Color": "Disabled"
+   },
+   "kids": [
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 35,
+     "h": 18,
+     "sizing": [
+      "HUG",
+      "HUG"
+     ],
+     "fill": [
+      "#98A2B3"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/text/disabled",
+      "letterSpacing": "IBM/Label/04/letter-spacing",
+      "fontSize": "IBM/Label/04/font-size",
+      "fontFamily": "IBM/font-family",
+      "paragraphSpacing": "IBM/Label/04/letter-spacing",
+      "fontWeight": "IBM/Label/04/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 12,
+      "lh": null,
+      "ls": -0.20000000298023224
+     },
+     "text": "Badge"
+    }
+   ]
+  }
+ ]
+}

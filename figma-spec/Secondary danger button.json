@@ -1,0 +1,1588 @@
+{
+ "component": "Secondary danger button",
+ "source": "(Component) VMS Plus",
+ "fileKey": "VmOC07pKEsDkHZagOgcSU2",
+ "page": "✅ Button",
+ "node": "2:5",
+ "props": {
+  "Text#105:0": {
+   "type": "TEXT",
+   "defaultValue": "Button"
+  },
+  "Leading icon#105:2": {
+   "type": "BOOLEAN",
+   "defaultValue": true
+  },
+  "Trailing icon#105:4": {
+   "type": "BOOLEAN",
+   "defaultValue": true
+  },
+  "Leading icon swap#133:10": {
+   "type": "INSTANCE_SWAP",
+   "defaultValue": "133:3719",
+   "preferredValues": [
+    {
+     "type": "COMPONENT",
+     "key": "234bdc259de272a633fc03791898e92bd60dfc64"
+    }
+   ]
+  },
+  "Trailing icon swap#133:12": {
+   "type": "INSTANCE_SWAP",
+   "defaultValue": "133:3719",
+   "preferredValues": [
+    {
+     "type": "COMPONENT",
+     "key": "234bdc259de272a633fc03791898e92bd60dfc64"
+    }
+   ]
+  },
+  "Button text#1246:27": {
+   "type": "BOOLEAN",
+   "defaultValue": true
+  },
+  "State": {
+   "type": "VARIANT",
+   "defaultValue": "Default",
+   "variantOptions": [
+    "Default",
+    "Hover",
+    "Focused",
+    "Disabled"
+   ]
+  },
+  "Size": {
+   "type": "VARIANT",
+   "defaultValue": "md",
+   "variantOptions": [
+    "md",
+    "lg"
+   ]
+  }
+ },
+ "set": {
+  "name": "Secondary danger button",
+  "type": "COMPONENT_SET",
+  "w": 307,
+  "h": 272,
+  "sizing": [
+   "FIXED",
+   "FIXED"
+  ],
+  "pl": 16,
+  "pr": 16,
+  "pt": 16,
+  "pb": 16,
+  "gap": 16,
+  "r": 5,
+  "justify": "MIN",
+  "align": "MIN",
+  "fill": [
+   "#FFFFFF"
+  ],
+  "stroke": [
+   "#9747FF"
+  ],
+  "sw": 1,
+  "strokeAlign": "INSIDE",
+  "vars": {
+   "fills": "Color/background/default"
+  }
+ },
+ "variants": [
+  {
+   "name": "State=Default, Size=lg",
+   "type": "COMPONENT",
+   "w": 122,
+   "h": 48,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 12,
+   "pr": 12,
+   "pt": 8,
+   "pb": 8,
+   "gap": 4,
+   "r": 8,
+   "dir": "HORIZONTAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#FFFFFF"
+   ],
+   "stroke": [
+    "#D0D5DD"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/100",
+    "paddingLeft": "Spacing/300",
+    "paddingTop": "Spacing/200",
+    "paddingRight": "Spacing/300",
+    "paddingBottom": "Spacing/200",
+    "topLeftRadius": "Radius/200",
+    "topRightRadius": "Radius/200",
+    "bottomLeftRadius": "Radius/200",
+    "bottomRightRadius": "Radius/200",
+    "fills": "Color/component/button/secondary/surface",
+    "strokes": "Color/border/primary"
+   },
+   "variant": {
+    "State": "Default",
+    "Size": "lg"
+   },
+   "kids": [
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D92D20"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 50,
+     "h": 24,
+     "sizing": [
+      "FILL",
+      "HUG"
+     ],
+     "fill": [
+      "#D92D20"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/component/button/tertiary-danger/text",
+      "letterSpacing": "IBM/Label/02/letter-spacing",
+      "fontSize": "IBM/Label/02/font-size",
+      "fontFamily": "IBM/Label/02/font-family",
+      "paragraphSpacing": "IBM/Label/02/font-size",
+      "fontWeight": "IBM/Label/02/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 16,
+      "lh": null,
+      "ls": -0.20000000298023224,
+      "align": "CENTER"
+     },
+     "text": "Button"
+    },
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D92D20"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "State=Hover, Size=lg",
+   "type": "COMPONENT",
+   "w": 122,
+   "h": 48,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 12,
+   "pr": 12,
+   "pt": 8,
+   "pb": 8,
+   "gap": 4,
+   "r": 8,
+   "dir": "HORIZONTAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#EAECF0"
+   ],
+   "stroke": [
+    "#D0D5DD"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/100",
+    "paddingLeft": "Spacing/300",
+    "paddingTop": "Spacing/200",
+    "paddingRight": "Spacing/300",
+    "paddingBottom": "Spacing/200",
+    "topLeftRadius": "Radius/200",
+    "topRightRadius": "Radius/200",
+    "bottomLeftRadius": "Radius/200",
+    "bottomRightRadius": "Radius/200",
+    "fills": "Color/component/button/secondary/surface-hover",
+    "strokes": "Color/border/primary"
+   },
+   "variant": {
+    "State": "Hover",
+    "Size": "lg"
+   },
+   "kids": [
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#B42318"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon-hover"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 50,
+     "h": 24,
+     "sizing": [
+      "FILL",
+      "HUG"
+     ],
+     "fill": [
+      "#B42318"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/component/button/tertiary-danger/text-hover",
+      "letterSpacing": "IBM/Label/02/letter-spacing",
+      "fontSize": "IBM/Label/02/font-size",
+      "fontFamily": "IBM/Label/02/font-family",
+      "paragraphSpacing": "IBM/Label/02/font-size",
+      "fontWeight": "IBM/Label/02/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 16,
+      "lh": null,
+      "ls": -0.20000000298023224,
+      "align": "CENTER"
+     },
+     "text": "Button"
+    },
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#B42318"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon-hover"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "State=Focused, Size=lg",
+   "type": "COMPONENT",
+   "w": 122,
+   "h": 48,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 12,
+   "pr": 12,
+   "pt": 8,
+   "pb": 8,
+   "gap": 4,
+   "r": 8,
+   "dir": "HORIZONTAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#FFFFFF"
+   ],
+   "stroke": [
+    "#D0D5DD"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "effects": [
+    {
+     "type": "DROP_SHADOW",
+     "color": "#6670851F",
+     "x": 0,
+     "y": 0,
+     "blur": 0,
+     "spread": 4
+    }
+   ],
+   "vars": {
+    "itemSpacing": "Spacing/100",
+    "paddingLeft": "Spacing/300",
+    "paddingTop": "Spacing/200",
+    "paddingRight": "Spacing/300",
+    "paddingBottom": "Spacing/200",
+    "topLeftRadius": "Radius/200",
+    "topRightRadius": "Radius/200",
+    "bottomLeftRadius": "Radius/200",
+    "bottomRightRadius": "Radius/200",
+    "fills": "Color/component/button/secondary/surface",
+    "strokes": "Color/border/primary",
+    "effects": "Color/effect/focus-gray"
+   },
+   "variant": {
+    "State": "Focused",
+    "Size": "lg"
+   },
+   "kids": [
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D92D20"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 50,
+     "h": 24,
+     "sizing": [
+      "FILL",
+      "HUG"
+     ],
+     "fill": [
+      "#D92D20"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/component/button/tertiary-danger/text",
+      "letterSpacing": "IBM/Label/02/letter-spacing",
+      "fontSize": "IBM/Label/02/font-size",
+      "fontFamily": "IBM/Label/02/font-family",
+      "paragraphSpacing": "IBM/Label/02/font-size",
+      "fontWeight": "IBM/Label/02/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 16,
+      "lh": null,
+      "ls": -0.20000000298023224,
+      "align": "CENTER"
+     },
+     "text": "Button"
+    },
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D92D20"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "State=Disabled, Size=lg",
+   "type": "COMPONENT",
+   "w": 122,
+   "h": 48,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 12,
+   "pr": 12,
+   "pt": 8,
+   "pb": 8,
+   "gap": 4,
+   "r": 8,
+   "dir": "HORIZONTAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#F2F4F7"
+   ],
+   "stroke": [
+    "#EAECF0"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/100",
+    "paddingLeft": "Spacing/300",
+    "paddingTop": "Spacing/200",
+    "paddingRight": "Spacing/300",
+    "paddingBottom": "Spacing/200",
+    "topLeftRadius": "Radius/200",
+    "topRightRadius": "Radius/200",
+    "bottomLeftRadius": "Radius/200",
+    "bottomRightRadius": "Radius/200",
+    "fills": "Color/surface/disabled",
+    "strokes": "Color/border/disabled-subtle"
+   },
+   "variant": {
+    "State": "Disabled",
+    "Size": "lg"
+   },
+   "kids": [
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#98A2B3"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/icon/disabled"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 50,
+     "h": 24,
+     "sizing": [
+      "FILL",
+      "HUG"
+     ],
+     "fill": [
+      "#98A2B3"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/text/disabled",
+      "letterSpacing": "IBM/Label/02/letter-spacing",
+      "fontSize": "IBM/Label/02/font-size",
+      "fontFamily": "IBM/Label/02/font-family",
+      "paragraphSpacing": "IBM/Label/02/font-size",
+      "fontWeight": "IBM/Label/02/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 16,
+      "lh": null,
+      "ls": -0.20000000298023224,
+      "align": "CENTER"
+     },
+     "text": "Button"
+    },
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#98A2B3"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/icon/disabled"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "State=Default, Size=md",
+   "type": "COMPONENT",
+   "w": 115,
+   "h": 40,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 12,
+   "pr": 12,
+   "pt": 8,
+   "pb": 8,
+   "gap": 4,
+   "r": 8,
+   "dir": "HORIZONTAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#FFFFFF"
+   ],
+   "stroke": [
+    "#D0D5DD"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/100",
+    "paddingLeft": "Spacing/300",
+    "paddingTop": "Spacing/200",
+    "paddingRight": "Spacing/300",
+    "paddingBottom": "Spacing/200",
+    "topLeftRadius": "Radius/200",
+    "topRightRadius": "Radius/200",
+    "bottomLeftRadius": "Radius/200",
+    "bottomRightRadius": "Radius/200",
+    "fills": "Color/component/button/secondary/surface",
+    "strokes": "Color/border/primary"
+   },
+   "variant": {
+    "State": "Default",
+    "Size": "md"
+   },
+   "kids": [
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D92D20"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 43,
+     "h": 21,
+     "sizing": [
+      "FILL",
+      "HUG"
+     ],
+     "fill": [
+      "#D92D20"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/component/button/tertiary-danger/text",
+      "letterSpacing": "IBM/Label/03/letter-spacing",
+      "fontSize": "IBM/Label/03/font-size",
+      "fontFamily": "IBM/Label/03/font-family",
+      "paragraphSpacing": "IBM/Label/03/letter-spacing",
+      "fontWeight": "IBM/Label/03/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 14,
+      "lh": null,
+      "ls": -0.20000000298023224,
+      "align": "CENTER"
+     },
+     "text": "Button"
+    },
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D92D20"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "State=Hover, Size=md",
+   "type": "COMPONENT",
+   "w": 115,
+   "h": 40,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 12,
+   "pr": 12,
+   "pt": 8,
+   "pb": 8,
+   "gap": 4,
+   "r": 8,
+   "dir": "HORIZONTAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#EAECF0"
+   ],
+   "stroke": [
+    "#D0D5DD"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/100",
+    "paddingLeft": "Spacing/300",
+    "paddingTop": "Spacing/200",
+    "paddingRight": "Spacing/300",
+    "paddingBottom": "Spacing/200",
+    "topLeftRadius": "Radius/200",
+    "topRightRadius": "Radius/200",
+    "bottomLeftRadius": "Radius/200",
+    "bottomRightRadius": "Radius/200",
+    "fills": "Color/component/button/secondary/surface-hover",
+    "strokes": "Color/border/primary"
+   },
+   "variant": {
+    "State": "Hover",
+    "Size": "md"
+   },
+   "kids": [
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#B42318"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon-hover"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 43,
+     "h": 21,
+     "sizing": [
+      "FILL",
+      "HUG"
+     ],
+     "fill": [
+      "#B42318"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/component/button/tertiary-danger/text-hover",
+      "letterSpacing": "IBM/Label/03/letter-spacing",
+      "fontSize": "IBM/Label/03/font-size",
+      "fontFamily": "IBM/Label/03/font-family",
+      "paragraphSpacing": "IBM/Label/03/letter-spacing",
+      "fontWeight": "IBM/Label/03/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 14,
+      "lh": null,
+      "ls": -0.20000000298023224,
+      "align": "CENTER"
+     },
+     "text": "Button"
+    },
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#B42318"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon-hover"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "State=Focused, Size=md",
+   "type": "COMPONENT",
+   "w": 115,
+   "h": 40,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 12,
+   "pr": 12,
+   "pt": 8,
+   "pb": 8,
+   "gap": 4,
+   "r": 8,
+   "dir": "HORIZONTAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#FFFFFF"
+   ],
+   "stroke": [
+    "#D0D5DD"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "effects": [
+    {
+     "type": "DROP_SHADOW",
+     "color": "#6670851F",
+     "x": 0,
+     "y": 0,
+     "blur": 0,
+     "spread": 4
+    }
+   ],
+   "vars": {
+    "itemSpacing": "Spacing/100",
+    "paddingLeft": "Spacing/300",
+    "paddingTop": "Spacing/200",
+    "paddingRight": "Spacing/300",
+    "paddingBottom": "Spacing/200",
+    "topLeftRadius": "Radius/200",
+    "topRightRadius": "Radius/200",
+    "bottomLeftRadius": "Radius/200",
+    "bottomRightRadius": "Radius/200",
+    "fills": "Color/component/button/secondary/surface",
+    "strokes": "Color/border/primary",
+    "effects": "Color/effect/focus-gray"
+   },
+   "variant": {
+    "State": "Focused",
+    "Size": "md"
+   },
+   "kids": [
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D92D20"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 43,
+     "h": 21,
+     "sizing": [
+      "FILL",
+      "HUG"
+     ],
+     "fill": [
+      "#D92D20"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/component/button/tertiary-danger/text",
+      "letterSpacing": "IBM/Label/03/letter-spacing",
+      "fontSize": "IBM/Label/03/font-size",
+      "fontFamily": "IBM/Label/03/font-family",
+      "paragraphSpacing": "IBM/Label/03/letter-spacing",
+      "fontWeight": "IBM/Label/03/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 14,
+      "lh": null,
+      "ls": -0.20000000298023224,
+      "align": "CENTER"
+     },
+     "text": "Button"
+    },
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D92D20"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/component/button/tertiary-danger/icon"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "State=Disabled, Size=md",
+   "type": "COMPONENT",
+   "w": 115,
+   "h": 40,
+   "sizing": [
+    "HUG",
+    "FIXED"
+   ],
+   "pl": 12,
+   "pr": 12,
+   "pt": 8,
+   "pb": 8,
+   "gap": 4,
+   "r": 8,
+   "dir": "HORIZONTAL",
+   "justify": "CENTER",
+   "align": "CENTER",
+   "fill": [
+    "#F2F4F7"
+   ],
+   "stroke": [
+    "#EAECF0"
+   ],
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/100",
+    "paddingLeft": "Spacing/300",
+    "paddingTop": "Spacing/200",
+    "paddingRight": "Spacing/300",
+    "paddingBottom": "Spacing/200",
+    "topLeftRadius": "Radius/200",
+    "topRightRadius": "Radius/200",
+    "bottomLeftRadius": "Radius/200",
+    "bottomRightRadius": "Radius/200",
+    "fills": "Color/surface/disabled",
+    "strokes": "Color/border/disabled-subtle"
+   },
+   "variant": {
+    "State": "Disabled",
+    "Size": "md"
+   },
+   "kids": [
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#98A2B3"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/icon/disabled"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 43,
+     "h": 21,
+     "sizing": [
+      "FILL",
+      "HUG"
+     ],
+     "fill": [
+      "#98A2B3"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/text/disabled",
+      "letterSpacing": "IBM/Label/03/letter-spacing",
+      "fontSize": "IBM/Label/03/font-size",
+      "fontFamily": "IBM/Label/03/font-family",
+      "paragraphSpacing": "IBM/Label/03/letter-spacing",
+      "fontWeight": "IBM/Label/03/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 14,
+      "lh": null,
+      "ls": -0.20000000298023224,
+      "align": "CENTER"
+     },
+     "text": "Button"
+    },
+    {
+     "name": "crop_free-20-400-round",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "crop_free-20-400-round",
+     "kids": [
+      {
+       "name": "Bounding box",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#D9D9D9"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE"
+      },
+      {
+       "name": "Vector",
+       "type": "VECTOR",
+       "w": 14,
+       "h": 14,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#98A2B3"
+       ],
+       "sw": 0.02083333395421505,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/icon/disabled"
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

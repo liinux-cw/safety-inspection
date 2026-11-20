@@ -233,14 +233,14 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
         </>}
 
         {ro && !c.files.length
-          ? <p className="text-sm text-gray-600">ยังไม่มีเอกสาร</p>
+          ? <Alert Color="Gray" Text="ยังไม่มีเอกสาร" />
           : <FileUpload LabelText={docLabel(c)} files={c.files} hint={UPLOAD_HINT} max={UPLOAD_MAX_FILES} accept={UPLOAD_ACCEPT} readonly={ro}
               HelperText={error ?? fileErr ?? undefined} Error={!!error || !!fileErr}
               onFiles={(f) => { touch("files"); onFiles(f); }} onDelete={(i) => { removeFile(plan.mr, car, i); setError(null); touch("files"); }} onDownload={(i) => downloadFile(c.files[i].name)} />}
         {!ro && out && <Alert Color={out.Color} Text={out.Text} />}
         {!ro && st !== "none" && (left.length
-          ? <p className="text-sm text-gray-600">{"ยังขาด: " + left.join(", ")}</p>
-          : <p className="text-sm font-semibold text-success-700">ข้อมูลครบ พร้อมส่งอนุมัติ (กดปุ่มส่งอนุมัติที่หน้าแผน)</p>)}
+          ? <Alert Color="Warning" Text={"ยังขาด: " + left.join(", ")} />
+          : <Alert Color="Success" Text="ข้อมูลครบ พร้อมส่งอนุมัติ" SupportingText="กดปุ่มส่งอนุมัติที่หน้าแผน" />)}
 
         {review && <>
           <ContentDivider />
