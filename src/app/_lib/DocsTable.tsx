@@ -217,7 +217,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
           ]} />
         ) : <>
           <div className="flex flex-col gap-4 sm:flex-row">
-            <div ref={dateRef} className="relative flex min-w-0 flex-1 flex-col gap-2">
+            <div ref={dateRef} className="relative flex min-w-0 flex-1 flex-col gap-1 sm:self-start">
               <TextInput LabelText="วันที่ตรวจ" LeadingIconSwap="calendar_month-24-300-round" Text={c.date ? dateText(c.date) : ""} Placeholder="ระบุวันที่" readOnly
                 State={cal ? "Focused" : touched.date && !c.date ? "Error" : c.date ? "Filled" : "Default"}
                 HelperText={touched.date && !c.date ? "กรุณาเลือกวันที่ตรวจ" : undefined}
