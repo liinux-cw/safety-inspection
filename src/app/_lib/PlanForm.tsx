@@ -1,6 +1,6 @@
 "use client";
 /* ฟอร์มสร้าง/แก้ไขแผนตรวจ ปจ.2 (กบค.) — อิงฟอร์มสร้างแผนของต้นแบบบำรุงรักษาตามวาระ แต่ไม่มีแท็บไตรมาสและไม่มีอะไหล่
-   3 section: ข้อมูลแผน (ชื่อแผน · ปีงบอัตโนมัติ · รอบตรวจ) · ข้อมูลผู้รับจ้าง (ผู้รับจ้าง · เบอร์ · เลขที่สัญญา — แยก section ให้ย้ายไปแผนเดินทางได้ทั้งก้อน)
+   3 section: ข้อมูลแผน (ชื่อแผน · รอบตรวจ · ไม่มีปีงบประมาณ 20 พ.ย. 2569) · ข้อมูลผู้รับจ้าง (ผู้รับจ้าง · เบอร์ · เลขที่สัญญา — แยก section ให้ย้ายไปแผนเดินทางได้ทั้งก้อน)
    · ยานพาหนะในแผน: ตาราง + ค่าจ้างตรวจตามสัญญารายคัน (พิมพ์ในช่องของตารางได้เลย · Text input ไม่มีป้าย เจ้าของงาน 20 พ.ย. 2569 · หรือติ๊กหลายคันแล้วกำหนดพร้อมกัน) + "เพิ่มยานพาหนะ" (VehiclePicker) · เอาออกทีละคัน
    "บันทึกและส่งอนุมัติ" กดได้เมื่อกรอกครบ + มียานพาหนะอย่างน้อย 1 คัน · ออกจากหน้าตอนแก้ค้าง = ยืนยันก่อน */
 import { useRouter } from "next/navigation";
@@ -24,7 +24,7 @@ import { TablePagination } from "@/components/vms/TablePagination";
 import { TextInput } from "@/components/vms/TextInput";
 import { cx } from "@/lib/cx";
 import { MONTH_OPTIONS, VEHICLES, moneyInput, moneyText, moneyValue, VEHICLE_BY_ID, VENDORS, VENDOR_BY_ID, bahtText, dateText, dueSub, fiscalYearOf, monthText, rangeText, type Plan } from "@/lib/mock/data";
-import { EMPTY_DRAFT, budget, contractCost, createPlan, draftOf, fyRange, hasWork, takenMap, updatePlan, type Draft } from "@/lib/mock/plan";
+import { EMPTY_DRAFT, budget, contractCost, createPlan, draftOf, hasWork, takenMap, updatePlan, type Draft } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
 import { useBreakpoint } from "@/lib/useBreakpoint";
@@ -88,8 +88,8 @@ export function PlanForm({ plan }: { plan?: Plan }) {
   const autoName = (from: string, to: string) => (from && to ? "ตรวจ ปจ.2 รอบ " + rangeText(from, to) : "");
   /* C: ปีงบคิดจากเดือนเริ่มต้น · เดือนสิ้นสุดต้องอยู่ปีงบเดียวกันและไม่ก่อนเดือนเริ่มต้น */
   const pickFrom = (m: string) => {
-    const fy = fiscalYearOf(m), r = fyRange(fy);
-    const to = d.to && d.to >= m && d.to <= r.to ? d.to : "";
+    const fy = fiscalYearOf(m);
+    const to = d.to && d.to >= m ? d.to : "";
     put({ from: m, fy, to, ...(nameEdited ? {} : { name: autoName(m, to) }) });
   };
   const pickTo = (m: string) => put({ to: m, ...(nameEdited ? {} : { name: autoName(d.from, m) }) });
@@ -108,7 +108,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
     vendor: touched.vendor && !d.vendor ? "กรุณาเลือกผู้รับจ้าง" : undefined,
     vendorTel: touched.vendorTel && !d.vendorTel.trim() ? "กรุณาระบุเบอร์โทรผู้รับจ้าง" : undefined,
   };
-  const complete = !!d.name.trim() && !!d.fy && !!d.from && !!d.to && !rangeBad && !!d.vendor && !!d.vendorTel.trim() && d.cars.length > 0 && noCost.length === 0;
+  const complete = !!d.name.trim() && !!d.from && !!d.to && !rangeBad && !!d.vendor && !!d.vendorTel.trim() && d.cars.length > 0 && noCost.length === 0;
 
   useProtoForm({
     dirty,
@@ -175,7 +175,6 @@ export function PlanForm({ plan }: { plan?: Plan }) {
           <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-2")}>
             <TextInput LabelText="ชื่อแผน" Text={d.name} Placeholder="เลือกรอบตรวจแล้วระบบเติมให้ หรือพิมพ์เอง" onChange={(v) => { setNameEdited(true); put({ name: v }); }} onBlur={() => touch("name")}
               State={err.name ? "Error" : undefined} HelperText={err.name} />
-            <TextInput LabelText="ปีงบประมาณ" Text={d.fy} Placeholder="เลือกเดือนเริ่มต้นก่อน" State="Readonly" readOnly HelperText="คิดให้อัตโนมัติจากเดือนเริ่มต้น (ปีงบ ต.ค. – ก.ย.)" />
             <InputDropdown LabelText="รอบตรวจ: เดือนเริ่มต้น" Text={d.from ? monthText(d.from) : ""} Placeholder="เลือกเดือน" open={dd === "from"} onOpenChange={ddOpen("from")}
               State={err.from ? "Error" : undefined} HelperText={err.from}>
               <DropdownList>{MONTH_OPTIONS.map((m) => <DropdownListItem key={m} Text={monthText(m)} State={m === d.from ? "Selected" : "Default"}
@@ -183,7 +182,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
             </InputDropdown>
             <InputDropdown LabelText="รอบตรวจ: เดือนสิ้นสุด" Text={d.to ? monthText(d.to) : ""} Placeholder="เลือกเดือน" open={dd === "to"} onOpenChange={ddOpen("to")}
               State={err.to ? "Error" : undefined} HelperText={err.to}>
-              <DropdownList emptyText={d.from ? undefined : "เลือกเดือนเริ่มต้นก่อน"}>{(d.from ? MONTH_OPTIONS.filter((m) => m >= d.from && m <= fyRange(d.fy).to) : []).map((m) => <DropdownListItem key={m} Text={monthText(m)} State={m === d.to ? "Selected" : "Default"}
+              <DropdownList emptyText={d.from ? undefined : "เลือกเดือนเริ่มต้นก่อน"}>{(d.from ? MONTH_OPTIONS.filter((m) => m >= d.from) : []).map((m) => <DropdownListItem key={m} Text={monthText(m)} State={m === d.to ? "Selected" : "Default"}
                 onClick={() => { pickTo(m); setDd(""); }} />)}</DropdownList>
             </InputDropdown>
           </div>

@@ -86,7 +86,7 @@ export default function PlanList() {
 
   const data: TableValue[][] = shown.map((p) => [
     p.mr,
-    { text: p.name, sub: "ปีงบประมาณ " + p.fy },
+    p.name,
     rangeText(p.from, p.to),
     VENDOR_BY_ID[p.vendor]?.name ?? "-",
     p.cars.length + " คัน",

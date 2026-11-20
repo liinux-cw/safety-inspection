@@ -15,7 +15,6 @@ export function PlanInfo({ plan }: { plan: Plan }) {
       <DisplayBox Title="ข้อมูลแผน" pairs={[
         ["เลขที่ MR", plan.mr],
         ["ชื่อแผน", plan.name],
-        ["ปีงบประมาณ", plan.fy],
         ["รอบตรวจ", rangeText(plan.from, plan.to)],
         ["จำนวนยานพาหนะ", plan.cars.length + " คัน"],
         ["สถานะแผน", <PillOutline key="s" Text={STATUS_TEXT[plan.status][0]} Color={STATUS_TEXT[plan.status][1]} />],
