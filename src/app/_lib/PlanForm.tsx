@@ -172,7 +172,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
         {plan?.status === "returned" && <Alert Color="Error" Text="หัวหน้า กบค. ส่งกลับให้แก้ไข" SupportingText={(plan.returnReason ? plan.returnReason + " · " : "") + "แก้ไขแล้วกดบันทึกและส่งอนุมัติอีกครั้ง"} />}
         <section className="flex flex-col gap-4">
           <SectionHeader Title="ข้อมูลแผน" />
-          <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-2")}>
+          <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-4")}>
             <TextInput className={mob ? undefined : "col-span-2"} LabelText="ชื่อแผน" Text={d.name} Placeholder="เลือกรอบตรวจแล้วระบบเติมให้ หรือพิมพ์เอง" onChange={(v) => { setNameEdited(true); put({ name: v }); }} onBlur={() => touch("name")}
               State={err.name ? "Error" : undefined} HelperText={err.name} />
             <InputDropdown LabelText="รอบตรวจ: เดือนเริ่มต้น" Text={d.from ? monthText(d.from) : ""} Placeholder="เลือกเดือน" open={dd === "from"} onOpenChange={ddOpen("from")}
@@ -190,9 +190,9 @@ export function PlanForm({ plan }: { plan?: Plan }) {
 
         <section className="flex flex-col gap-4">
           <SectionHeader Title="ข้อมูลผู้รับจ้าง" SupportingText="ผู้รับจ้างเห็นแผนหลังหัวหน้า กบค. อนุมัติแผน แล้วบันทึกผลตรวจส่งให้ กบค. พิจารณา" />
-          <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-2")}>
-            {vendorLocked ? <TextInput LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} State="Readonly" readOnly HelperText="เปลี่ยนไม่ได้ ผู้รับจ้างบันทึกผลตรวจในแผนนี้แล้ว" /> :
-            <InputDropdown LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} Placeholder="เลือกผู้รับจ้าง" open={dd === "vendor"} onOpenChange={ddOpen("vendor")}
+          <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-4")}>
+            {vendorLocked ? <TextInput className={mob ? undefined : "col-span-2"} LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} State="Readonly" readOnly HelperText="เปลี่ยนไม่ได้ ผู้รับจ้างบันทึกผลตรวจในแผนนี้แล้ว" /> :
+            <InputDropdown className={mob ? undefined : "col-span-2"} LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} Placeholder="เลือกผู้รับจ้าง" open={dd === "vendor"} onOpenChange={ddOpen("vendor")}
               State={err.vendor ? "Error" : undefined} HelperText={err.vendor}>
               <DropdownList>{VENDORS.map((v) => <DropdownListItem key={v.id} Text={v.name} SupportingText={v.tel} State={v.id === d.vendor ? "Selected" : "Default"}
                 onClick={() => { put({ vendor: v.id, vendorTel: v.tel }); setDd(""); }} />)}</DropdownList>
