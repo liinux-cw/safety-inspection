@@ -32,7 +32,7 @@ export default function PlanDetail() {
   const [bulk, setBulk] = useState(false);
   const pend = plan ? pendingCars(mock, plan) : [];
   const sel = ticked.filter((c) => pend.includes(c));
-  const crumbs = [{ Text: "งานซ่อมและบำรุงรักษา" }, { Text: "แผนตรวจ ปจ.2", href: "/" }, { Text: "รายละเอียดแผน" }];
+  const crumbs = [{ Text: "Safety Inspection" }, { Text: "แผนตรวจ ปจ.2", href: "/" }, { Text: "รายละเอียดแผน" }];
   return (
     <AppFrame>
       <RoleGate kbk>

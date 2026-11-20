@@ -55,7 +55,7 @@ export default function VendorPlan() {
       <RoleGate vendor>
         {!hydrated ? null : !plan ? <EmptyStateDataEmpty Text="ไม่พบแผนนี้" SupportingText="แผนนี้ไม่ได้ระบุคุณเป็นผู้รับจ้าง หรือถูกลบไปแล้ว" /> : <>
           <PageHeader Title={plan.name} SupportingText={plan.mr} onBack={() => router.push("/docs/")}
-            crumbs={[{ Text: "งานซ่อมและบำรุงรักษา" }, { Text: "เอกสาร ปจ.2", href: "/docs/" }, { Text: plan.mr }]} />
+            crumbs={[{ Text: "Safety Inspection" }, { Text: "เอกสาร ปจ.2", href: "/docs/" }, { Text: plan.mr }]} />
           <div className="flex flex-col gap-8">
             {open
               ? <>

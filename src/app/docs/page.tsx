@@ -51,7 +51,7 @@ export default function VendorPlans() {
   return (
     <AppFrame>
       <RoleGate vendor>
-        <PageHeader Title="เอกสาร ปจ.2" SupportingText="แผนตรวจ ปจ.2 ที่คุณเป็นผู้รับจ้าง แนบเอกสารรายคันแล้วส่งอนุมัติ" crumbs={[{ Text: "งานซ่อมและบำรุงรักษา" }, { Text: "เอกสาร ปจ.2" }]} />
+        <PageHeader Title="เอกสาร ปจ.2" SupportingText="แผนตรวจ ปจ.2 ที่คุณเป็นผู้รับจ้าง แนบเอกสารรายคันแล้วส่งอนุมัติ" crumbs={[{ Text: "Safety Inspection" }, { Text: "เอกสาร ปจ.2" }]} />
         {!mine.length ? <EmptyStateDataEmpty Text="ยังไม่มีแผนที่ต้องส่งเอกสาร" SupportingText="เมื่อ กบค. สร้างแผนที่ระบุคุณเป็นผู้รับจ้าง แผนจะแสดงที่นี่" /> : (
           <section className="flex flex-col gap-6">
             <TableHeader Placeholder="ค้นหาเลขที่ MR, ชื่อแผน" query={query} onQuery={(v) => { setQuery(v); setPage(1); }} FilterButton={false} />

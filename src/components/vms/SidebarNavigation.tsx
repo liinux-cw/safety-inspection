@@ -23,17 +23,20 @@ export interface SideLink { Text: string; href?: string; /** property Badge ข�
 export interface SideGroup { IconSwap: string; Text: string; items?: SideLink[]; href?: string; /** Badge ของ Nav item ชั้นบน (Pill color) — จำนวนที่รอ */ badge?: string }
 export interface SideFooter { IconSwap: string; Text: string; SupportingText?: string; TrailingIconSwap?: string; avatar?: boolean }
 
-/* เมนูจริงตามหน้า "Sidebar Navigation" (277:230639) ของ UI Release#2 แบบเดียวกับต้นแบบบำรุงรักษา · งานนี้อยู่ใต้ "งานซ่อมและบำรุงรักษา" · เมนูอื่นแสดงแต่ไม่พาไปไหน
+/* เมนูจริงตามหน้า "Sidebar Navigation" (277:230639) ของ UI Release#2 · เมนูอื่นแสดงแต่ไม่พาไปไหน
+   Safety Inspection เป็น feature แยกของตัวเอง ไม่อยู่ใต้ "งานซ่อมและบำรุงรักษา" (เจ้าของงาน 20 พ.ย. 2569) → กลุ่มชั้นบนของตัวเอง ต่อจากงานซ่อมและบำรุงรักษา
    กบค. เห็น "แผนตรวจ ปจ.2" · ผู้รับจ้างเห็น "เอกสาร ปจ.2" (AppFrame กรองตามบทบาท) */
 export const MT_LABEL = "แผนตรวจ ปจ.2";
 export const DOCS_LABEL = "เอกสาร ปจ.2";
+export const SI_GROUP = "Safety Inspection";
 export const SIDEBAR_MENU: SideGroup[] = [
   { IconSwap: "home-24-300-round", Text: "หน้าหลัก" },
   { IconSwap: "car_rental-24-300-round", Text: "ระบบจองยานพาหนะ", items: [{ Text: "คำขอใช้ยานพาหนะ" }, { Text: "อนุมัติคำขอ" }] },
   { IconSwap: "traffic_jam-24-300-round", Text: "จัดการคำขอใช้ยานพาหนะ", items: [{ Text: "ตรวจสอบและจัดการคำขอ" }, { Text: "อนุมัติใช้ยานพาหนะ" }] },
   { IconSwap: "database-24-300-round", Text: "ข้อมูลพนักงานและยานพาหนะ", items: [{ Text: "ผู้ดูแลยานพาหนะ" }, { Text: "ข้อมูลพนักงานขับยานพาหนะ" }, { Text: "ข้อมูลยานพาหนะ" }, { Text: "กลุ่มยานพาหนะ" }, { Text: "บริหารสัญญา" }] },
   { IconSwap: "ev_station", Text: "การอัดประจุไฟฟ้า", items: [{ Text: "สถานีอัดประจุไฟฟ้า" }, { Text: "อัตราค่าไฟฟ้า" }, { Text: "ค่าใช้จ่ายอัดประจุยานพาหนะ" }, { Text: "บันทึกการอัดประจุ Wall Charger" }, { Text: "ต้นทุนและค่าใช้จ่ายในการอัดประจุ" }] },
-  { IconSwap: "build", Text: "งานซ่อมและบำรุงรักษา", items: [{ Text: "ภาพรวมการซ่อมบำรุง" }, { Text: "ตารางบำรุงรักษา" }, { Text: "นัดหมายบำรุงรักษา" }, { Text: "งานซ่อม" }, { Text: "ยานพาหนะทดแทน" }, { Text: MT_LABEL, href: "/" }, { Text: DOCS_LABEL, href: "/docs/" }] },
+  { IconSwap: "build", Text: "งานซ่อมและบำรุงรักษา", items: [{ Text: "ภาพรวมการซ่อมบำรุง" }, { Text: "ตารางบำรุงรักษา" }, { Text: "นัดหมายบำรุงรักษา" }, { Text: "งานซ่อม" }, { Text: "ยานพาหนะทดแทน" }] },
+  { IconSwap: "verified_user-24-300-round", Text: SI_GROUP, items: [{ Text: MT_LABEL, href: "/" }, { Text: DOCS_LABEL, href: "/docs/" }] },
   { IconSwap: "e911_emergency", Text: "จัดการเหตุการณ์", items: [{ Text: "จัดการเหตุยานพาหนะเสีย" }, { Text: "จัดการเหตุอุบัติเหตุ" }] },
   { IconSwap: "news", Text: "รายงาน" },
 ];
