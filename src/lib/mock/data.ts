@@ -88,8 +88,10 @@ export const VEHICLES: Vehicle[] = [
 export const VEHICLE_BY_ID: Record<string, Vehicle> = Object.fromEntries(VEHICLES.map((v) => [v.id, v]));
 
 /* ตัวกรองครบกำหนดตรวจ */
-export const DUE_FILTERS = ["เกินกำหนด", "ภายใน 30 วัน", "ภายใน 90 วัน", "มากกว่า 90 วัน"] as const;
-export const dueBucket = (iso: string): (typeof DUE_FILTERS)[number] => {
+export const DUE_FILTERS = ["เกินกำหนด", "ครบกำหนดในรอบนี้", "ภายใน 30 วัน", "ภายใน 90 วัน", "มากกว่า 90 วัน"] as const;
+/** ครบกำหนดตรวจอยู่ในช่วงเดือนของแผน (YYYY-MM) */
+export const dueInRange = (iso: string, from: string, to: string) => !!from && !!to && iso.slice(0, 7) >= from && iso.slice(0, 7) <= to;
+export const dueBucket = (iso: string): Exclude<(typeof DUE_FILTERS)[number], "ครบกำหนดในรอบนี้"> => {
   const d = daysFromToday(iso);
   return d < 0 ? "เกินกำหนด" : d <= 30 ? "ภายใน 30 วัน" : d <= 90 ? "ภายใน 90 วัน" : "มากกว่า 90 วัน";
 };
@@ -131,16 +133,18 @@ export interface Plan {
   vendorTel: string;
   /** เลขที่สัญญา/ใบสั่งจ้าง (ถ้ามี) */
   contract: string;
+  /** ค่าจ้างตรวจต่อคันตามสัญญา (บาท) — กบค. กำหนดตอนสร้างแผน */
+  unitCost: number;
   cars: string[];
   status: PlanStatus;
 }
 
 export const PLANS: Plan[] = [
-  { mr: "MRZ7000010", name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0112", cars: ["v17", "v18", "v19", "v20", "v23"], status: "approved" },
-  { mr: "MRZ7000011", name: "ตรวจ ปจ.2 ภาคตะวันออก รอบ ม.ค. – มี.ค. 2570", fy: "2570", from: "2027-01", to: "2027-03", vendor: "ven2", vendorTel: "02-555-0202", contract: "", cars: ["v21", "v22"], status: "approved" },
-  { mr: "MRZ7000012", name: "ตรวจ ปจ.2 กระเช้าฮอทไลน์ ก.พ. 2570", fy: "2570", from: "2027-02", to: "2027-02", vendor: "ven1", vendorTel: "02-555-0101", contract: "", cars: ["v24"], status: "review" },
-  { mr: "MRZ7000009", name: "ตรวจ ปจ.2 หลัง Overhaul รอบ ม.ค. 2570", fy: "2570", from: "2027-01", to: "2027-01", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0098", cars: ["v16"], status: "approved" },
-  { mr: "MRZ6900020", name: "ตรวจ ปจ.2 รอบ ก.ค. – ก.ย. 2569", fy: "2569", from: "2026-07", to: "2026-09", vendor: "ven1", vendorTel: "02-555-0101", contract: "", cars: [], status: "closed" },
+  { mr: "MRZ7000010", name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0112", unitCost: 9000, cars: ["v17", "v18", "v19", "v20", "v23"], status: "approved" },
+  { mr: "MRZ7000011", name: "ตรวจ ปจ.2 ภาคตะวันออก รอบ ม.ค. – มี.ค. 2570", fy: "2570", from: "2027-01", to: "2027-03", vendor: "ven2", vendorTel: "02-555-0202", contract: "", unitCost: 8500, cars: ["v21", "v22"], status: "approved" },
+  { mr: "MRZ7000012", name: "ตรวจ ปจ.2 กระเช้าฮอทไลน์ ก.พ. 2570", fy: "2570", from: "2027-02", to: "2027-02", vendor: "ven1", vendorTel: "02-555-0101", contract: "", unitCost: 9000, cars: ["v24"], status: "review" },
+  { mr: "MRZ7000009", name: "ตรวจ ปจ.2 หลัง Overhaul รอบ ม.ค. 2570", fy: "2570", from: "2027-01", to: "2027-01", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0098", unitCost: 12000, cars: ["v16"], status: "approved" },
+  { mr: "MRZ6900020", name: "ตรวจ ปจ.2 รอบ ก.ค. – ก.ย. 2569", fy: "2569", from: "2026-07", to: "2026-09", vendor: "ven1", vendorTel: "02-555-0101", contract: "", unitCost: 8500, cars: [], status: "closed" },
 ];
 
 /* ---------- เอกสาร ปจ.2 ที่ผู้รับจ้างแนบ (รายคัน) ---------- */
@@ -153,8 +157,10 @@ export const RESULT_COLOR: Record<InspectResult, "Success" | "Error" | "Warning"
 export interface CarDocs {
   /** วันที่ตรวจ (ISO) */
   date?: string;
-  /** ค่าจ้างตรวจคันนี้ (บาท) */
+  /** ค่าจ้างตรวจคันนี้ (บาท) — ไม่มีค่า = ตามสัญญา (unitCost ของแผน) */
   cost?: number;
+  /** เหตุผลที่ค่าจ้างต่างจากสัญญา (ต้องระบุเมื่อ cost ≠ unitCost) */
+  costReason?: string;
   result?: InspectResult;
   /** เหตุผลที่ตรวจไม่ได้ (ต้องระบุเมื่อผล = ตรวจไม่ได้) */
   reason?: string;
@@ -173,10 +179,10 @@ export type DocsState = Record<string, Record<string, CarDocs>>;
 export const DOCS: DocsState = {
   MRZ7000010: {
     v17: { date: "2026-11-12", cost: 9000, result: "ผ่าน", files: [{ name: "ปจ2-70-8801.pdf", size: "1.4 MB" }], sentAt: "2026-11-15", approvedAt: "2026-11-16" },
-    v19: { date: "2026-11-14", cost: 9500, result: "ไม่ผ่าน", files: [{ name: "ปจ2-74-7745.pdf", size: "980 KB" }], sentAt: "2026-11-18" },
+    v19: { date: "2026-11-14", cost: 9500, costReason: "ต้องใช้เครื่องยกเสริมเพราะพื้นที่ลาดชัน", result: "ไม่ผ่าน", files: [{ name: "ปจ2-74-7745.pdf", size: "980 KB" }], sentAt: "2026-11-18" },
     v20: { date: "2026-11-13", cost: 9000, result: "ผ่าน", files: [{ name: "ปจ2-82-9956.jpg", size: "3.1 MB" }], returnReason: "เอกสารไม่ชัด อ่านเลขตัวถังไม่ได้ กรุณาสแกนใหม่" },
-    v18: { date: "2026-11-17", cost: 8500, result: "ตรวจไม่ได้", reason: "ยานพาหนะอยู่ระหว่างซ่อมระบบไฮดรอลิก ไม่สามารถยกกระเช้าทดสอบได้", files: [{ name: "หนังสือรับรอง-72-3302.pdf", size: "1.1 MB" }] },
-    v23: { date: "2026-11-18", files: [] },
+    v18: { date: "2026-11-17", cost: 9000, result: "ตรวจไม่ได้", reason: "ยานพาหนะอยู่ระหว่างซ่อมระบบไฮดรอลิก ไม่สามารถยกกระเช้าทดสอบได้", files: [{ name: "หนังสือรับรอง-72-3302.pdf", size: "1.1 MB" }] },
+    v23: { date: "2026-11-18", cost: 9000, files: [] },
   },
 };
 

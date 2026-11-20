@@ -22,8 +22,8 @@ import { TableHeader } from "@/components/vms/TableHeader";
 import { TablePagination } from "@/components/vms/TablePagination";
 import { TextInput } from "@/components/vms/TextInput";
 import { cx } from "@/lib/cx";
-import { MONTH_OPTIONS, VEHICLES, VEHICLE_BY_ID, VENDORS, VENDOR_BY_ID, dateText, dueSub, fiscalYearOf, monthText, type Plan } from "@/lib/mock/data";
-import { EMPTY_DRAFT, createPlan, draftOf, takenMap, updatePlan, type Draft } from "@/lib/mock/plan";
+import { MONTH_OPTIONS, VEHICLES, VEHICLE_BY_ID, VENDORS, VENDOR_BY_ID, bahtText, dateText, dueSub, fiscalYearOf, monthText, rangeText, type Plan } from "@/lib/mock/data";
+import { EMPTY_DRAFT, budget, createPlan, draftOf, fyRange, hasWork, takenMap, updatePlan, type Draft } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
 import { useBreakpoint } from "@/lib/useBreakpoint";
@@ -38,7 +38,6 @@ const COLS: TableColumn[] = [
   { head: "ครบกำหนดตรวจ", width: 160 },
   { head: "", width: 72 },
 ];
-const YEARS = ["2570", "2571"];
 const PER = 10;
 const LEAVE = { title: "ยืนยันการออกจากหน้านี้", sub: "ข้อมูลที่กรอกไว้จะไม่ถูกบันทึก", cancel: "อยู่ต่อ", ok: "ออกจากหน้านี้", danger: true };
 
@@ -58,27 +57,42 @@ export function PlanForm({ plan }: { plan?: Plan }) {
   const [leaving, setLeaving] = useState(false);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
+  /* C: ชื่อแผนเติมให้จากรอบตรวจจนกว่าจะพิมพ์เอง · แก้ไขแผนเดิม = ถือว่าพิมพ์เองแล้ว */
+  const [nameEdited, setNameEdited] = useState(edit);
+  const [costText, setCostText] = useState(start.unitCost ? String(start.unitCost) : "");
+  const autoName = (from: string, to: string) => (from && to ? "ตรวจ ปจ.2 รอบ " + rangeText(from, to) : "");
+  /* C: ปีงบคิดจากเดือนเริ่มต้น · เดือนสิ้นสุดต้องอยู่ปีงบเดียวกันและไม่ก่อนเดือนเริ่มต้น */
+  const pickFrom = (m: string) => {
+    const fy = fiscalYearOf(m), r = fyRange(fy);
+    const to = d.to && d.to >= m && d.to <= r.to ? d.to : "";
+    put({ from: m, fy, to, ...(nameEdited ? {} : { name: autoName(m, to) }) });
+  };
+  const pickTo = (m: string) => put({ to: m, ...(nameEdited ? {} : { name: autoName(d.from, m) }) });
+  /* A: มีผลตรวจจากผู้รับจ้างแล้ว → เปลี่ยนผู้รับจ้าง/เอาคันนั้นออกไม่ได้ */
+  const worked = (id: string) => !!plan && hasWork(mock, plan.mr, id);
+  const vendorLocked = !!plan && plan.cars.some(worked);
 
   const taken = useMemo(() => takenMap(mock, plan?.mr), [mock, plan?.mr]);
   const dirty = JSON.stringify(d) !== JSON.stringify(start);
   const rangeBad = !!d.from && !!d.to && d.to < d.from;
   const err = {
     name: touched.name && !d.name.trim() ? "กรุณาระบุชื่อแผน" : undefined,
-    fy: touched.fy && !d.fy ? "กรุณาเลือกปีงบประมาณ" : undefined,
     from: touched.from && !d.from ? "กรุณาเลือกเดือนเริ่มต้น" : undefined,
     to: touched.to && !d.to ? "กรุณาเลือกเดือนสิ้นสุด" : rangeBad ? "เดือนสิ้นสุดต้องไม่ก่อนเดือนเริ่มต้น" : undefined,
     vendor: touched.vendor && !d.vendor ? "กรุณาเลือกผู้รับจ้าง" : undefined,
     vendorTel: touched.vendorTel && !d.vendorTel.trim() ? "กรุณาระบุเบอร์โทรผู้รับจ้าง" : undefined,
+    unitCost: touched.unitCost && !(d.unitCost > 0) ? "กรุณาระบุค่าจ้างตรวจต่อคัน" : undefined,
   };
-  const complete = !!d.name.trim() && !!d.fy && !!d.from && !!d.to && !rangeBad && !!d.vendor && !!d.vendorTel.trim() && d.cars.length > 0;
+  const complete = !!d.name.trim() && !!d.fy && !!d.from && !!d.to && !rangeBad && !!d.vendor && !!d.vendorTel.trim() && d.unitCost > 0 && d.cars.length > 0;
 
   useProtoForm({
     dirty,
     fill: () => {
       const free = VEHICLES.filter((v) => !taken[v.id]).slice(0, 4).map((v) => v.id);
-      setD({ name: "ตรวจ ปจ.2 รอบ มี.ค. – พ.ค. 2570", fy: "2570", from: "2027-03", to: "2027-05", vendor: "ven3", vendorTel: "02-555-0303", contract: "PO-2570-0150", cars: free });
+      setD({ name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", vendor: "ven3", vendorTel: "02-555-0303", contract: "PO-2570-0150", unitCost: 9000, cars: free });
+      setCostText("9000"); setNameEdited(false);
     },
-    clear: () => { setD(start); setTouched({}); },
+    clear: () => { setD(start); setTouched({}); setCostText(start.unitCost ? String(start.unitCost) : ""); setNameEdited(edit); },
   });
 
   const leave = () => (dirty ? setLeaving(true) : router.push(plan ? "/detail/?mr=" + plan.mr : "/"));
@@ -100,11 +114,13 @@ export function PlanForm({ plan }: { plan?: Plan }) {
   const k = query.trim();
   const shownCars = cars.filter((v) => !k || v.plate.includes(k) || v.code.includes(k) || v.org.includes(k));
   const last = Math.max(1, Math.ceil(shownCars.length / PER)), pg = Math.min(page, last);
-  const removeCar = (id: string) => put({ cars: d.cars.filter((c) => c !== id) });
+  const removeCar = (id: string) => (worked(id)
+    ? notify("เอา " + VEHICLE_BY_ID[id].plate + " ออกไม่ได้ ผู้รับจ้างบันทึกผลตรวจคันนี้แล้ว", "Error")
+    : put({ cars: d.cars.filter((c) => c !== id) }));
   const rows: TableValue[][] = shownCars.slice((pg - 1) * PER, pg * PER).map((v) => {
     const del = { IconSwap: "delete-24-300-round", label: "เอาออก " + v.plate, onClick: () => removeCar(v.id) };
     return [
-      { text: v.plate, sub: v.code }, v.type, v.org, { text: v.owner, sub: v.tel }, v.cycle + " เดือน",
+      { text: v.plate, sub: worked(v.id) ? v.code + " · มีผลตรวจแล้ว เอาออกไม่ได้" : v.code }, v.type, v.org, { text: v.owner, sub: v.tel }, v.cycle + " เดือน",
       { text: dateText(v.due), sub: dueSub(v.due) },
       { actions: [del], mobileActions: [del] },
     ];
@@ -123,30 +139,31 @@ export function PlanForm({ plan }: { plan?: Plan }) {
         <section className="flex flex-col gap-4">
           <SectionHeader Title="ข้อมูลแผน" />
           <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-2")}>
-            <TextInput LabelText="ชื่อแผน" Text={d.name} Placeholder="ระบุชื่อแผน" onChange={(v) => put({ name: v })} onBlur={() => touch("name")}
+            <TextInput LabelText="ชื่อแผน" Text={d.name} Placeholder="เลือกรอบตรวจแล้วระบบเติมให้ หรือพิมพ์เอง" onChange={(v) => { setNameEdited(true); put({ name: v }); }} onBlur={() => touch("name")}
               State={err.name ? "Error" : undefined} HelperText={err.name} />
-            <InputDropdown LabelText="ปีงบประมาณ" Text={d.fy} Placeholder="เลือกปีงบประมาณ" open={dd === "fy"} onOpenChange={ddOpen("fy")}
-              State={err.fy ? "Error" : undefined} HelperText={err.fy}>
-              <DropdownList>{YEARS.map((y) => <DropdownListItem key={y} Text={y} State={y === d.fy ? "Selected" : "Default"} onClick={() => { put({ fy: y }); setDd(""); }} />)}</DropdownList>
-            </InputDropdown>
+            <TextInput LabelText="ปีงบประมาณ" Text={d.fy} Placeholder="เลือกเดือนเริ่มต้นก่อน" State="Readonly" readOnly HelperText="คิดให้อัตโนมัติจากเดือนเริ่มต้น (ปีงบ ต.ค. – ก.ย.)" />
             <InputDropdown LabelText="รอบตรวจ: เดือนเริ่มต้น" Text={d.from ? monthText(d.from) : ""} Placeholder="เลือกเดือน" open={dd === "from"} onOpenChange={ddOpen("from")}
               State={err.from ? "Error" : undefined} HelperText={err.from}>
               <DropdownList>{MONTH_OPTIONS.map((m) => <DropdownListItem key={m} Text={monthText(m)} State={m === d.from ? "Selected" : "Default"}
-                onClick={() => { put({ from: m, fy: d.fy || fiscalYearOf(m) }); setDd(""); }} />)}</DropdownList>
+                onClick={() => { pickFrom(m); setDd(""); }} />)}</DropdownList>
             </InputDropdown>
             <InputDropdown LabelText="รอบตรวจ: เดือนสิ้นสุด" Text={d.to ? monthText(d.to) : ""} Placeholder="เลือกเดือน" open={dd === "to"} onOpenChange={ddOpen("to")}
               State={err.to ? "Error" : undefined} HelperText={err.to}>
-              <DropdownList>{MONTH_OPTIONS.filter((m) => !d.from || m >= d.from).map((m) => <DropdownListItem key={m} Text={monthText(m)} State={m === d.to ? "Selected" : "Default"}
-                onClick={() => { put({ to: m }); setDd(""); }} />)}</DropdownList>
+              <DropdownList emptyText={d.from ? undefined : "เลือกเดือนเริ่มต้นก่อน"}>{(d.from ? MONTH_OPTIONS.filter((m) => m >= d.from && m <= fyRange(d.fy).to) : []).map((m) => <DropdownListItem key={m} Text={monthText(m)} State={m === d.to ? "Selected" : "Default"}
+                onClick={() => { pickTo(m); setDd(""); }} />)}</DropdownList>
             </InputDropdown>
+            {vendorLocked ? <TextInput LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} State="Readonly" readOnly HelperText="เปลี่ยนไม่ได้ ผู้รับจ้างบันทึกผลตรวจในแผนนี้แล้ว" /> :
             <InputDropdown LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} Placeholder="เลือกผู้รับจ้าง" open={dd === "vendor"} onOpenChange={ddOpen("vendor")}
-              State={err.vendor ? "Error" : undefined} HelperText={err.vendor ?? "ผู้รับจ้างจะเห็นแผนนี้ทันทีหลังสร้าง เพื่ออัปโหลดเอกสาร ปจ.2 ส่งให้ กบค. อนุมัติ"}>
+              State={err.vendor ? "Error" : undefined} HelperText={err.vendor ?? "ผู้รับจ้างเห็นแผนทันทีหลังสร้าง และบันทึกผลตรวจได้เมื่อแผนอนุมัติแล้ว"}>
               <DropdownList>{VENDORS.map((v) => <DropdownListItem key={v.id} Text={v.name} SupportingText={v.tel} State={v.id === d.vendor ? "Selected" : "Default"}
                 onClick={() => { put({ vendor: v.id, vendorTel: v.tel }); setDd(""); }} />)}</DropdownList>
-            </InputDropdown>
+            </InputDropdown>}
             <TextInput LabelText="เบอร์โทรผู้รับจ้าง" Text={d.vendorTel} Placeholder="0XX-XXX-XXXX" onChange={(v) => put({ vendorTel: v })} onBlur={() => touch("vendorTel")}
               State={err.vendorTel ? "Error" : undefined} HelperText={err.vendorTel} />
             <TextInput LabelText="เลขที่สัญญา/ใบสั่งจ้าง" Optional Text={d.contract} Placeholder="ระบุเลขที่สัญญาหรือใบสั่งจ้าง" onChange={(v) => put({ contract: v })} />
+            <TextInput LabelText="ค่าจ้างตรวจต่อคัน (บาท)" Text={costText} Placeholder="0.00" inputMode="decimal" onBlur={() => touch("unitCost")}
+              onChange={(v) => { const t = v.replace(/[^\d.]/g, ""); setCostText(t); put({ unitCost: Number(t) || 0 }); }}
+              State={err.unitCost ? "Error" : undefined} HelperText={err.unitCost ?? (d.unitCost > 0 ? "งบรวมตามสัญญา " + bahtText(budget(d)) + " (" + d.cars.length + " คัน)" : "ผู้รับจ้างจะเห็นเป็นค่าตั้งต้นของทุกคัน")} />
           </div>
         </section>
 
@@ -171,7 +188,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
           <PrimaryButton Text="บันทึกและส่งอนุมัติ" Size="lg" State={complete ? "Default" : "Disabled"} onClick={save} />
         </div>
       </div>
-      <VehiclePicker open={picker} pool={VEHICLES.filter((v) => !d.cars.includes(v.id))} taken={taken} onCancel={() => setPicker(false)}
+      <VehiclePicker open={picker} from={d.from} to={d.to} pool={VEHICLES.filter((v) => !d.cars.includes(v.id))} taken={taken} onCancel={() => setPicker(false)}
         onAdd={(ids) => { put({ cars: [...d.cars, ...ids] }); setPicker(false); notify("เพิ่มยานพาหนะเข้าแผน " + ids.length + " คันแล้ว"); }} />
       <ConfirmDialog spec={leaving ? LEAVE : null} onCancel={() => setLeaving(false)} onOk={() => { setLeaving(false); router.push(plan ? "/detail/?mr=" + plan.mr : "/"); }} />
     </>

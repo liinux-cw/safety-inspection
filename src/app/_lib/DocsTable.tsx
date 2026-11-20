@@ -6,6 +6,7 @@
    กบค. (canReview): คันที่รออนุมัติ = เลือกผลการพิจารณา อนุมัติ / ส่งกลับแก้ไข (ต้องมีเหตุผล) · อื่นๆ ดูอย่างเดียว
    เงื่อนไขไฟล์: PDF/PNG/JPG · ไฟล์ละไม่เกิน 10 MB · 1–10 ไฟล์ต่อคัน */
 import { useState } from "react";
+import { CheckTable } from "@/components/patterns/CheckTable";
 import { DisplayBox } from "@/components/patterns/DisplayBox";
 import { PopupModal } from "@/components/patterns/PopupModal";
 import { Alert } from "@/components/vms/Alert";
@@ -23,10 +24,10 @@ import { TextArea } from "@/components/vms/TextArea";
 import { TextInput } from "@/components/vms/TextInput";
 import { downloadFile, rememberFiles } from "@/lib/fileDownload";
 import {
-  RESULTS, RESULT_COLOR, TODAY, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, addMonths, bahtText, dateText, dueSub, fileOk, sizeText,
+  RESULTS, RESULT_COLOR, TODAY, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, addMonths, bahtText, dateText, dueSub, fileOk, rangeText, sizeText,
   type CarDocs, type InspectResult, type Plan, type Vehicle,
 } from "@/lib/mock/data";
-import { DOC_TEXT, addFiles, approveDocs, carDocs, docState, missing, removeFile, returnDocs, updateResult, vendorCanEdit } from "@/lib/mock/plan";
+import { DOC_TEXT, addFiles, approveDocs, carCost, carDocs, costDiffers, docState, missing, removeFile, returnDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
 import { TH_PICKER } from "@/lib/thaiDate";
@@ -47,7 +48,8 @@ const toDate = (iso: string) => { const [y, m, d] = iso.split("-").map(Number); 
 const toIso = (d: Date) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
 const docLabel = (c: CarDocs) => (c.result === "ตรวจไม่ได้" ? "หนังสือรับรองจากผู้แทนหน่วยงาน" : "เอกสารการตรวจ ปจ.2");
 
-export function DocsTable({ plan, canEdit, canReview }: { plan: Plan; canEdit: boolean; canReview?: boolean }) {
+/** canEdit = บทบาทผู้รับจ้าง (แก้ได้จริงเมื่อแผนอนุมัติแล้ว) · ticked/onTicked = กบค. ติ๊กหลายคันที่รออนุมัติเพื่ออนุมัติพร้อมกัน */
+export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan: Plan; canEdit: boolean; canReview?: boolean; ticked?: string[]; onTicked?: (next: string[]) => void }) {
   const mob = useBreakpoint() === "Mobile";
   const mock = useMock();
   const [page, setPage] = useState(1);
@@ -57,8 +59,8 @@ export function DocsTable({ plan, canEdit, canReview }: { plan: Plan; canEdit: b
   const rows: TableValue[][] = plan.cars.slice((pg - 1) * PER, pg * PER).map((id) => {
     const v = VEHICLE_BY_ID[id];
     const c = carDocs(mock, plan.mr, id);
-    const st = docState(c);
-    const editHere = canEdit && vendorCanEdit(c);
+    const st = docState(c, plan);
+    const editHere = canEdit && vendorCanWork(plan) && vendorCanEdit(c);
     const reviewHere = !!canReview && st === "sent";
     const act = editHere ? { IconSwap: "edit_note-24-300-round", label: "บันทึกผลตรวจ " + v.plate, onClick: () => setOpen(id) }
       : reviewHere ? { IconSwap: "fact_check-24-300-round", label: "พิจารณาผลตรวจ " + v.plate, onClick: () => setOpen(id) }
@@ -67,16 +69,25 @@ export function DocsTable({ plan, canEdit, canReview }: { plan: Plan; canEdit: b
       { text: v.plate, sub: v.code + " · " + v.type }, v.org, { text: dateText(v.due), sub: dueSub(v.due) },
       c.date ? dateText(c.date) : "-",
       c.result ? { pills: [[c.result, RESULT_COLOR[c.result]]] } : "-",
-      c.cost ? bahtText(c.cost) : "-",
+      st === "none" ? "-" : { text: bahtText(carCost(plan, c)), sub: costDiffers(plan, c) ? "ต่างจากสัญญา" : undefined },
       { pills: [DOC_TEXT[st]] },
       { actions: [act], mobileActions: [act] },
     ];
+  });
+  const pageCars = plan.cars.slice((pg - 1) * PER, pg * PER);
+  const checkRows = rows.map((r, i) => {
+    const id = pageCars[i], v = VEHICLE_BY_ID[id], a = r[7] as { actions: { IconSwap: string; label: string; onClick?: () => void }[] };
+    return { key: id, text: v.plate, sub: v.code + " · " + v.type, disabled: docState(carDocs(mock, plan.mr, id), plan) !== "sent", cells: r.slice(1), mobileActions: a.actions };
   });
   const rowKey = (r: TableValue[]) => { const v = r[0]; return v && typeof v === "object" && "text" in v ? v.text : String(v); };
 
   return (
     <>
-      {mob ? (
+      {ticked && onTicked ? (
+        <CheckTable columns={COLS} rows={checkRows} ticked={ticked} onTicked={onTicked}
+          scope={plan.cars.map((id) => ({ key: id, disabled: docState(carDocs(mock, plan.mr, id), plan) !== "sent" }))}
+          Pagination={<TablePagination total={plan.cars.length} page={pg} perPage={PER} onPage={setPage} />} />
+      ) : mob ? (
         <div className="flex flex-col gap-5">
           <MobileCards columns={COLS} rows={rows} rowKey={rowKey} />
           <TablePagination total={plan.cars.length} page={pg} perPage={PER} onPage={setPage} />
@@ -100,12 +111,13 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const mock = useMock();
   const v = VEHICLE_BY_ID[car];
   const c = carDocs(mock, plan.mr, car);
-  const st = docState(c);
-  const ro = !canEdit || !vendorCanEdit(c);
+  const st = docState(c, plan);
+  const waitPlan = canEdit && !vendorCanWork(plan) && plan.status !== "closed";
+  const ro = !canEdit || !vendorCanWork(plan) || !vendorCanEdit(c);
   const review = canReview && st === "sent";
   const [error, setError] = useState<string | null>(null);
   const [cal, setCal] = useState(false);
-  const [costText, setCostText] = useState(c.cost ? String(c.cost) : "");
+  const [costText, setCostText] = useState(String(carCost(plan, c)));
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const touch = (k: string) => setTouched((t) => ({ ...t, [k]: true }));
   const [decision, setDecision] = useState<"" | "approve" | "return">("");
@@ -113,26 +125,28 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const [rTouched, setRTouched] = useState(false);
   const reasonErr = rTouched && !reason.trim();
   const decided = decision === "approve" || (decision === "return" && !!reason.trim());
-  const left = missing(c);
+  const left = missing(c, plan);
+  const differs = costDiffers(plan, c);
 
   const setCost = (t: string) => {
     const clean = t.replace(/[^\d.]/g, "");
     setCostText(clean);
     const n = Number(clean);
-    updateResult(plan.mr, car, { cost: clean && !Number.isNaN(n) ? n : undefined });
+    /* B: เท่ากับสัญญา = ไม่เก็บค่า (ใช้ค่าตามสัญญา) · ว่าง = 0 (ต้องกรอก) */
+    updateResult(plan.mr, car, { cost: !clean || Number.isNaN(n) ? 0 : n === plan.unitCost ? undefined : n });
   };
   const sample = () => {
     if (!c.date) updateResult(plan.mr, car, { date: TODAY });
-    if (!c.cost) setCost("9000");
+    if (!carCost(plan, c)) setCost(String(plan.unitCost));
     if (!c.result) updateResult(plan.mr, car, { result: "ผ่าน" });
     if (c.result === "ตรวจไม่ได้" && !c.reason) updateResult(plan.mr, car, { reason: "ยานพาหนะอยู่ระหว่างซ่อม ไม่สามารถทดสอบได้" });
     if (!c.files.length) addFiles(plan.mr, car, [{ name: "ปจ2-" + v.plate.split(" ")[0] + "-ตัวอย่าง.pdf", size: "1.2 MB" }]);
     setError(null);
   };
   const clearAll = () => {
-    updateResult(plan.mr, car, { date: undefined, cost: undefined, result: undefined, reason: undefined });
+    updateResult(plan.mr, car, { date: undefined, cost: undefined, costReason: undefined, result: undefined, reason: undefined });
     for (let i = c.files.length - 1; i >= 0; i--) removeFile(plan.mr, car, i);
-    setCostText(""); setTouched({}); setError(null);
+    setCostText(String(plan.unitCost)); setTouched({}); setError(null);
   };
   /* ต้นแบบ: กรอกข้อมูลตัวอย่าง — ผู้รับจ้าง = กรอกผลผ่าน + ไฟล์ตัวอย่าง · กบค. = เลือกอนุมัติ */
   useProtoForm(review ? {
@@ -161,6 +175,9 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
     onClose();
   };
   const out = outcome(v, c);
+  /* D: วันที่ตรวจเลือกได้ตั้งแต่ 1 เดือนก่อนรอบตรวจ ถึงวันนี้ · นอกรอบตรวจ = เตือน ไม่บล็อก */
+  const minDate = addMonths(plan.from + "-01", -1);
+  const inRound = (iso: string) => iso.slice(0, 7) >= plan.from && iso.slice(0, 7) <= plan.to;
   const summary = v.plate + " · " + v.code + " · " + v.type + " · วาระ " + v.cycle + " เดือน";
   const fileErr = !ro && touched.files && !c.files.length ? "กรุณาแนบ" + docLabel(c) + " อย่างน้อย 1 ไฟล์" : null;
 
@@ -174,13 +191,16 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
         {st === "sent" && <Alert Color="Info" Text={"ส่งอนุมัติแล้วเมื่อ " + dateText(c.sentAt!) + " · รอ กบค. อนุมัติ"} SupportingText={canEdit ? "ระหว่างรออนุมัติแก้ไขหรือลบไม่ได้ ดูและดาวน์โหลดได้" : undefined} />}
         {st === "returned" && <Alert Color="Error" Text="กบค. ส่งกลับแก้ไข" SupportingText={c.returnReason + (canEdit ? " · แก้ไขแล้วกดส่งอนุมัติอีกครั้ง" : "")} />}
         {!canEdit && !c.sentAt && !c.approvedAt && st !== "none" && <Alert Color="Warning" Text="ผู้รับจ้างยังไม่ส่งอนุมัติ" SupportingText="ข้อมูลอาจเปลี่ยนแปลงจนกว่าผู้รับจ้างจะส่ง" />}
+        {waitPlan && <Alert Color="Warning" Text="แผนยังไม่อนุมัติ" SupportingText="ดูรายละเอียดได้ก่อน บันทึกและส่งผลตรวจได้เมื่อแผนอนุมัติแล้ว" />}
 
         {ro ? (
           <DisplayBox perRow={2} pairs={[
             ["วันที่ตรวจ", c.date ? dateText(c.date) : "-"],
-            ["ค่าจ้างตรวจคันนี้", c.cost ? bahtText(c.cost) : "-"],
+            ["ค่าจ้างตรวจคันนี้", st === "none" ? "ตามสัญญา " + bahtText(plan.unitCost) : bahtText(carCost(plan, c)) + (differs ? " (สัญญา " + bahtText(plan.unitCost) + ")" : "")],
+            ...(differs ? [["เหตุผลที่ค่าจ้างต่างจากสัญญา", c.costReason || "-"] as [string, string]] : []),
             ["ผลการตรวจ", c.result ? <PillOutline key="r" Text={c.result} Color={RESULT_COLOR[c.result]} /> : "-"],
             ["ครบกำหนดตรวจเดิม", dateText(v.due)],
+            ...(c.date && !inRound(c.date) ? [["หมายเหตุ", "วันที่ตรวจอยู่นอกรอบตรวจของแผน"] as [string, string]] : []),
             ...(c.result === "ตรวจไม่ได้" ? [["เหตุผลที่ตรวจไม่ได้", c.reason || "-"] as [string, string]] : []),
           ]} />
         ) : <>
@@ -191,9 +211,13 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
                 onClick={() => setCal(true)} />
             </div>
             <TextInput className="min-w-0 flex-1" LabelText="ค่าจ้างตรวจคันนี้ (บาท)" Text={costText} Placeholder="0.00" inputMode="decimal" onChange={setCost} onBlur={() => touch("cost")}
-              State={touched.cost && !c.cost ? "Error" : undefined} HelperText={touched.cost && !c.cost ? "กรุณาระบุค่าจ้างตรวจ" : undefined} />
+              State={touched.cost && !carCost(plan, c) ? "Error" : undefined}
+              HelperText={touched.cost && !carCost(plan, c) ? "กรุณาระบุค่าจ้างตรวจ" : differs ? "ต่างจากสัญญา (" + bahtText(plan.unitCost) + ") ต้องระบุเหตุผล" : "ตามสัญญา แก้ได้ถ้าจำเป็น"} />
           </div>
-          {cal && <div className="flex"><DatePicker Type="Single" {...TH_PICKER} max={toDate(TODAY)} today={toDate(TODAY)}
+          {differs && <TextArea LabelText="เหตุผลที่ค่าจ้างต่างจากสัญญา" Text={c.costReason ?? ""} Placeholder="เช่น ต้องใช้อุปกรณ์เสริม" onChange={(x) => updateResult(plan.mr, car, { costReason: x })}
+            onBlur={() => touch("costReason")} State={touched.costReason && !c.costReason?.trim() ? "Error" : undefined} HelperText={touched.costReason && !c.costReason?.trim() ? "กรุณาระบุเหตุผล" : undefined} />}
+          {c.date && !inRound(c.date) && <Alert Color="Warning" Text={"วันที่ตรวจอยู่นอกรอบตรวจของแผน (" + rangeText(plan.from, plan.to) + ")"} SupportingText="ส่งได้ แต่ กบค. จะเห็นคำเตือนนี้ตอนพิจารณา" />}
+          {cal && <div className="flex"><DatePicker Type="Single" {...TH_PICKER} min={toDate(minDate)} max={toDate(TODAY)} today={toDate(TODAY)}
             value={{ start: toDate(c.date ?? TODAY), end: toDate(c.date ?? TODAY) }} month={toDate(c.date ?? TODAY)}
             onCancel={() => { setCal(false); touch("date"); }} onApply={(r) => { if (r.start) updateResult(plan.mr, car, { date: toIso(r.start) }); setCal(false); touch("date"); }} /></div>}
           <div className="flex flex-col gap-2">

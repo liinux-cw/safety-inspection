@@ -14,7 +14,7 @@ import { InputDropdownWithBadges } from "@/components/vms/InputDropdownWithBadge
 import { TableHeader } from "@/components/vms/TableHeader";
 import { TablePagination } from "@/components/vms/TablePagination";
 import type { TableColumn } from "@/components/vms/Table";
-import { CYCLE_FILTERS, DUE_FILTERS, ORGS, VEHICLE_TYPES, dateText, dueBucket, dueSub, type Vehicle } from "@/lib/mock/data";
+import { CYCLE_FILTERS, DUE_FILTERS, ORGS, VEHICLE_TYPES, dateText, dueBucket, dueInRange, dueSub, rangeText, type Vehicle } from "@/lib/mock/data";
 
 const COLS: TableColumn[] = [
   { head: "ทะเบียน", width: 230 },
@@ -33,13 +33,16 @@ export function VehiclePicker({ open, ...p }: PickerProps & { open: boolean }) {
   if (!open) return null;
   return <Picker {...p} />;
 }
-interface PickerProps { pool: Vehicle[]; taken: Record<string, string>; onAdd: (ids: string[]) => void; onCancel: () => void }
+interface PickerProps { pool: Vehicle[]; taken: Record<string, string>; onAdd: (ids: string[]) => void; onCancel: () => void; /** รอบตรวจของแผน (YYYY-MM) — มีค่า = ตั้งตัวกรองครบกำหนดในรอบนี้ + เกินกำหนดให้ตั้งแต่เปิด */ from?: string; to?: string }
 
-function Picker({ pool, taken, onAdd, onCancel }: PickerProps) {
+function Picker({ pool, taken, onAdd, onCancel, from = "", to = "" }: PickerProps) {
   const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
   const [ticked, setTicked] = useState<string[]>([]);
-  const [f, setF] = useState<F>(NONE);
+  const hasRange = !!from && !!to;
+  const START: F = hasRange ? { ...NONE, due: ["ครบกำหนดในรอบนี้", "เกินกำหนด"] } : NONE;
+  const [f, setF] = useState<F>(START);
+  const dueMatch = (v: Vehicle) => f.due.some((x) => (x === "ครบกำหนดในรอบนี้" ? dueInRange(v.due, from, to) : dueBucket(v.due) === x));
   const [panel, setPanel] = useState(false);
   const [fd, setFd] = useState<F>(NONE);
   const [dd, setDd] = useState("");
@@ -51,7 +54,7 @@ function Picker({ pool, taken, onAdd, onCancel }: PickerProps) {
 
   const k = q.trim();
   const shown = pool.filter((v) => (!k || v.plate.includes(k) || v.code.includes(k) || v.org.includes(k))
-    && (!f.org.length || f.org.includes(v.org)) && (!f.due.length || f.due.includes(dueBucket(v.due)))
+    && (!f.org.length || f.org.includes(v.org)) && (!f.due.length || dueMatch(v))
     && (!f.cycle.length || f.cycle.includes(v.cycle + " เดือน")) && (!f.type.length || f.type.includes(v.type)));
   const last = Math.max(1, Math.ceil(shown.length / PER)), pg = Math.min(page, last);
   const nTaken = pool.filter((v) => taken[v.id]).length;
@@ -63,7 +66,8 @@ function Picker({ pool, taken, onAdd, onCancel }: PickerProps) {
       key: v.id, text: v.plate, sub: inPlan ?? v.code + " · " + v.type,
       mobileSub: [inPlan, v.org, "ครบกำหนด " + dateText(v.due)].filter(Boolean).join(" · "),
       disabled: !!taken[v.id],
-      cells: [v.org, { text: v.owner, sub: v.tel }, { text: v.status, sub: warn }, v.cycle + " เดือน", { text: dateText(v.due), sub: dueSub(v.due) }],
+      cells: [v.org, { text: v.owner, sub: v.tel }, { text: v.status, sub: warn }, v.cycle + " เดือน",
+        { text: dateText(v.due), sub: dueSub(v.due) + (dueInRange(v.due, from, to) ? " · ครบกำหนดในรอบนี้" : "") }],
     };
   });
 
@@ -81,7 +85,7 @@ function Picker({ pool, taken, onAdd, onCancel }: PickerProps) {
   return (
     <>
       <PopupModal open width={1140} title="เพิ่มยานพาหนะเข้าแผน"
-        sub={"แสดงเฉพาะยานพาหนะประเภท 09 ที่ต้องตรวจ ปจ.2" + (nTaken ? " · " + nTaken + " คันอยู่ในแผนอื่นที่ยังไม่ปิด เลือกไม่ได้" : "")}
+        sub={"แสดงเฉพาะยานพาหนะประเภท 09 ที่ต้องตรวจ ปจ.2" + (hasRange ? " · ตั้งตัวกรองให้: ครบกำหนดในรอบ " + rangeText(from, to) + " และเกินกำหนด" : "") + (nTaken ? " · " + nTaken + " คันอยู่ในแผนอื่นที่ยังไม่ปิด เลือกไม่ได้" : "")}
         ok={"เพิ่ม " + n + " คันเข้าแผน"} okDisabled={!n} onCancel={onCancel}
         onOk={() => onAdd(ticked.filter((id) => !taken[id]))}>
         {body}
@@ -91,7 +95,7 @@ function Picker({ pool, taken, onAdd, onCancel }: PickerProps) {
           <DropdownList>{ORGS.map((x) => <DropdownListItem key={x} Text={x} State={fd.org.includes(x) ? "Selected" : "Default"} onClick={() => flip("org", x)} />)}</DropdownList>
         </InputDropdownWithBadges>
         <InputDropdownWithBadges LabelText="ครบกำหนดตรวจ" Optional values={fd.due} Placeholder="ทั้งหมด" onRemove={drop("due")} open={dd === "due"} onOpenChange={ddOpen("due")}>
-          <DropdownList>{DUE_FILTERS.map((x) => <DropdownListItem key={x} Text={x} State={fd.due.includes(x) ? "Selected" : "Default"} onClick={() => flip("due", x)} />)}</DropdownList>
+          <DropdownList>{DUE_FILTERS.filter((x) => hasRange || x !== "ครบกำหนดในรอบนี้").map((x) => <DropdownListItem key={x} Text={x} State={fd.due.includes(x) ? "Selected" : "Default"} onClick={() => flip("due", x)} />)}</DropdownList>
         </InputDropdownWithBadges>
         <InputDropdownWithBadges LabelText="วาระ" Optional values={fd.cycle} Placeholder="ทั้งหมด" onRemove={drop("cycle")} open={dd === "cycle"} onOpenChange={ddOpen("cycle")}>
           <DropdownList>{CYCLE_FILTERS.map((x) => <DropdownListItem key={x} Text={x} State={fd.cycle.includes(x) ? "Selected" : "Default"} onClick={() => flip("cycle", x)} />)}</DropdownList>

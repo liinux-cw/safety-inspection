@@ -3,7 +3,7 @@
 import { DisplayBox } from "@/components/patterns/DisplayBox";
 import { PillOutline } from "@/components/vms/PillOutline";
 import { STATUS_TEXT, VENDOR_BY_ID, bahtText, rangeText, type Plan } from "@/lib/mock/data";
-import { costTotal } from "@/lib/mock/plan";
+import { budget, costTotal } from "@/lib/mock/plan";
 import { useMock } from "@/lib/mock/store";
 
 export function PlanInfo({ plan }: { plan: Plan }) {
@@ -19,6 +19,8 @@ export function PlanInfo({ plan }: { plan: Plan }) {
       ["เบอร์โทรผู้รับจ้าง", plan.vendorTel || "-"],
       ["เลขที่สัญญา/ใบสั่งจ้าง", plan.contract || "-"],
       ["จำนวนยานพาหนะ", plan.cars.length + " คัน"],
+      ["ค่าจ้างตรวจต่อคัน (สัญญา)", bahtText(plan.unitCost)],
+      ["งบรวมตามสัญญา", bahtText(budget(plan))],
       ["ค่าจ้างตรวจรวม (ที่ส่งแล้ว)", bahtText(costTotal(mock, plan))],
       ["สถานะแผน", <PillOutline key="s" Text={STATUS_TEXT[plan.status][0]} Color={STATUS_TEXT[plan.status][1]} />],
     ]} />
