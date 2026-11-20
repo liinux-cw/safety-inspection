@@ -96,11 +96,11 @@ export type DocState = "none" | "draft" | "ready" | "sent" | "approved" | "retur
 export const docState = (c: CarDocs, p?: Plan, car?: string): DocState =>
   c.approvedAt ? "approved" : c.sentAt ? "sent" : c.returnReason ? "returned" : !touchedAny(c) ? "none" : missing(c, p, car).length ? "draft" : "ready";
 export const DOC_TEXT: Record<DocState, [string, "Gray" | "Warning" | "Success" | "Info" | "Error" | "Brand"]> = {
-  none: ["ยังไม่บันทึกผล", "Gray"],
-  draft: ["กรอกยังไม่ครบ", "Warning"],
-  ready: ["พร้อมส่ง", "Brand"],
-  sent: ["รอ กบค. อนุมัติ", "Info"],
-  approved: ["อนุมัติแล้ว", "Success"],
+  none: ["รอดำเนินการ", "Gray"],
+  draft: ["กำลังดำเนินการ", "Info"],
+  ready: ["กำลังดำเนินการ", "Info"],
+  sent: ["รออนุมัติ", "Warning"],
+  approved: ["เสร็จสิ้น", "Success"],
   returned: ["ส่งกลับแก้ไข", "Error"],
 };
 const countOf = (s: MockState, p: Plan, st: DocState) => p.cars.filter((c) => docState(carDocs(s, p.mr, c), p, c) === st).length;
