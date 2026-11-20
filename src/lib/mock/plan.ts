@@ -10,7 +10,7 @@ export const draftOf = (p: Plan): Draft => ({ name: p.name, fy: p.fy, from: p.fr
 /** แก้ไข/ลบได้เฉพาะแผนที่ยังไม่อนุมัติ (รออนุมัติ · ส่งกลับแก้ไข) */
 export const editable = (p: Plan) => p.status === "review" || p.status === "returned";
 /** ผู้รับจ้างเห็นแผนหลังหัวหน้า กบค. อนุมัติแล้ว (เจ้าของงาน 20 พ.ย. 2569) */
-export const vendorSees = (p: Plan) => p.status === "approved" || p.status === "closing" || p.status === "closed";
+export const vendorSees = (p: Plan) => p.status === "approved" || p.status === "closing" || p.status === "closeReview" || p.status === "closed";
 /** ผู้รับจ้างบันทึก/ส่งผลได้เมื่อแผนอนุมัติแล้วและยังไม่ขอปิดงาน */
 export const vendorCanWork = (p: Plan) => p.status === "approved";
 /** คันที่ผู้รับจ้างเริ่มกรอกผลแล้ว — เอาออกจากแผนไม่ได้ */
@@ -58,16 +58,16 @@ export const approvePlans = (mrs: string[], head: string) =>
   setMock((x) => ({ ...x, plans: x.plans.map((p) => (mrs.includes(p.mr) && p.status === "review" ? { ...p, status: "approved", approvedBy: head, approvedAt: TODAY, returnReason: undefined } : p)) }));
 /** ส่งกลับแก้ไขแผน (ต้องมีเหตุผล) → กบค. แก้แล้วส่งใหม่ */
 export const returnPlan = (mr: string, reason: string) => setPlan(mr, (p) => (p.status === "review" ? { ...p, status: "returned", returnReason: reason } : p));
-/** เงื่อนไขขอปิดงาน: มียานพาหนะ และผลตรวจอนุมัติครบทุกคัน */
-export const canClose = (s: MockState, p: Plan) => p.status === "approved" && p.cars.length > 0 && approvedCount(s, p) === p.cars.length;
-/** กบค. ขอปิดงาน → หัวหน้า กบค. ที่เลือก */
-export const requestClose = (mr: string, head: string, note: string) =>
-  setPlan(mr, (p) => ({ ...p, status: "closing", closeApprover: head, closeNote: note || undefined, closeRequestedAt: TODAY, closeReturnReason: undefined }));
-/** อนุมัติปิดงาน (หลายแผนพร้อมกันได้) */
-export const approveClose = (mrs: string[]) =>
-  setMock((x) => ({ ...x, plans: x.plans.map((p) => (mrs.includes(p.mr) && p.status === "closing" ? { ...p, status: "closed", closedAt: TODAY } : p)) }));
-/** ไม่อนุมัติปิดงาน → แผนกลับเป็นอนุมัติแล้ว พร้อมเหตุผล */
-export const returnClose = (mr: string, reason: string) => setPlan(mr, (p) => (p.status === "closing" ? { ...p, status: "approved", closeReturnReason: reason } : p));
+/** กบค. ขออนุมัติปิดงานได้เมื่อผู้รับจ้างขอปิดงานแล้ว และผลตรวจอนุมัติครบทุกคัน */
+export const canClose = (s: MockState, p: Plan) => p.status === "closing" && p.cars.length > 0 && approvedCount(s, p) === p.cars.length;
+/** กบค. ขออนุมัติปิดงาน → หัวหน้า กบค. ที่เลือก */
+export const kbkRequestClose = (mr: string, head: string, note: string) =>
+  setPlan(mr, (p) => (p.status === "closing" ? { ...p, status: "closeReview", closeApprover: head, closeNote: note || undefined, closeRequestedAt: TODAY, headReturnReason: undefined } : p));
+/** หัวหน้า กบค. อนุมัติปิดงาน (หลายแผนพร้อมกันได้) */
+export const headApproveClose = (mrs: string[]) =>
+  setMock((x) => ({ ...x, plans: x.plans.map((p) => (mrs.includes(p.mr) && p.status === "closeReview" ? { ...p, status: "closed", closedAt: TODAY } : p)) }));
+/** หัวหน้า กบค. ไม่อนุมัติปิดงาน → กลับไปให้ กบค. ตรวจสอบ (สถานะผู้รับจ้างขอปิดงาน) พร้อมเหตุผล */
+export const headReturnClose = (mr: string, reason: string) => setPlan(mr, (p) => (p.status === "closeReview" ? { ...p, status: "closing", headReturnReason: reason } : p));
 /** สรุปผลตรวจของแผน */
 export function resultSummary(s: MockState, p: Plan) {
   const out = { ผ่าน: 0, ไม่ผ่าน: 0, ระงับ: 0, ตรวจไม่ได้: 0 } as Record<string, number>;
@@ -87,8 +87,8 @@ export const vendorCanEdit = (c: CarDocs) => !c.sentAt && !c.approvedAt;
 const putCar = (mr: string, car: string, fn: (c: CarDocs) => CarDocs) => setCar(mr, car, (c) => (vendorCanEdit(c) ? fn(c) : c));
 export const addFiles = (mr: string, car: string, files: DocFile[]) => putCar(mr, car, (c) => ({ ...c, files: [...c.files, ...files] }));
 export const removeFile = (mr: string, car: string, i: number) => putCar(mr, car, (c) => ({ ...c, files: c.files.filter((_, j) => j !== i) }));
-/** ผู้รับจ้างกรอกผลการตรวจ (วันที่ ค่าจ้าง ผล เหตุผล) */
-export const updateResult = (mr: string, car: string, patch: Partial<Pick<CarDocs, "date" | "cost" | "costReason" | "result" | "reason">>) => putCar(mr, car, (c) => ({ ...c, ...patch }));
+/** ผู้รับจ้างกรอกผลการตรวจ (วันที่ ค่าจ้าง ผล เหตุผล เอกสาร) */
+export const updateResult = (mr: string, car: string, patch: Partial<Pick<CarDocs, "date" | "cost" | "costReason" | "result" | "reason" | "files">>) => putCar(mr, car, (c) => ({ ...c, ...patch }));
 /** ข้อที่ยังขาดก่อนส่งได้ (ว่าง = ครบ) · p = แผน (ค่าจ้างตามสัญญา) */
 export function missing(c: CarDocs, p?: Plan, car?: string): string[] {
   const m: string[] = [];
@@ -117,11 +117,11 @@ export type DocState = "none" | "draft" | "ready" | "sent" | "approved" | "retur
 export const docState = (c: CarDocs, p?: Plan, car?: string): DocState =>
   c.approvedAt ? "approved" : c.sentAt ? "sent" : c.returnReason ? "returned" : !touchedAny(c) ? "none" : missing(c, p, car).length ? "draft" : "ready";
 export const DOC_TEXT: Record<DocState, [string, "Gray" | "Warning" | "Success" | "Info" | "Error" | "Brand"]> = {
-  none: ["ยังไม่บันทึกผล", "Gray"],
-  draft: ["กรอกยังไม่ครบ", "Warning"],
-  ready: ["พร้อมส่ง", "Brand"],
-  sent: ["รอ กบค. อนุมัติ", "Info"],
-  approved: ["อนุมัติแล้ว", "Success"],
+  none: ["รอดำเนินการ", "Gray"],
+  draft: ["กำลังดำเนินการ", "Info"],
+  ready: ["กำลังดำเนินการ", "Info"],
+  sent: ["รออนุมัติ", "Warning"],
+  approved: ["เสร็จสิ้น", "Success"],
   returned: ["ส่งกลับแก้ไข", "Error"],
 };
 const countOf = (s: MockState, p: Plan, st: DocState) => p.cars.filter((c) => docState(carDocs(s, p.mr, c), p, c) === st).length;
@@ -129,6 +129,12 @@ const countOf = (s: MockState, p: Plan, st: DocState) => p.cars.filter((c) => do
 export const approvedCount = (s: MockState, p: Plan) => countOf(s, p, "approved");
 /** จำนวนคันที่รอ กบค. อนุมัติ */
 export const pendingCount = (s: MockState, p: Plan) => countOf(s, p, "sent");
+/** ทุกคันในแผน กบค. อนุมัติผลแล้ว → ผู้รับจ้างส่งอนุมัติปิดงานได้ */
+export const allApproved = (s: MockState, p: Plan) => p.cars.length > 0 && approvedCount(s, p) === p.cars.length;
+/** ผู้รับจ้างส่งอนุมัติปิดงาน */
+export const requestClose = (mr: string) => setPlan(mr, (p) => (p.status === "approved" ? { ...p, status: "closing", closeReturnReason: undefined } : p));
+/** กบค. ส่งกลับคำขอปิดงานของผู้รับจ้าง → ผู้รับจ้างแก้แล้วขอปิดใหม่ */
+export const returnClose = (mr: string, reason: string) => setPlan(mr, (p) => (p.status === "closing" ? { ...p, status: "approved", closeReturnReason: reason } : p));
 export const returnedCount = (s: MockState, p: Plan) => countOf(s, p, "returned");
 /** ค่าจ้างตรวจรวมของคันที่ส่งแล้ว/อนุมัติแล้ว */
 export const costTotal = (s: MockState, p: Plan) => p.cars.reduce((a, c) => { const d = carDocs(s, p.mr, c); return a + (d.sentAt || d.approvedAt ? carCost(p, d, c) : 0); }, 0);

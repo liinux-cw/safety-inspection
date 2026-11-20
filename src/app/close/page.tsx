@@ -1,6 +1,7 @@
 "use client";
 /* กบค. · สรุปปิดงานแผน — /close/?mr= (จากปุ่ม "สรุปปิดงาน" ในหน้ารายละเอียดแผน)
    เงื่อนไข: ผลตรวจอนุมัติครบทุกคัน · สรุปผ่าน/ไม่ผ่าน/ระงับ/ตรวจไม่ได้ + ค่าจ้างรวมเทียบงบ · ผลรายคัน
+   ขั้น 2 ของการปิดงาน: ผู้รับจ้างขอปิดงานแล้ว (closing) → กบค. ขออนุมัติปิดงาน → หัวหน้า กบค.
    "ขออนุมัติปิดงาน" → popup เลือกหัวหน้า กบค. ผู้อนุมัติ (เลือกใหม่ได้ ไม่ต้องเป็นคนที่อนุมัติแผน · รายชื่อเฉพาะหัวหน้า กบค.) + หมายเหตุ (ถ้ามี) */
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -22,7 +23,7 @@ import { SectionHeader } from "@/components/vms/SectionHeader";
 import { TextArea } from "@/components/vms/TextArea";
 import { cx } from "@/lib/cx";
 import { HEADS, HEAD_BY_ID } from "@/lib/mock/data";
-import { approvedCount, canClose, requestClose } from "@/lib/mock/plan";
+import { approvedCount, canClose, kbkRequestClose } from "@/lib/mock/plan";
 import { notify, useHydrated, useMock, useQuery } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 
@@ -49,7 +50,8 @@ export default function ClosePlan() {
               crumbs={[{ Text: "Safety Inspection" }, { Text: "แผนตรวจ ปจ.2", href: "/" }, { Text: plan.mr, href: "/detail/?mr=" + plan.mr }, { Text: "สรุปปิดงาน" }]} />
             <div className="flex flex-col gap-8">
               <PlanStatusAlert plan={plan} />
-              {plan.status === "approved" && (ready
+              {plan.status === "approved" && <Alert Color="Gray" Text="รอผู้รับจ้างขอปิดงาน" SupportingText="ขออนุมัติปิดงานได้หลังผู้รับจ้างส่งอนุมัติปิดงาน และผลตรวจอนุมัติครบทุกคัน" />}
+              {plan.status === "closing" && (ready
                 ? <Alert Color="Success" Text="พร้อมขออนุมัติปิดงาน" SupportingText="ผลตรวจของยานพาหนะทุกคันได้รับอนุมัติแล้ว" />
                 : <Alert Color="Warning" Text={"ยังขอปิดงานไม่ได้ · ผลอนุมัติแล้ว " + done + "/" + plan.cars.length + " คัน"} SupportingText="ต้องอนุมัติผลตรวจของยานพาหนะครบทุกคันก่อน" />)}
               <CloseSummary plan={plan} />
@@ -59,12 +61,12 @@ export default function ClosePlan() {
               </section>
               <div className={cx("flex", mob ? "gap-4 [&>*]:flex-1 [&>*]:basis-0" : "justify-between gap-3")}>
                 <SecondaryButton Text="ย้อนกลับ" Size="lg" onClick={back} />
-                {plan.status === "approved" && <PrimaryButton Text="ขออนุมัติปิดงาน" Size="lg" State={ready ? "Default" : "Disabled"} onClick={() => ready && setOpen(true)} />}
+                {plan.status === "closing" && <PrimaryButton Text="ขออนุมัติปิดงาน" Size="lg" State={ready ? "Default" : "Disabled"} onClick={() => ready && setOpen(true)} />}
               </div>
             </div>
             <PopupModal open={open} title="ขออนุมัติปิดงาน" sub={plan.mr + " · " + plan.name} ok="ส่งขออนุมัติ" okDisabled={!approver}
               onCancel={() => setOpen(false)}
-              onOk={() => { requestClose(plan.mr, approver, note.trim()); setOpen(false); notify("ส่งขออนุมัติปิดงานถึง " + HEAD_BY_ID[approver].name + " แล้ว"); back(); }}>
+              onOk={() => { kbkRequestClose(plan.mr, approver, note.trim()); setOpen(false); notify("ส่งขออนุมัติปิดงานถึง " + HEAD_BY_ID[approver].name + " แล้ว"); back(); }}>
               <div className="flex flex-col gap-4">
                 <InputDropdown LabelText="ผู้อนุมัติปิดงาน" Text={approver ? HEAD_BY_ID[approver].name : ""} Placeholder="เลือกหัวหน้า กบค." open={dd} onOpenChange={setDd}
                   HelperText="เฉพาะหัวหน้า กบค. ที่มีสิทธิ์อนุมัติ · ไม่จำเป็นต้องเป็นคนเดียวกับที่อนุมัติแผน">

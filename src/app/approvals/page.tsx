@@ -20,7 +20,7 @@ import { TableHeader } from "@/components/vms/TableHeader";
 import { TablePagination } from "@/components/vms/TablePagination";
 import { Tabs } from "@/components/vms/Tabs";
 import { STATUS_TEXT, VENDOR_BY_ID, bahtText, dateText, rangeText, type Plan } from "@/lib/mock/data";
-import { approveClose, approvePlans, budget } from "@/lib/mock/plan";
+import { approvePlans, headApproveClose, budget } from "@/lib/mock/plan";
 import { headOf, notify, useMock, useRole } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 
@@ -52,7 +52,7 @@ export default function Approvals() {
 
   const lists: Record<Tab, Plan[]> = {
     plan: mock.plans.filter((p) => p.status === "review"),
-    close: mock.plans.filter((p) => p.status === "closing" && p.closeApprover === me),
+    close: mock.plans.filter((p) => p.status === "closeReview" && p.closeApprover === me),
     done: mock.plans.filter((p) => p.approvedBy === me || (p.status === "closed" && p.closeApprover === me)),
   };
   const q = query.trim();
@@ -72,7 +72,7 @@ export default function Approvals() {
     if (!me) return;
     const label = one ? one + " " : targets.length + " แผน";
     if (tab === "plan") { approvePlans(targets, me); notify("อนุมัติแผน " + label + "แล้ว · ผู้รับจ้างเห็นแผนแล้ว"); }
-    else { approveClose(targets); notify("อนุมัติปิดงาน " + label + "แล้ว"); }
+    else { headApproveClose(targets); notify("อนุมัติปิดงาน " + label + "แล้ว"); }
     setTicked(ticked.filter((x) => !targets.includes(x))); setOne(null);
   };
   const approveOne = (p: Plan) => ({ IconSwap: "check_circle-24-300-round", label: (tab === "plan" ? "อนุมัติแผน " : "อนุมัติปิดงาน ") + p.mr, onClick: () => { setOne(p.mr); setAsk(true); } });

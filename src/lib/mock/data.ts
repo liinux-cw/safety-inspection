@@ -134,13 +134,15 @@ export const VENDOR_BY_ID: Record<string, Vendor> = Object.fromEntries(VENDORS.m
 
 /* ---------- แผน ---------- */
 /** review = รออนุมัติ · returned = ส่งกลับแก้ไข · approved = อนุมัติแล้ว (ผู้รับจ้างเห็น) · closed = ปิดงานแล้ว */
-/** review = รอหัวหน้า กบค. อนุมัติ · returned = ส่งกลับแก้ไข · approved = อนุมัติแล้ว (ผู้รับจ้างเห็น) · closing = รออนุมัติปิดงาน · closed = ปิดงานแล้ว */
-export type PlanStatus = "review" | "returned" | "approved" | "closing" | "closed";
+/** ปิดงาน 3 ขั้น (เจ้าของงาน 20 พ.ย. 2569): ผู้รับจ้างขอปิด (closing) → กบค. ขออนุมัติปิดงาน (closeReview) → หัวหน้า กบค. อนุมัติ (closed)
+    review = รอหัวหน้า กบค. อนุมัติแผน · returned = ส่งกลับแก้ไข · approved = อนุมัติแล้ว (ผู้รับจ้างเห็น) */
+export type PlanStatus = "review" | "returned" | "approved" | "closing" | "closeReview" | "closed";
 export const STATUS_TEXT: Record<PlanStatus, [string, "Warning" | "Error" | "Info" | "Gray" | "Purple"]> = {
   review: ["รออนุมัติ", "Warning"],
   returned: ["ส่งกลับแก้ไข", "Error"],
   approved: ["อนุมัติแล้ว", "Info"],
-  closing: ["รออนุมัติปิดงาน", "Purple"],
+  closing: ["ผู้รับจ้างขอปิดงาน", "Warning"],
+  closeReview: ["รออนุมัติปิดงาน", "Purple"],
   closed: ["ปิดงานแล้ว", "Gray"],
 };
 export interface Plan {
@@ -169,8 +171,10 @@ export interface Plan {
   closeApprover?: string;
   closeNote?: string;
   closeRequestedAt?: string;
-  /** หัวหน้า กบค. ไม่อนุมัติปิดงาน: เหตุผล (แผนกลับเป็นอนุมัติแล้ว) */
+  /** กบค. ส่งกลับคำขอปิดงานของผู้รับจ้าง: เหตุผล (แผนกลับเป็นอนุมัติแล้ว) */
   closeReturnReason?: string;
+  /** หัวหน้า กบค. ไม่อนุมัติปิดงาน: เหตุผล (กลับไปให้ กบค. ตรวจสอบ) */
+  headReturnReason?: string;
   closedAt?: string;
 }
 
@@ -179,7 +183,7 @@ export const PLANS: Plan[] = [
   { mr: "MRZ7000011", name: "ตรวจ ปจ.2 ภาคตะวันออก รอบ ม.ค. – มี.ค. 2570", fy: "2570", from: "2027-01", to: "2027-03", vendor: "ven2", vendorTel: "02-555-0202", contract: "", costs: { v21: 8500, v22: 9200 }, cars: ["v21", "v22"], status: "approved", approvedBy: "head2", approvedAt: "2026-11-12" },
   { mr: "MRZ7000012", name: "ตรวจ ปจ.2 กระเช้าฮอทไลน์ ก.พ. 2570", fy: "2570", from: "2027-02", to: "2027-02", vendor: "ven1", vendorTel: "02-555-0101", contract: "", costs: { v24: 9000 }, cars: ["v24"], status: "review", submittedAt: "2026-11-18" },
   { mr: "MRZ7000008", name: "ตรวจ ปจ.2 เครน ภาคใต้ มี.ค. 2570", fy: "2570", from: "2027-03", to: "2027-03", vendor: "ven3", vendorTel: "02-555-0303", contract: "", costs: { v09: 9800 }, cars: ["v09"], status: "review", submittedAt: "2026-11-19" },
-  { mr: "MRZ7000009", name: "ตรวจ ปจ.2 หลัง Overhaul รอบ ม.ค. 2570", fy: "2570", from: "2027-01", to: "2027-01", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0098", costs: { v16: 12000 }, cars: ["v16"], status: "approved", approvedBy: "head1", approvedAt: "2026-11-05" },
+  { mr: "MRZ7000009", name: "ตรวจ ปจ.2 หลัง Overhaul รอบ ม.ค. 2570", fy: "2570", from: "2027-01", to: "2027-01", vendor: "ven1", vendorTel: "02-555-0101", contract: "PO-2570-0098", costs: { v16: 12000 }, cars: ["v16"], status: "closing", approvedBy: "head1", approvedAt: "2026-11-05" },
   { mr: "MRZ6900020", name: "ตรวจ ปจ.2 รอบ ก.ค. – ก.ย. 2569", fy: "2569", from: "2026-07", to: "2026-09", vendor: "ven1", vendorTel: "02-555-0101", contract: "", costs: {  }, cars: [], status: "closed" },
 ];
 

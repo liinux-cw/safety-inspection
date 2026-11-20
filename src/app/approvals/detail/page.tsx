@@ -23,7 +23,7 @@ import { Table, type TableColumn, type TableValue } from "@/components/vms/Table
 import { TextArea } from "@/components/vms/TextArea";
 import { cx } from "@/lib/cx";
 import { VEHICLE_BY_ID, bahtText, dateText, dueSub } from "@/lib/mock/data";
-import { approveClose, approvePlans, budget, contractCost, returnClose, returnPlan } from "@/lib/mock/plan";
+import { approvePlans, budget, contractCost, headApproveClose, headReturnClose, returnPlan } from "@/lib/mock/plan";
 import { headOf, notify, useHydrated, useMock, useQuery, useRole } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 
@@ -47,17 +47,17 @@ export default function ApprovalDetail() {
   const [reason, setReason] = useState("");
   const [touched, setTouched] = useState(false);
 
-  const isClose = plan?.status === "closing";
+  const isClose = plan?.status === "closeReview";
   const canAct = !!plan && !!me && (plan.status === "review" || (isClose && plan.closeApprover === me));
   const ok = decision === "approve" || (decision === "return" && !!reason.trim());
   const back = () => router.push("/approvals/");
   const confirm = () => {
     if (!plan || !me || !ok) return;
     if (decision === "approve") {
-      if (isClose) { approveClose([plan.mr]); notify("อนุมัติปิดงาน " + plan.mr + " แล้ว"); }
+      if (isClose) { headApproveClose([plan.mr]); notify("อนุมัติปิดงาน " + plan.mr + " แล้ว"); }
       else { approvePlans([plan.mr], me); notify("อนุมัติแผน " + plan.mr + " แล้ว · ผู้รับจ้างเห็นแผนแล้ว"); }
     } else {
-      if (isClose) { returnClose(plan.mr, reason.trim()); notify("ส่งคำขอปิดงาน " + plan.mr + " กลับให้ กบค. แล้ว"); }
+      if (isClose) { headReturnClose(plan.mr, reason.trim()); notify("ส่งคำขอปิดงาน " + plan.mr + " กลับให้ กบค. แล้ว"); }
       else { returnPlan(plan.mr, reason.trim()); notify("ส่งแผน " + plan.mr + " กลับให้ กบค. แก้ไขแล้ว"); }
     }
     back();
@@ -81,7 +81,7 @@ export default function ApprovalDetail() {
                 <SectionLabel Title="ผลการพิจารณา" />
                 <RadioTextCards options={[
                   { Text: "อนุมัติ", SupportingText: isClose ? "ปิดงานแผนนี้ แก้ไขไม่ได้อีก" : "ผู้รับจ้างเห็นแผนและเริ่มบันทึกผลตรวจได้" },
-                  { Text: "ส่งกลับแก้ไข", SupportingText: isClose ? "แผนกลับไปให้ กบค. ตรวจสอบแล้วขอปิดงานใหม่" : "กบค. แก้ไขแผนแล้วส่งอนุมัติใหม่" },
+                  { Text: "ส่งกลับแก้ไข", SupportingText: isClose ? "กลับไปให้ กบค. ตรวจสอบแล้วขออนุมัติปิดงานใหม่" : "กบค. แก้ไขแผนแล้วส่งอนุมัติใหม่" },
                 ]} value={decision === "approve" ? "อนุมัติ" : decision === "return" ? "ส่งกลับแก้ไข" : null}
                   onChange={(x) => { setDecision(x === "อนุมัติ" ? "approve" : "return"); setTouched(false); }} />
                 {decision === "return" && <TextArea LabelText="เหตุผลที่ส่งกลับ" Text={reason} Placeholder="ระบุเหตุผลที่ส่งกลับ" onChange={setReason} onBlur={() => setTouched(true)}

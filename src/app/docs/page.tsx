@@ -1,6 +1,6 @@
 "use client";
 /* ผู้รับจ้าง · เมนู Safety Inspection > เอกสาร ปจ.2 — /docs/
-   รายการแผนที่ระบุผู้รับจ้างรายนี้ เห็นหลังหัวหน้า กบค. อนุมัติแผน · เปิดแผนเพื่อแนบเอกสาร ปจ.2 รายคันแล้วส่งให้ กบค. อนุมัติ */
+   รายการแผนที่ระบุผู้รับจ้างรายนี้ เห็นทันทีหลัง กบค. สร้างแผน · เปิดแผนเพื่อแนบเอกสาร ปจ.2 รายคันแล้วส่งให้ กบค. อนุมัติ */
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { RoleGate } from "@/app/_lib/RoleGate";
@@ -42,7 +42,10 @@ export default function VendorPlans() {
   const data: TableValue[][] = list.slice((page - 1) * PER, page * PER).map((p) => {
     const ok = approvedCount(mock, p), ret = returnedCount(mock, p), pend = pendingCount(mock, p), draft = readyCars(mock, p).length - ret;
     const st: [string, "Success" | "Warning" | "Info" | "Gray" | "Error"] = p.status === "closed" ? ["ปิดงานแล้ว", "Gray"]
-      : ret ? ["มีเอกสารที่ถูกส่งกลับแก้ไข", "Error"] : ok === p.cars.length ? ["อนุมัติครบแล้ว", "Success"]
+      : (p.status === "closing" || p.status === "closeReview") ? ["รออนุมัติปิดงาน", "Warning"]
+      : p.status !== "approved" ? ["รอแผนอนุมัติ", "Gray"]
+      : p.closeReturnReason ? ["คำขอปิดงานถูกส่งกลับ", "Error"]
+      : ret ? ["มีเอกสารที่ถูกส่งกลับแก้ไข", "Error"] : ok === p.cars.length ? ["พร้อมส่งปิดงาน", "Success"]
       : draft ? ["มีเอกสารยังไม่ส่ง", "Warning"] : pend ? ["รอ กบค. อนุมัติ", "Info"] : ["รอแนบเอกสาร", "Gray"];
     const open = { IconSwap: "quick_reference_all-24-300-round", label: "เปิดแผน " + p.mr, onClick: () => router.push("/docs/plan/?mr=" + p.mr) };
     return [p.mr, p.name, rangeText(p.from, p.to), p.cars.length + " คัน", ok + "/" + p.cars.length + " คัน", { pills: [st] }, { actions: [open], mobileActions: [open] }];
@@ -51,8 +54,8 @@ export default function VendorPlans() {
   return (
     <AppFrame>
       <RoleGate vendor>
-        <PageHeader Title="เอกสาร ปจ.2" SupportingText="แผนตรวจ ปจ.2 ที่คุณเป็นผู้รับจ้าง แนบเอกสารรายคันแล้วส่งอนุมัติ" crumbs={[{ Text: "Safety Inspection" }, { Text: "เอกสาร ปจ.2" }]} />
-        {!mine.length ? <EmptyStateDataEmpty Text="ยังไม่มีแผนที่ต้องส่งเอกสาร" SupportingText="เมื่อแผนที่ระบุคุณเป็นผู้รับจ้างได้รับอนุมัติ แผนจะแสดงที่นี่" /> : (
+        <PageHeader Title="เอกสาร ปจ.2" SupportingText="แผนตรวจ ปจ.2 ที่คุณเป็นผู้รับจ้าง แนบเอกสารรายคันแล้วส่งอนุมัติ" crumbs={[{ Text: "งานซ่อมและบำรุงรักษา" }, { Text: "เอกสาร ปจ.2" }]} />
+        {!mine.length ? <EmptyStateDataEmpty Text="ยังไม่มีแผนที่ต้องส่งเอกสาร" SupportingText="เมื่อ กบค. สร้างแผนที่ระบุคุณเป็นผู้รับจ้าง แผนจะแสดงที่นี่" /> : (
           <section className="flex flex-col gap-6">
             <TableHeader Placeholder="ค้นหาเลขที่ MR, ชื่อแผน" query={query} onQuery={(v) => { setQuery(v); setPage(1); }} FilterButton={false} />
             {!list.length ? <EmptyStateSearchNotFound Actions={<SecondaryButton Text="ล้างตัวกรอง" Size={mob ? "lg" : "md"} onClick={() => { setQuery(""); setPage(1); }} />} /> : mob ? (

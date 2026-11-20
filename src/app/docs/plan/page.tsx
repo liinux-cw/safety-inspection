@@ -1,7 +1,7 @@
 "use client";
 /* ผู้รับจ้าง · แผนตรวจ ปจ.2 — /docs/plan/?mr=
-   แนบเอกสาร ปจ.2 รายคัน (PDF/PNG/JPG · ไฟล์ละไม่เกิน 10 MB · สูงสุด 10 ไฟล์ต่อคัน) → "ส่งอนุมัติ (n คัน)" ส่งทุกคันที่แนบแล้วและยังไม่ส่ง
-   ยืนยันแล้ว = ล็อก รอ กบค. อนุมัติ · กบค. ส่งกลับแก้ไข = แก้ไฟล์แล้วส่งใหม่ได้ · อนุมัติแล้ว = ล็อกถาวร · เห็นเฉพาะแผนของตัวเอง (ตั้งแต่สร้างแผน) */
+   บันทึกและส่งอนุมัติผลตรวจรายคันใน popup ของแต่ละคัน · ส่งแล้ว = ล็อก รอ กบค. อนุมัติ · กบค. ส่งกลับแก้ไข = แก้แล้วส่งใหม่ได้ · อนุมัติแล้ว = ล็อกถาวร
+   ทุกคันเสร็จสิ้น (กบค. อนุมัติครบ) → "ส่งอนุมัติปิดงาน" → กบค. อนุมัติปิดงาน หรือส่งกลับ · เห็นเฉพาะแผนของตัวเอง (ตั้งแต่สร้างแผน) */
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { DocsTable } from "@/app/_lib/DocsTable";
@@ -16,8 +16,7 @@ import { PrimaryButton } from "@/components/vms/PrimaryButton";
 import { SecondaryButton } from "@/components/vms/SecondaryButton";
 import { SectionHeader } from "@/components/vms/SectionHeader";
 import { cx } from "@/lib/cx";
-import { UPLOAD_HINT } from "@/lib/mock/data";
-import { addFiles, approvedCount, carDocs, missing, readyCars, removeFile, returnedCount, submitDocs, updateResult, vendorCanEdit, vendorCanWork, vendorSees } from "@/lib/mock/plan";
+import { addFiles, allApproved, approvedCount, carDocs, missing, removeFile, requestClose, returnedCount, updateResult, vendorCanEdit, vendorCanWork, vendorSees } from "@/lib/mock/plan";
 import { TODAY, VEHICLE_BY_ID } from "@/lib/mock/data";
 import { useProtoForm } from "@/lib/protoForm";
 import { notify, useHydrated, useMock, useQuery, useRole, vendorOf } from "@/lib/mock/store";
@@ -32,9 +31,10 @@ export default function VendorPlan() {
   const hydrated = useHydrated();
   const [ask, setAsk] = useState(false);
   const plan = mock.plans.find((p) => p.mr === mr && p.vendor === vendor && vendorSees(p));
-  const ready = plan ? readyCars(mock, plan) : [];
-  /* ผู้รับจ้างบันทึก/ส่งผลได้เมื่อแผนอนุมัติแล้ว จนกว่า กบค. ขอปิดงาน */
+  const done = !!plan && allApproved(mock, plan);
+  /* A: ผู้รับจ้างเห็นแผนทันที แต่บันทึก/ส่งผลได้เมื่อแผนอนุมัติแล้ว */
   const open = !!plan && vendorCanWork(plan);
+  const waiting = !!plan && (plan.status === "review" || plan.status === "returned");
   /* ต้นแบบ: กรอกข้อมูลตัวอย่าง = กรอกผลผ่าน + ค่าจ้าง + ไฟล์ตัวอย่างให้ทุกคันที่ยังแก้ได้และยังไม่ครบ · ล้างค่า = ล้างผลและไฟล์ของคันที่ยังแก้ได้ */
   const editableCars = plan && open ? plan.cars.filter((c) => vendorCanEdit(carDocs(mock, plan.mr, c))) : [];
   useProtoForm(plan && open ? {
@@ -53,16 +53,18 @@ export default function VendorPlan() {
   return (
     <AppFrame>
       <RoleGate vendor>
-        {!hydrated ? null : !plan ? <EmptyStateDataEmpty Text="ไม่พบแผนนี้" SupportingText="แผนนี้ไม่ได้ระบุคุณเป็นผู้รับจ้าง ยังไม่ได้รับอนุมัติ หรือถูกลบไปแล้ว" /> : <>
+        {!hydrated ? null : !plan ? <EmptyStateDataEmpty Text="ไม่พบแผนนี้" SupportingText="แผนนี้ไม่ได้ระบุคุณเป็นผู้รับจ้าง หรือถูกลบไปแล้ว" /> : <>
           <PageHeader Title={plan.name} SupportingText={plan.mr} onBack={() => router.push("/docs/")}
-            crumbs={[{ Text: "Safety Inspection" }, { Text: "เอกสาร ปจ.2", href: "/docs/" }, { Text: plan.mr }]} />
+            crumbs={[{ Text: "งานซ่อมและบำรุงรักษา" }, { Text: "เอกสาร ปจ.2", href: "/docs/" }, { Text: plan.mr }]} />
           <div className="flex flex-col gap-8">
+            {open && plan.closeReturnReason && <Alert Color="Error" Text="กบค. ส่งกลับคำขอปิดงาน" SupportingText={plan.closeReturnReason} />}
             {open
-              ? <>
-                {returnedCount(mock, plan) > 0 && <Alert Color="Error" Text={"กบค. ส่งกลับแก้ไข " + returnedCount(mock, plan) + " คัน"} SupportingText="เปิดคันที่ถูกส่งกลับเพื่อดูเหตุผล แก้ไขผลหรือเอกสาร แล้วกดส่งอนุมัติอีกครั้ง" />}
-                <Alert Color="Info" Text="บันทึกผลตรวจ ปจ.2 รายคันแล้วกดส่งอนุมัติให้ กบค." SupportingText={"ต่อคัน: วันที่ตรวจ · ค่าจ้างตรวจ (ตั้งต้นตามสัญญาของคันนั้น) · ผลการตรวจ · เอกสาร ปจ.2 (" + UPLOAD_HINT + ", อย่างน้อย 1 ไฟล์) · ตรวจไม่ได้ = เหตุผล + หนังสือรับรองจากผู้แทนหน่วยงาน · ส่งแล้วแก้ไขไม่ได้ระหว่างรอ กบค. อนุมัติ"} />
-              </>
-              : <Alert Color="Gray" Text={plan.status === "closing" ? "แผนนี้อยู่ระหว่างขออนุมัติปิดงาน" : "แผนนี้ปิดงานแล้ว"} SupportingText="ดูและดาวน์โหลดเอกสารที่ส่งไปแล้วได้อย่างเดียว" />}
+              ? returnedCount(mock, plan) > 0 && <Alert Color="Error" Text={"กบค. ส่งกลับแก้ไข " + returnedCount(mock, plan) + " คัน"} SupportingText="เปิดคันที่ถูกส่งกลับเพื่อดูเหตุผล แก้ไขผลหรือเอกสาร แล้วกดส่งอนุมัติอีกครั้ง" />
+              : waiting
+                ? <Alert Color="Warning" Text="แผนนี้ยังไม่อนุมัติ" SupportingText="ดูรายละเอียดแผนและยานพาหนะเพื่อเตรียมงานได้ บันทึกและส่งผลตรวจได้เมื่อแผนอนุมัติแล้ว" />
+                : (plan.status === "closing" || plan.status === "closeReview")
+                  ? <Alert Color="Info" Text="ส่งอนุมัติปิดงานแล้ว" SupportingText="รอ กบค. อนุมัติปิดงาน" />
+                  : <Alert Color="Gray" Text="แผนนี้ปิดงานแล้ว" SupportingText="ดูและดาวน์โหลดเอกสารที่ส่งไปแล้วได้อย่างเดียว" />}
             <PlanInfo plan={plan} />
             <section className="flex flex-col gap-4">
               <SectionHeader Title="ผลการตรวจ ปจ.2 รายคัน" Badge={"อนุมัติแล้ว " + approvedCount(mock, plan) + "/" + plan.cars.length + " คัน"} />
@@ -71,12 +73,12 @@ export default function VendorPlan() {
             {open && (
               <div className={cx("flex", mob ? "gap-4 [&>*]:flex-1 [&>*]:basis-0" : "justify-between gap-3")}>
                 <SecondaryButton Text="ย้อนกลับ" Size="lg" onClick={() => router.push("/docs/")} />
-                <PrimaryButton Text={"ส่งอนุมัติ" + (ready.length ? " (" + ready.length + " คัน)" : "")} Size="lg" State={ready.length ? "Default" : "Disabled"} onClick={() => ready.length && setAsk(true)} />
+                <PrimaryButton Text="ส่งอนุมัติปิดงาน" Size="lg" State={done ? "Default" : "Disabled"} onClick={() => done && setAsk(true)} />
               </div>
             )}
           </div>
-          <ConfirmDialog spec={ask ? { title: "ยืนยันส่งผลการตรวจ ปจ.2 เพื่ออนุมัติ", sub: "ส่งผลการตรวจและเอกสารของยานพาหนะ " + ready.length + " คันให้ กบค. อนุมัติ ระหว่างรออนุมัติจะแก้ไขหรือลบเอกสารที่ส่งไม่ได้ แต่ยังดูได้", cancel: "ยกเลิก", ok: "ยืนยันส่งอนุมัติ" } : null}
-            onCancel={() => setAsk(false)} onOk={() => { setAsk(false); submitDocs(plan, ready); notify("ส่งผลการตรวจ ปจ.2 เพื่ออนุมัติ " + ready.length + " คันสำเร็จ"); }} />
+          <ConfirmDialog spec={ask ? { title: "ยืนยันส่งอนุมัติปิดงาน", sub: "ผลการตรวจ ปจ.2 อนุมัติครบ " + plan.cars.length + " คัน ส่งให้ กบค. อนุมัติปิดงานแผน " + plan.mr, cancel: "ยกเลิก", ok: "ส่งอนุมัติปิดงาน" } : null}
+            onCancel={() => setAsk(false)} onOk={() => { setAsk(false); requestClose(plan.mr); notify("ส่งอนุมัติปิดงานแผน " + plan.mr + " สำเร็จ"); }} />
         </>}
       </RoleGate>
     </AppFrame>
