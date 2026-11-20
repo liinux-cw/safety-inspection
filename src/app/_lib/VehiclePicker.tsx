@@ -4,7 +4,6 @@
    ยานพาหนะที่อยู่ในแผน ปจ.2 อื่นที่ยังไม่ปิด = แสดงแต่เลือกไม่ได้ (ห้ามซ้อนแผน) · สถานะไม่พร้อมใช้งาน = เลือกได้ แต่เตือนว่าอาจตรวจไม่ได้ */
 import { useState } from "react";
 import { CheckTable } from "@/components/patterns/CheckTable";
-import { FilterShell } from "@/components/patterns/FilterShell";
 import { PopupModal } from "@/components/patterns/PopupModal";
 import { DropdownList } from "@/components/vms/DropdownList";
 import { DropdownListItem } from "@/components/vms/DropdownListItem";
@@ -12,6 +11,8 @@ import { EmptyStateDataEmpty } from "@/components/vms/EmptyStateDataEmpty";
 import { EmptyStateSearchNotFound } from "@/components/vms/EmptyStateSearchNotFound";
 import { InputDropdownWithBadges } from "@/components/vms/InputDropdownWithBadges";
 import { TableHeader } from "@/components/vms/TableHeader";
+import { TertiaryBrandButton } from "@/components/vms/TertiaryBrandButton";
+import { useBreakpoint } from "@/lib/useBreakpoint";
 import { TablePagination } from "@/components/vms/TablePagination";
 import type { TableColumn } from "@/components/vms/Table";
 import { CYCLE_FILTERS, DUE_FILTERS, ORGS, VEHICLE_TYPES, dateText, dueBucket, dueInRange, dueSub, rangeText, type Vehicle } from "@/lib/mock/data";
@@ -43,14 +44,13 @@ function Picker({ pool, taken, onAdd, onCancel, from = "", to = "" }: PickerProp
   const START: F = hasRange ? { ...NONE, due: ["ครบกำหนดในรอบนี้", "เกินกำหนด"] } : NONE;
   const [f, setF] = useState<F>(START);
   const dueMatch = (v: Vehicle) => f.due.some((x) => (x === "ครบกำหนดในรอบนี้" ? dueInRange(v.due, from, to) : dueBucket(v.due) === x));
-  const [panel, setPanel] = useState(false);
-  const [fd, setFd] = useState<F>(NONE);
+  /* ตัวกรองวางใต้ช่องค้นหาในตัว popup (ไม่เปิดแผงซ้อน popup · เจ้าของงาน 20 พ.ย. 2569) — เลือกแล้วกรองทันที */
+  const mob = useBreakpoint() === "Mobile";
   const [dd, setDd] = useState("");
-  const flip = (k: keyof F, v: string) => setFd((x) => ({ ...x, [k]: x[k].includes(v) ? x[k].filter((y) => y !== v) : [...x[k], v] }));
-  const drop = (k: keyof F) => (v: string) => setFd((x) => ({ ...x, [k]: x[k].filter((y) => y !== v) }));
+  const flip = (k: keyof F, v: string) => { setF((x) => ({ ...x, [k]: x[k].includes(v) ? x[k].filter((y) => y !== v) : [...x[k], v] })); setPage(1); };
+  const drop = (k: keyof F) => (v: string) => { setF((x) => ({ ...x, [k]: x[k].filter((y) => y !== v) })); setPage(1); };
   const ddOpen = (k: string) => (v: boolean) => setDd(v ? k : dd === k ? "" : dd);
-  const chips = [...f.org, ...f.due, ...f.cycle, ...f.type];
-  const removeChip = (c: string) => { setF((x) => ({ org: x.org.filter((y) => y !== c), due: x.due.filter((y) => y !== c), cycle: x.cycle.filter((y) => y !== c), type: x.type.filter((y) => y !== c) })); setPage(1); };
+  const nFilters = f.org.length + f.due.length + f.cycle.length + f.type.length;
 
   const k = q.trim();
   const shown = pool.filter((v) => (!k || v.plate.includes(k) || v.code.includes(k) || v.org.includes(k))
@@ -71,11 +71,27 @@ function Picker({ pool, taken, onAdd, onCancel, from = "", to = "" }: PickerProp
     };
   });
 
+  const filters = <>
+        <InputDropdownWithBadges LabelText="สังกัด" Optional values={f.org} Placeholder="ทั้งหมด" onRemove={drop("org")} open={dd === "org"} onOpenChange={ddOpen("org")}>
+          <DropdownList>{ORGS.map((x) => <DropdownListItem key={x} Text={x} State={f.org.includes(x) ? "Selected" : "Default"} onClick={() => flip("org", x)} />)}</DropdownList>
+        </InputDropdownWithBadges>
+        <InputDropdownWithBadges LabelText="ครบกำหนดตรวจ" Optional values={f.due} Placeholder="ทั้งหมด" onRemove={drop("due")} open={dd === "due"} onOpenChange={ddOpen("due")}>
+          <DropdownList>{DUE_FILTERS.filter((x) => hasRange || x !== "ครบกำหนดในรอบนี้").map((x) => <DropdownListItem key={x} Text={x} State={f.due.includes(x) ? "Selected" : "Default"} onClick={() => flip("due", x)} />)}</DropdownList>
+        </InputDropdownWithBadges>
+        <InputDropdownWithBadges LabelText="วาระ" Optional values={f.cycle} Placeholder="ทั้งหมด" onRemove={drop("cycle")} open={dd === "cycle"} onOpenChange={ddOpen("cycle")}>
+          <DropdownList>{CYCLE_FILTERS.map((x) => <DropdownListItem key={x} Text={x} State={f.cycle.includes(x) ? "Selected" : "Default"} onClick={() => flip("cycle", x)} />)}</DropdownList>
+        </InputDropdownWithBadges>
+        <InputDropdownWithBadges LabelText="ประเภทยานพาหนะ" Optional values={f.type} Placeholder="ทั้งหมด" onRemove={drop("type")} open={dd === "type"} onOpenChange={ddOpen("type")}>
+          <DropdownList>{VEHICLE_TYPES.map((x) => <DropdownListItem key={x} Text={x} State={f.type.includes(x) ? "Selected" : "Default"} onClick={() => flip("type", x)} />)}</DropdownList>
+        </InputDropdownWithBadges>
+  </>;
+
   const body = !pool.length
     ? <EmptyStateDataEmpty Graphic="vehicle" Text="ไม่มียานพาหนะที่เพิ่มเข้าแผนได้" SupportingText="ยานพาหนะประเภท 09 ทุกคันอยู่ในแผนนี้แล้ว" />
     : <>
-      <TableHeader query={q} Placeholder={SEARCH} onQuery={(v) => { setQ(v); setPage(1); }} onFilter={() => { setFd(f); setDd(""); setPanel(true); }}
-        FilterCount={chips.length} Filters={chips} onRemoveFilter={removeChip} />
+      <TableHeader query={q} Placeholder={SEARCH} onQuery={(v) => { setQ(v); setPage(1); }} FilterButton={false}
+        Actions={nFilters ? <TertiaryBrandButton Text="ล้างตัวกรอง" onClick={() => { setF(NONE); setPage(1); }} /> : undefined} />
+      <div className={mob ? "grid grid-cols-1 gap-4" : "grid grid-cols-4 gap-4"}>{filters}</div>
       {shown.length
         ? <CheckTable columns={COLS} rows={rows} scope={shown.map((v) => ({ key: v.id, disabled: !!taken[v.id] }))} ticked={ticked} onTicked={setTicked}
             Pagination={<TablePagination total={shown.length} page={pg} perPage={PER} onPage={setPage} />} />
@@ -90,20 +106,6 @@ function Picker({ pool, taken, onAdd, onCancel, from = "", to = "" }: PickerProp
         onOk={() => onAdd(ticked.filter((id) => !taken[id]))}>
         {body}
       </PopupModal>
-      <FilterShell open={panel} onClose={() => { setDd(""); setPanel(false); }} onClear={() => setFd(NONE)} onApply={() => { setF(fd); setPage(1); setDd(""); setPanel(false); }}>
-        <InputDropdownWithBadges LabelText="สังกัด" Optional values={fd.org} Placeholder="ทั้งหมด" onRemove={drop("org")} open={dd === "org"} onOpenChange={ddOpen("org")}>
-          <DropdownList>{ORGS.map((x) => <DropdownListItem key={x} Text={x} State={fd.org.includes(x) ? "Selected" : "Default"} onClick={() => flip("org", x)} />)}</DropdownList>
-        </InputDropdownWithBadges>
-        <InputDropdownWithBadges LabelText="ครบกำหนดตรวจ" Optional values={fd.due} Placeholder="ทั้งหมด" onRemove={drop("due")} open={dd === "due"} onOpenChange={ddOpen("due")}>
-          <DropdownList>{DUE_FILTERS.filter((x) => hasRange || x !== "ครบกำหนดในรอบนี้").map((x) => <DropdownListItem key={x} Text={x} State={fd.due.includes(x) ? "Selected" : "Default"} onClick={() => flip("due", x)} />)}</DropdownList>
-        </InputDropdownWithBadges>
-        <InputDropdownWithBadges LabelText="วาระ" Optional values={fd.cycle} Placeholder="ทั้งหมด" onRemove={drop("cycle")} open={dd === "cycle"} onOpenChange={ddOpen("cycle")}>
-          <DropdownList>{CYCLE_FILTERS.map((x) => <DropdownListItem key={x} Text={x} State={fd.cycle.includes(x) ? "Selected" : "Default"} onClick={() => flip("cycle", x)} />)}</DropdownList>
-        </InputDropdownWithBadges>
-        <InputDropdownWithBadges LabelText="ประเภทยานพาหนะ" Optional values={fd.type} Placeholder="ทั้งหมด" onRemove={drop("type")} open={dd === "type"} onOpenChange={ddOpen("type")}>
-          <DropdownList>{VEHICLE_TYPES.map((x) => <DropdownListItem key={x} Text={x} State={fd.type.includes(x) ? "Selected" : "Default"} onClick={() => flip("type", x)} />)}</DropdownList>
-        </InputDropdownWithBadges>
-      </FilterShell>
     </>
   );
 }
