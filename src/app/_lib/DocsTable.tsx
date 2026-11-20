@@ -25,7 +25,7 @@ import { TextArea } from "@/components/vms/TextArea";
 import { TextInput } from "@/components/vms/TextInput";
 import { downloadFile, rememberFiles } from "@/lib/fileDownload";
 import {
-  RESULTS, RESULT_COLOR, TODAY, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, addMonths, bahtText, dateText, dueSub, fileOk, rangeText, sizeText,
+  RESULTS, RESULT_COLOR, TODAY, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, bahtText, dateText, dueSub, fileOk, rangeText, sizeText,
   type CarDocs, type InspectResult, type Plan,
 } from "@/lib/mock/data";
 import { DOC_TEXT, approveDocs, carCost, carDocs, contractCost, costDiffers, docState, missing, returnDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
@@ -183,13 +183,11 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
     else { returnDocs(plan.mr, car, reason.trim()); notify("ส่งกลับให้ผู้รับจ้างแก้ไขผลตรวจของ " + v.plate + " แล้ว"); }
     onClose();
   };
-  /* D: วันที่ตรวจเลือกได้ตั้งแต่ 1 เดือนก่อนรอบตรวจ ถึงวันนี้ · นอกรอบตรวจ = เตือน ไม่บล็อก */
-  const minDate = addMonths(plan.from + "-01", -1);
-  const notYet = minDate > TODAY;
+  /* วันที่ตรวจเลือกได้ทุกวันจนถึงวันนี้ · นอกรอบตรวจ = เตือน ไม่บล็อก */
   const pickMonth = toDate(c.date ?? TODAY);
   const inRound = (iso: string) => iso.slice(0, 7) >= plan.from && iso.slice(0, 7) <= plan.to;
   const summary = v.plate + " · " + v.code + " · " + v.type + " · วาระ " + v.cycle + " เดือน";
-  const picker = <DatePicker Type="Single" {...TH_PICKER} min={toDate(minDate)} max={toDate(TODAY)} today={toDate(TODAY)}
+  const picker = <DatePicker Type="Single" {...TH_PICKER} max={toDate(TODAY)} today={toDate(TODAY)}
     value={c.date ? { start: pickMonth, end: pickMonth } : undefined} month={pickMonth}
     onCancel={closeCal} onApply={(r) => { if (r.start) put({ date: toIso(r.start) }); closeCal(); }} />;
   const fileErr = !ro && touched.files && !c.files.length ? "กรุณาแนบ" + docLabel(c) + " อย่างน้อย 1 ไฟล์" : null;
@@ -221,9 +219,9 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
           <div className="flex flex-col gap-4 sm:flex-row">
             <div ref={dateRef} className="relative flex min-w-0 flex-1 flex-col gap-2">
               <TextInput LabelText="วันที่ตรวจ" LeadingIconSwap="calendar_month-24-300-round" Text={c.date ? dateText(c.date) : ""} Placeholder="ระบุวันที่" readOnly
-                State={notYet ? "Disabled" : cal ? "Focused" : touched.date && !c.date ? "Error" : c.date ? "Filled" : "Default"}
-                HelperText={notYet ? "บันทึกได้ตั้งแต่ " + dateText(minDate) + " (1 เดือนก่อนรอบตรวจ)" : touched.date && !c.date ? "กรุณาเลือกวันที่ตรวจ" : undefined}
-                onClick={() => !notYet && setCal(true)} />
+                State={cal ? "Focused" : touched.date && !c.date ? "Error" : c.date ? "Filled" : "Default"}
+                HelperText={touched.date && !c.date ? "กรุณาเลือกวันที่ตรวจ" : undefined}
+                onClick={() => setCal(true)} />
               {cal && (mob ? <div className="flex justify-center">{picker}</div> : <div className="absolute top-full left-0 z-30 mt-1">{picker}</div>)}
             </div>
             <TextInput className="min-w-0 flex-1" LabelText="ค่าจ้างตรวจคันนี้ (บาท)" Text={costText} Placeholder="0.00" inputMode="decimal" onChange={setCost} onBlur={() => touch("cost")}
