@@ -14,7 +14,7 @@ import { Table, type TableColumn, type TableValue } from "@/components/vms/Table
 import { TableHeader } from "@/components/vms/TableHeader";
 import { TablePagination } from "@/components/vms/TablePagination";
 import { rangeText } from "@/lib/mock/data";
-import { approvedCount, pendingCount, readyCars, returnedCount } from "@/lib/mock/plan";
+import { approvedCount, pendingCount, readyCars, returnedCount, vendorSees } from "@/lib/mock/plan";
 import { useMock, useRole, vendorOf } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 
@@ -36,13 +36,13 @@ export default function VendorPlans() {
   const vendor = vendorOf(useRole());
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const mine = useMemo(() => mock.plans.filter((p) => p.vendor === vendor), [mock.plans, vendor]);
+  const mine = useMemo(() => mock.plans.filter((p) => p.vendor === vendor && vendorSees(p)), [mock.plans, vendor]);
   const q = query.trim();
   const list = mine.filter((p) => (!q || p.mr.includes(q) || p.name.includes(q)));
   const data: TableValue[][] = list.slice((page - 1) * PER, page * PER).map((p) => {
     const ok = approvedCount(mock, p), ret = returnedCount(mock, p), pend = pendingCount(mock, p), draft = readyCars(mock, p).length - ret;
     const st: [string, "Success" | "Warning" | "Info" | "Gray" | "Error"] = p.status === "closed" ? ["ปิดงานแล้ว", "Gray"]
-      : p.status === "closing" ? ["รออนุมัติปิดงาน", "Warning"]
+      : (p.status === "closing" || p.status === "closeReview") ? ["รออนุมัติปิดงาน", "Warning"]
       : p.status !== "approved" ? ["รอแผนอนุมัติ", "Gray"]
       : p.closeReturnReason ? ["คำขอปิดงานถูกส่งกลับ", "Error"]
       : ret ? ["มีเอกสารที่ถูกส่งกลับแก้ไข", "Error"] : ok === p.cars.length ? ["พร้อมส่งปิดงาน", "Success"]

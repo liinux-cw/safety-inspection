@@ -22,7 +22,7 @@ import { TableHeader } from "@/components/vms/TableHeader";
 import { TablePagination } from "@/components/vms/TablePagination";
 import { STATUS_TEXT, VENDORS, VENDOR_BY_ID, rangeText, type Plan, type PlanStatus } from "@/lib/mock/data";
 import { approvedCount, deletePlan, editable, pendingCount } from "@/lib/mock/plan";
-import { notify, useHydrated, useMock, useRole, vendorOf } from "@/lib/mock/store";
+import { headOf, notify, useHydrated, useMock, useRole, vendorOf } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 
 const PER = 10;
@@ -50,7 +50,7 @@ export default function PlanList() {
   const mock = useMock();
   const role = useRole();
   const hydrated = useHydrated();
-  useEffect(() => { if (hydrated && vendorOf(role)) router.replace("/docs/"); }, [hydrated, role, router]);
+  useEffect(() => { if (hydrated && vendorOf(role)) router.replace("/docs/"); else if (hydrated && headOf(role)) router.replace("/approvals/"); }, [hydrated, role, router]);
 
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -86,7 +86,7 @@ export default function PlanList() {
 
   const data: TableValue[][] = shown.map((p) => [
     p.mr,
-    { text: p.name, sub: "ปีงบประมาณ " + p.fy },
+    p.name,
     rangeText(p.from, p.to),
     VENDOR_BY_ID[p.vendor]?.name ?? "-",
     p.cars.length + " คัน",
@@ -102,7 +102,7 @@ export default function PlanList() {
 
   return (
     <AppFrame>
-      <PageHeader Title="แผนตรวจ ปจ.2" crumbs={[{ Text: "งานซ่อมและบำรุงรักษา" }, { Text: "แผนตรวจ ปจ.2" }]} />
+      <PageHeader Title="แผนตรวจ ปจ.2" crumbs={[{ Text: "Safety Inspection" }, { Text: "แผนตรวจ ปจ.2" }]} />
       {hydrated && !mock.plans.length ? (
         <EmptyStateDataEmpty Text="ยังไม่มีแผนตรวจ ปจ.2" SupportingText="เมื่อสร้างแผนตรวจ ปจ.2 รายการแผนจะแสดงที่นี่" Actions={create} />
       ) : (
