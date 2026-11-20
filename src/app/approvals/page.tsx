@@ -33,7 +33,7 @@ const COLS: TableColumn[] = [
   { head: "ยานพาหนะ", width: 100 },
   { head: "งบรวมตามสัญญา", width: 160 },
   { head: "วันที่ส่ง", width: 120 },
-  { head: "", width: 72 },
+  { head: "", width: 104 },
 ];
 const DONE_COLS: TableColumn[] = [...COLS.slice(0, 5), { head: "สถานะ", width: 160 }, { head: "", width: 72 }];
 
@@ -47,6 +47,8 @@ export default function Approvals() {
   const [page, setPage] = useState(1);
   const [ticked, setTicked] = useState<string[]>([]);
   const [ask, setAsk] = useState(false);
+  /* อนุมัติทีละแผนจากไอคอนท้ายแถว (one) หรือหลายแผนที่ติ๊ก (sel) */
+  const [one, setOne] = useState<string | null>(null);
 
   const lists: Record<Tab, Plan[]> = {
     plan: mock.plans.filter((p) => p.status === "review"),
@@ -64,19 +66,22 @@ export default function Approvals() {
   const sentOn = (p: Plan) => { const d = tab === "close" ? p.closeRequestedAt : p.submittedAt; return d ? dateText(d) : "-"; };
 
   const approveText = tab === "plan" ? "อนุมัติแผน" : "อนุมัติปิดงาน";
+  const targets = one ? [one] : sel;
   const confirm = () => {
     setAsk(false);
     if (!me) return;
-    if (tab === "plan") { approvePlans(sel, me); notify("อนุมัติแผน " + sel.length + " แผนแล้ว · ผู้รับจ้างเห็นแผนแล้ว"); }
-    else { approveClose(sel); notify("อนุมัติปิดงาน " + sel.length + " แผนแล้ว"); }
-    setTicked([]);
+    const label = one ? one + " " : targets.length + " แผน";
+    if (tab === "plan") { approvePlans(targets, me); notify("อนุมัติแผน " + label + "แล้ว · ผู้รับจ้างเห็นแผนแล้ว"); }
+    else { approveClose(targets); notify("อนุมัติปิดงาน " + label + "แล้ว"); }
+    setTicked(ticked.filter((x) => !targets.includes(x))); setOne(null);
   };
+  const approveOne = (p: Plan) => ({ IconSwap: "check_circle-24-300-round", label: (tab === "plan" ? "อนุมัติแผน " : "อนุมัติปิดงาน ") + p.mr, onClick: () => { setOne(p.mr); setAsk(true); } });
 
   const pendingRows = shown.map((p) => ({
     key: p.mr, text: p.mr, sub: p.name,
     mobileSub: p.name + " · " + (VENDOR_BY_ID[p.vendor]?.name ?? "-") + " · " + p.cars.length + " คัน · " + bahtText(budget(p)),
-    cells: [rangeText(p.from, p.to), VENDOR_BY_ID[p.vendor]?.name ?? "-", p.cars.length + " คัน", bahtText(budget(p)), sentOn(p), { actions: [act(p)] }] as TableValue[],
-    mobileActions: [act(p)],
+    cells: [rangeText(p.from, p.to), VENDOR_BY_ID[p.vendor]?.name ?? "-", p.cars.length + " คัน", bahtText(budget(p)), sentOn(p), { actions: [act(p), approveOne(p)] }] as TableValue[],
+    mobileActions: [act(p), approveOne(p)],
   }));
   const doneRows: TableValue[][] = shown.map((p) => [
     { text: p.mr, sub: p.name }, rangeText(p.from, p.to), VENDOR_BY_ID[p.vendor]?.name ?? "-", p.cars.length + " คัน", bahtText(budget(p)),
@@ -99,7 +104,7 @@ export default function Approvals() {
           {!lists[tab].length ? <EmptyStateDataEmpty Text={emptyText} /> : <>
             <TableHeader Placeholder="ค้นหาเลขที่ MR, ชื่อแผน" query={query} onQuery={(v) => { setQuery(v); setPage(1); }} FilterButton={false}
               Actions={tab !== "done" ? <PrimaryButton Text={approveText + (sel.length ? " (" + sel.length + ")" : "")} LeadingIconSwap="done_all-24-300-round"
-                Size={mob ? "lg" : "md"} State={sel.length ? "Default" : "Disabled"} onClick={() => sel.length && setAsk(true)} /> : undefined} />
+                Size={mob ? "lg" : "md"} State={sel.length ? "Default" : "Disabled"} onClick={() => { if (sel.length) { setOne(null); setAsk(true); } }} /> : undefined} />
             {!list.length ? <EmptyStateSearchNotFound />
               : tab === "done"
                 ? (mob ? <div className="flex flex-col gap-5"><MobileCards columns={DONE_COLS} rows={doneRows} rowKey={rowKey} />{pagination}</div>
@@ -107,8 +112,8 @@ export default function Approvals() {
                 : <CheckTable columns={COLS} rows={pendingRows} ticked={sel} onTicked={setTicked} scope={list.map((p) => ({ key: p.mr }))} Pagination={pagination} />}
           </>}
         </section>
-        <ConfirmDialog spec={ask ? { title: approveText + " " + sel.length + " แผน", sub: tab === "plan" ? "ผู้รับจ้างของแผนที่เลือกจะเห็นแผนและเริ่มบันทึกผลตรวจได้" : "แผนที่เลือกจะปิดงาน แก้ไขไม่ได้อีก", cancel: "ยกเลิก", ok: approveText } : null}
-          onCancel={() => setAsk(false)} onOk={confirm} />
+        <ConfirmDialog spec={ask ? { title: approveText + " " + (one ?? targets.length + " แผน"), sub: tab === "plan" ? "ผู้รับจ้างของแผนที่เลือกจะเห็นแผนและเริ่มบันทึกผลตรวจได้" : "แผนที่เลือกจะปิดงาน แก้ไขไม่ได้อีก", cancel: "ยกเลิก", ok: approveText } : null}
+          onCancel={() => { setAsk(false); setOne(null); }} onOk={confirm} />
       </RoleGate>
     </AppFrame>
   );
