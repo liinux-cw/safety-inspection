@@ -173,7 +173,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
         <section className="flex flex-col gap-4">
           <SectionHeader Title="ข้อมูลแผน" />
           <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-2")}>
-            <TextInput LabelText="ชื่อแผน" Text={d.name} Placeholder="เลือกรอบตรวจแล้วระบบเติมให้ หรือพิมพ์เอง" onChange={(v) => { setNameEdited(true); put({ name: v }); }} onBlur={() => touch("name")}
+            <TextInput className={mob ? undefined : "col-span-2"} LabelText="ชื่อแผน" Text={d.name} Placeholder="เลือกรอบตรวจแล้วระบบเติมให้ หรือพิมพ์เอง" onChange={(v) => { setNameEdited(true); put({ name: v }); }} onBlur={() => touch("name")}
               State={err.name ? "Error" : undefined} HelperText={err.name} />
             <InputDropdown LabelText="รอบตรวจ: เดือนเริ่มต้น" Text={d.from ? monthText(d.from) : ""} Placeholder="เลือกเดือน" open={dd === "from"} onOpenChange={ddOpen("from")}
               State={err.from ? "Error" : undefined} HelperText={err.from}>
