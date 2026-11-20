@@ -27,8 +27,10 @@ export interface CheckRow {
   text: string; sub?: string;
   /** บรรทัดรองบนมือถือ (List with checkbox item) — ไม่ใส่ = sub */
   mobileSub?: string;
-  /** คอลัมน์ที่เหลือ */
-  cells: TableValue[];
+  /** คอลัมน์ที่เหลือ · { node } = ช่องที่มี component อยู่ข้างใน (เช่น Text input ไม่มีป้าย · เจ้าของงาน 20 พ.ย. 2569) */
+  cells: (TableValue | { node: ReactNode })[];
+  /** มือถือ: ส่วนเพิ่มใต้รายการ (เช่น ช่องกรอกค่าจ้าง) */
+  mobileExtra?: ReactNode;
   disabled?: boolean;
   /** มือถือ: ไอคอนดู แก้ไข ลบ ใต้รายการ (Mobile table item Style=Action icons) */
   mobileActions?: CellAction[];
@@ -51,6 +53,7 @@ export function CheckTable({ columns, rows, scope, ticked, onTicked, Pagination,
           {rows.map((r) => (
             <div key={r.key} className="border-b border-gray-200 [&>div:first-child]:border-b-0">
               <ListWithCheckboxItem Text={r.text} SupportingText={r.mobileSub ?? r.sub} Selected={ticked.includes(r.key)} State={r.disabled ? "Disabled" : undefined} onChange={(on) => flip(r.key, on)} />
+              {r.mobileExtra ? <div className="px-4 pb-3">{r.mobileExtra}</div> : null}
               {r.mobileActions?.length ? <MobileTableItem Style="Action icons" Actions={r.mobileActions} /> : null}
             </div>
           ))}
@@ -85,7 +88,9 @@ export function CheckTable({ columns, rows, scope, ticked, onTicked, Pagination,
             {rows.map((r, ri) => (
               <tr key={r.key}>
                 <TableCell Style="Lead checkbox" AlternatingFills={ri % 2 === 1} Text={r.text} SupportingText={r.sub} checked={!r.disabled && ticked.includes(r.key)} checkDisabled={r.disabled} onCheck={(on) => flip(r.key, on)} />
-                {columns.slice(1).map((c, ci) => <TableCell key={ci} AlternatingFills={ri % 2 === 1} {...cellProps(r.cells[ci], c.Style)} />)}
+                {columns.slice(1).map((c, ci) => { const v = r.cells[ci]; return v && typeof v === "object" && "node" in v
+                  ? <TableCell key={ci} AlternatingFills={ri % 2 === 1} Style="Text" Text={v.node} />
+                  : <TableCell key={ci} AlternatingFills={ri % 2 === 1} {...cellProps(v as TableValue, c.Style)} />; })}
               </tr>
             ))}
           </tbody>

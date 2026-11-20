@@ -28,8 +28,9 @@
 
 | ส่วน | ประกอบจาก | หมายเหตุ |
 |---|---|---|
-| เมนู "แผนตรวจ ปจ.2" · "เอกสาร ปจ.2" ใน Sidebar navigation | Nav list item ต่อท้ายกลุ่ม "งานซ่อมและบำรุงรักษา" ของเมนูจริง (หน้า "Sidebar Navigation" 277:230639 ของ UI Release#2) · เมนูอื่นแสดงแต่ไม่พาไปไหน | แบบเดียวกับต้นแบบบำรุงรักษา (เดิมเป็นกลุ่ม "Safety Inspection" ที่ตั้งเอง) · กบค. เห็นแผนตรวจ ผู้รับจ้างเห็นเอกสาร · **รอเคาะตำแหน่งและชื่อเมนู** |
-| Breadcrumb หน้าแรก | "งานซ่อมและบำรุงรักษา" | ตามกลุ่มเมนูและหน้าการตรวจ ปจ.2 ของต้นแบบบำรุงรักษา (เดิม "Safety Inspection" ภาษาอังกฤษ) |
+| เมนู "แผนตรวจ ปจ.2" · "เอกสาร ปจ.2" ใน Sidebar navigation | Nav item กลุ่มชั้นบน "Safety Inspection" (ต่อจาก "งานซ่อมและบำรุงรักษา") + Nav list item · เมนูอื่นของระบบจริง (หน้า "Sidebar Navigation" 277:230639) แสดงแต่ไม่พาไปไหน | เจ้าของงาน 20 พ.ย. 2569: เป็น feature แยก ไม่เกี่ยวกับงานซ่อมและบำรุงรักษา · กบค. เห็นแผนตรวจ ผู้รับจ้างเห็นเอกสาร |
+| Breadcrumb หน้าแรก | "Safety Inspection" | ตามชื่อกลุ่มเมนู (เจ้าของงาน 20 พ.ย. 2569) |
+| ช่องค่าจ้างตรวจในตารางยานพาหนะ | Text input ไม่มีป้าย (Label=false) ในคอลัมน์ "ค่าจ้างตรวจ (บาท)" ของ CheckTable · มือถือ = ช่องเดียวกันใต้รายการ · ปุ่ม "กำหนดค่าจ้าง (n คัน)" ยังใช้ FormModal | Table cell ไม่มีแบบช่องกรอก · แบบเดียวกับช่องหมายเหตุในตารางรายการตรวจสภาพของต้นแบบบำรุงรักษา · เจ้าของงานเลือก 20 พ.ย. 2569 |
 | ช่องค่าจ้างตรวจ (บาท) | Text input (รับเฉพาะตัวเลข) | Number input ของไลบรารีเป็นปุ่ม −/+ ไม่เหมาะกับเงิน · เจ้าของงานเลือก Text input 20 พ.ย. 2569 |
 | ฟอร์มแผนตรวจ (`src/app/_lib/PlanForm.tsx`) | Section header + Text input / Input dropdown 2 คอลัมน์ (มือถือ 1) + Table header + CheckTable + Table pagination + ปุ่มล่าง Secondary/Primary lg · popup ค่าจ้าง = FormModal · ออกจากหน้า = ConfirmDialog | โครงเดียวกับฟอร์มสร้างแผนของต้นแบบบำรุงรักษา |
 | ข้อมูลแผน (`src/app/_lib/PlanInfo.tsx`) | DisplayBox 2 กล่อง + Pill outline | |
@@ -37,9 +38,10 @@
 | ตารางและ popup ผลตรวจ (`src/app/_lib/DocsTable.tsx`) | Table / CheckTable / Mobile table + PopupModal 640 + Alert + DisplayBox + Text input + Date picker + Radio text card + File upload + Text area + Section label | "ยังขาด…" และ "ข้อมูลครบ" เป็น Alert (เดิมข้อความลอย) · ยังไม่มีเอกสาร = แถวใน DisplayBox |
 | ปุ่มหัวหน้ารายละเอียดแผน | Secondary danger button + Secondary button ใน Page header (มือถือ lg ใต้หัวข้อ) | เดิมห่อด้วยกล่องของตัวเองทำให้ปุ่มบนมือถือไม่เต็มแถว |
 | แถบต้นแบบ (`src/components/shell/PrototypeBar.tsx`) | Input dropdown + Dropdown list (บทบาท กบค./ผู้รับจ้าง) · Tertiary button "จำลองอนุมัติแผน" | ของต้นแบบเท่านั้น |
-
 ## ค. ปุ่มที่สามใน popup (20 พ.ย. 2569)
-
 | ส่วน | ประกอบจาก | เหตุผล |
 |---|---|---|
 | popup บันทึกผลการตรวจ ปจ.2 ของผู้รับจ้าง: บันทึก · ยกเลิก · ส่งอนุมัติ | `PopupModal` prop `extra` → Modal footer Alignment=Horizontal right ช่อง Tertiary action (Tertiary brand button "บันทึก" ชิดซ้าย) + Secondary "ยกเลิก" + Primary "ส่งอนุมัติ" · มือถือ Bottom sheet footer Secondary "บันทึก" + Primary "ส่งอนุมัติ" และ "ยกเลิก" เป็น Action text ของ Bottom sheet header | Modal footer ของไลบรารีมีช่อง Tertiary action อยู่แล้ว · Bottom sheet footer มีได้ 2 ปุ่ม |
+| หน้า "แผนรออนุมัติ" ของหัวหน้า กบค. (`src/app/approvals/page.tsx`) | Page header + Tabs/Tab item (Badge) + Table header (Primary button อนุมัติ) + CheckTable + Table + Table pagination + ConfirmDialog | อนุมัติหลายแผนพร้อมกัน (เจ้าของงาน 20 พ.ย. 2569) |
+| รายละเอียดเพื่ออนุมัติ (`src/app/approvals/detail/page.tsx`) | Page header + Alert + DisplayBox (PlanInfo) + Table/Mobile table + Section label + Radio text card ×2 + Text area + ปุ่มล่าง Secondary/Primary lg | แบบหน้าอนุมัติของต้นแบบบำรุงรักษา (decisionSection) |
+| สรุปปิดงาน (`src/app/close/page.tsx`) | Page header + Alert + DisplayBox (สรุปผล) + ตารางผลตรวจ + PopupModal (Input dropdown ผู้อนุมัติ + Text area หมายเหตุ) | prototype พี่มิก P5-Close / P5-CloseRequest |

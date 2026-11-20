@@ -2,12 +2,12 @@
 /* ที่เก็บข้อมูลจำลอง — localStorage คีย์ si-next-v1 · บทบาทเก็บแยกคีย์ si-next-v1:role
    อ่านด้วย useMock() · เขียนด้วย setMock() · ล้างด้วย resetMock() */
 import { useSyncExternalStore } from "react";
-import { DOCS, PLANS, VENDORS, type DocsState, type Plan } from "./data";
+import { DOCS, HEADS, PLANS, VENDORS, type DocsState, type Plan } from "./data";
 
 export const KEY = "si-next-v1";
 export const ROLE_KEY = "si-next-v1:role";
 /** รุ่นข้อมูลจำลอง — รุ่นไม่ตรง = เริ่มจากค่าตั้งต้นใหม่ */
-export const MOCK_V = 7;   // 7 = ค่าจ้างตามสัญญารายคัน (costs) แทนค่าเดียวทั้งแผน ·   // 6 = ค่าจ้างต่อคันตามสัญญา (unitCost) + เหตุผลค่าจ้างต่างจากสัญญา ·   // 3 = กบค. อนุมัติ/ส่งกลับ · 4 = เอาประเภทงานออก · 5 = ผลตรวจรายคัน (วันที่ ค่าจ้าง ผล เหตุผล) + เบอร์/เลขที่สัญญาผู้รับจ้าง
+export const MOCK_V = 9;   // 9 = ปิดงาน 3 ขั้น (closing = ผู้รับจ้างขอปิด · closeReview = รอหัวหน้า กบค.) ·   // 8 = หัวหน้า กบค. อนุมัติแผน/ปิดงาน (สถานะ closing) ·   // 7 = ค่าจ้างตามสัญญารายคัน (costs) แทนค่าเดียวทั้งแผน ·   // 6 = ค่าจ้างต่อคันตามสัญญา (unitCost) + เหตุผลค่าจ้างต่างจากสัญญา ·   // 3 = กบค. อนุมัติ/ส่งกลับ · 4 = เอาประเภทงานออก · 5 = ผลตรวจรายคัน (วันที่ ค่าจ้าง ผล เหตุผล) + เบอร์/เลขที่สัญญาผู้รับจ้าง
 
 export interface MockState {
   v: typeof MOCK_V;
@@ -54,7 +54,10 @@ export function resetMock() { state = initial(); save(); }
 /* ---------- บทบาท (แถบต้นแบบ) ---------- */
 export const KBK = "กบค.";
 export const vendorRole = (id: string) => "ผู้รับจ้าง (" + (VENDORS.find((v) => v.id === id)?.name ?? id) + ")";
-export const ROLES: string[] = [KBK, ...VENDORS.map((v) => vendorRole(v.id))];
+export const headRole = (id: string) => "หัวหน้า กบค. (" + (HEADS.find((h) => h.id === id)?.name ?? id) + ")";
+export const ROLES: string[] = [KBK, ...HEADS.map((h) => headRole(h.id)), ...VENDORS.map((v) => vendorRole(v.id))];
+/** รหัสหัวหน้า กบค. ของบทบาท (ไม่ใช่ = null) */
+export const headOf = (r: string): string | null => HEADS.find((h) => headRole(h.id) === r)?.id ?? null;
 export type Role = string;
 /** รหัสผู้รับจ้างของบทบาท (ไม่ใช่ผู้รับจ้าง = null) */
 export const vendorOf = (r: Role): string | null => VENDORS.find((v) => vendorRole(v.id) === r)?.id ?? null;

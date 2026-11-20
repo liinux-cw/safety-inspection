@@ -16,7 +16,7 @@ import { PrimaryButton } from "@/components/vms/PrimaryButton";
 import { SecondaryButton } from "@/components/vms/SecondaryButton";
 import { SectionHeader } from "@/components/vms/SectionHeader";
 import { cx } from "@/lib/cx";
-import { addFiles, allApproved, approvedCount, carDocs, missing, removeFile, requestClose, returnedCount, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
+import { addFiles, allApproved, approvedCount, carDocs, missing, removeFile, requestClose, returnedCount, updateResult, vendorCanEdit, vendorCanWork, vendorSees } from "@/lib/mock/plan";
 import { TODAY, VEHICLE_BY_ID } from "@/lib/mock/data";
 import { useProtoForm } from "@/lib/protoForm";
 import { notify, useHydrated, useMock, useQuery, useRole, vendorOf } from "@/lib/mock/store";
@@ -30,7 +30,7 @@ export default function VendorPlan() {
   const mr = useQuery("mr");
   const hydrated = useHydrated();
   const [ask, setAsk] = useState(false);
-  const plan = mock.plans.find((p) => p.mr === mr && p.vendor === vendor);
+  const plan = mock.plans.find((p) => p.mr === mr && p.vendor === vendor && vendorSees(p));
   const done = !!plan && allApproved(mock, plan);
   /* A: ผู้รับจ้างเห็นแผนทันที แต่บันทึก/ส่งผลได้เมื่อแผนอนุมัติแล้ว */
   const open = !!plan && vendorCanWork(plan);
@@ -62,7 +62,7 @@ export default function VendorPlan() {
               ? returnedCount(mock, plan) > 0 && <Alert Color="Error" Text={"กบค. ส่งกลับแก้ไข " + returnedCount(mock, plan) + " คัน"} SupportingText="เปิดคันที่ถูกส่งกลับเพื่อดูเหตุผล แก้ไขผลหรือเอกสาร แล้วกดส่งอนุมัติอีกครั้ง" />
               : waiting
                 ? <Alert Color="Warning" Text="แผนนี้ยังไม่อนุมัติ" SupportingText="ดูรายละเอียดแผนและยานพาหนะเพื่อเตรียมงานได้ บันทึกและส่งผลตรวจได้เมื่อแผนอนุมัติแล้ว" />
-                : plan.status === "closing"
+                : (plan.status === "closing" || plan.status === "closeReview")
                   ? <Alert Color="Info" Text="ส่งอนุมัติปิดงานแล้ว" SupportingText="รอ กบค. อนุมัติปิดงาน" />
                   : <Alert Color="Gray" Text="แผนนี้ปิดงานแล้ว" SupportingText="ดูและดาวน์โหลดเอกสารที่ส่งไปแล้วได้อย่างเดียว" />}
             <PlanInfo plan={plan} />
