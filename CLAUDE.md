@@ -28,7 +28,7 @@ Safety Inspection feature for MaintainD. (Details: see `docs/requirements.md`)
 - Checks before saying done: `npm run typecheck` · `NEXT_PUBLIC_BASE_PATH=/safety-inspection npm run build` · `npm run check-wording` · no hex in `src/**/*.tsx` · click through in a real browser (desktop 1440 + mobile 402), no console errors.
 
 ## Code map
-- `figma-spec/` — Figma component specs (copied from ref; source of truth for `src/components/vms`). Log every hand-composed piece in `figma-spec/COMPOSED.md`. No plain styled text where a library component fits (use Alert, etc.).
+- `figma-spec/` — Figma component specs (copied from ref; source of truth for `src/components/vms`). **Always use the defined library components. If something is needed that the library doesn't have (composed piece, custom layout, styled text), ASK THE USER FIRST before building it.** Log approved compositions in `figma-spec/COMPOSED.md`.
 - `src/components/vms|patterns|shell` — copied from ref prototype (shell/PrototypeBar adapted: role switch กบค./ผู้รับจ้าง, "จำลองอนุมัติแผน").
 - `src/lib/mock/` — `data.ts` (vehicles, vendors, plans, upload rules) · `store.ts` (localStorage `si-next-v1`) · `plan.ts` (CRUD, no-overlap rule, docs).
 - `src/app/` — `/` plan list · `/new/` `/edit/` `/detail/` (กบค.) · `/docs/` `/docs/plan/` (ผู้รับจ้าง) · `_lib/` PlanForm, VehiclePicker, DocsTable.
