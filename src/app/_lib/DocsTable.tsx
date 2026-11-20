@@ -26,7 +26,7 @@ import { TextArea } from "@/components/vms/TextArea";
 import { TextInput } from "@/components/vms/TextInput";
 import { downloadFile, rememberFiles } from "@/lib/fileDownload";
 import {
-  RESULTS, RESULT_COLOR, TODAY, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, bahtText, dateText, dueSub, fileOk, rangeText, sizeText,
+  RESULTS, RESULT_COLOR, TODAY, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, bahtText, dateText, dueSub, fileOk, sizeText,
   type CarDocs, type InspectResult, type Plan,
 } from "@/lib/mock/data";
 import { DOC_TEXT, approveDocs, carCost, carDocs, contractCost, costDiffers, docState, missing, returnDocs, submitDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
@@ -202,9 +202,8 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
     else { returnDocs(plan.mr, car, reason.trim()); notify("ส่งกลับให้ผู้รับจ้างแก้ไขผลตรวจของ " + v.plate + " แล้ว"); }
     onClose();
   };
-  /* วันที่ตรวจเลือกได้ทุกวันจนถึงวันนี้ · นอกรอบตรวจ = เตือน ไม่บล็อก */
+  /* วันที่ตรวจเลือกได้ทุกวันจนถึงวันนี้ */
   const pickMonth = toDate(c.date ?? TODAY);
-  const inRound = (iso: string) => iso.slice(0, 7) >= plan.from && iso.slice(0, 7) <= plan.to;
   const summary = v.plate + " · " + v.code + " · " + v.type + " · วาระ " + v.cycle + " เดือน";
   const picker = <DatePicker Type="Single" {...TH_PICKER} max={toDate(TODAY)} today={toDate(TODAY)}
     value={c.date ? { start: pickMonth, end: pickMonth } : undefined} month={pickMonth}
@@ -231,7 +230,6 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
             ...(differs ? [["เหตุผลที่ค่าจ้างต่างจากสัญญา", c.costReason || "-"] as [string, string]] : []),
             ["ผลการตรวจ", c.result ? <PillOutline key="r" Text={c.result} Color={RESULT_COLOR[c.result]} /> : "-"],
             ["ครบกำหนดตรวจเดิม", dateText(v.due)],
-            ...(c.date && !inRound(c.date) ? [["หมายเหตุ", "วันที่ตรวจอยู่นอกรอบตรวจของแผน"] as [string, string]] : []),
             ...(c.result === "ตรวจไม่ได้" ? [["เหตุผลที่ตรวจไม่ได้", c.reason || "-"] as [string, string]] : []),
             ...(!c.files.length ? [[docLabel(c), "ยังไม่มีเอกสาร"] as [string, string]] : []),
           ]} />
@@ -250,7 +248,6 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
           </div>
           {differs && <TextArea LabelText="เหตุผลที่ค่าจ้างต่างจากสัญญา" Text={c.costReason ?? ""} Placeholder="เช่น ต้องใช้อุปกรณ์เสริม" onChange={(x) => put({ costReason: x })}
             onBlur={() => touch("costReason")} State={touched.costReason && !c.costReason?.trim() ? "Error" : undefined} HelperText={touched.costReason && !c.costReason?.trim() ? "กรุณาระบุเหตุผล" : undefined} />}
-          {c.date && !inRound(c.date) && <Alert Color="Warning" Text={"วันที่ตรวจอยู่นอกรอบตรวจของแผน (" + rangeText(plan.from, plan.to) + ")"} SupportingText="ส่งได้ แต่ กบค. จะเห็นคำเตือนนี้ตอนพิจารณา" />}
           <div className="flex flex-col gap-2">
             <InputLabel LabelText="ผลการตรวจ" />
             <RadioTextCards row={!mob} options={RESULTS.map((r) => ({ Text: r }))} value={c.result ?? null}
