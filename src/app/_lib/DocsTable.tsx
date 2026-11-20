@@ -5,7 +5,7 @@
    ผู้รับจ้าง (canEdit): ยังไม่ส่ง หรือ กบค. ส่งกลับแก้ไข = แก้ได้ · ส่งแล้ว (รอ กบค.) หรืออนุมัติแล้ว = ล็อก ดูและดาวน์โหลดได้อย่างเดียว
    กบค. (canReview): คันที่รออนุมัติ = เลือกผลการพิจารณา อนุมัติ / ส่งกลับแก้ไข (ต้องมีเหตุผล) · อื่นๆ ดูอย่างเดียว
    เงื่อนไขไฟล์: PDF/PNG/JPG · ไฟล์ละไม่เกิน 10 MB · 1–10 ไฟล์ต่อคัน */
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { CheckTable } from "@/components/patterns/CheckTable";
 import { DisplayBox } from "@/components/patterns/DisplayBox";
 import { PopupModal } from "@/components/patterns/PopupModal";
@@ -33,6 +33,7 @@ import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
 import { TH_PICKER } from "@/lib/thaiDate";
 import { useBreakpoint } from "@/lib/useBreakpoint";
+import { useOutside } from "@/lib/useOutside";
 
 const COLS: TableColumn[] = [
   { head: "ทะเบียน", width: 200, Style: "Lead text" },
@@ -119,6 +120,9 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const review = canReview && st === "sent";
   const [error, setError] = useState<string | null>(null);
   const [cal, setCal] = useState(false);
+  const dateRef = useRef<HTMLDivElement>(null);
+  const closeCal = useCallback(() => { setCal(false); setTouched((t) => ({ ...t, date: true })); }, []);
+  useOutside(dateRef, cal && !mob, closeCal);
   const [costText, setCostText] = useState(String(carCost(plan, c, car)));
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const touch = (k: string) => setTouched((t) => ({ ...t, [k]: true }));
@@ -181,8 +185,13 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   };
   /* D: วันที่ตรวจเลือกได้ตั้งแต่ 1 เดือนก่อนรอบตรวจ ถึงวันนี้ · นอกรอบตรวจ = เตือน ไม่บล็อก */
   const minDate = addMonths(plan.from + "-01", -1);
+  const notYet = minDate > TODAY;
+  const pickMonth = toDate(c.date ?? TODAY);
   const inRound = (iso: string) => iso.slice(0, 7) >= plan.from && iso.slice(0, 7) <= plan.to;
   const summary = v.plate + " · " + v.code + " · " + v.type + " · วาระ " + v.cycle + " เดือน";
+  const picker = <DatePicker Type="Single" {...TH_PICKER} min={toDate(minDate)} max={toDate(TODAY)} today={toDate(TODAY)}
+    value={c.date ? { start: pickMonth, end: pickMonth } : undefined} month={pickMonth}
+    onCancel={closeCal} onApply={(r) => { if (r.start) put({ date: toIso(r.start) }); closeCal(); }} />;
   const fileErr = !ro && touched.files && !c.files.length ? "กรุณาแนบ" + docLabel(c) + " อย่างน้อย 1 ไฟล์" : null;
 
   return (
@@ -210,10 +219,12 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
           ]} />
         ) : <>
           <div className="flex flex-col gap-4 sm:flex-row">
-            <div className="flex min-w-0 flex-1 flex-col gap-2">
-              <TextInput LabelText="วันที่ตรวจ" LeadingIconSwap="calendar_month-24-300-round" Text={c.date ? dateText(c.date) : ""} Placeholder="วว/ดด/ปปปป" readOnly
-                State={cal ? "Focused" : touched.date && !c.date ? "Error" : c.date ? "Filled" : "Default"} HelperText={touched.date && !c.date ? "กรุณาเลือกวันที่ตรวจ" : undefined}
-                onClick={() => setCal(true)} />
+            <div ref={dateRef} className="relative flex min-w-0 flex-1 flex-col gap-2">
+              <TextInput LabelText="วันที่ตรวจ" LeadingIconSwap="calendar_month-24-300-round" Text={c.date ? dateText(c.date) : ""} Placeholder="ระบุวันที่" readOnly
+                State={notYet ? "Disabled" : cal ? "Focused" : touched.date && !c.date ? "Error" : c.date ? "Filled" : "Default"}
+                HelperText={notYet ? "บันทึกได้ตั้งแต่ " + dateText(minDate) + " (1 เดือนก่อนรอบตรวจ)" : touched.date && !c.date ? "กรุณาเลือกวันที่ตรวจ" : undefined}
+                onClick={() => !notYet && setCal(true)} />
+              {cal && (mob ? <div className="flex justify-center">{picker}</div> : <div className="absolute top-full left-0 z-30 mt-1">{picker}</div>)}
             </div>
             <TextInput className="min-w-0 flex-1" LabelText="ค่าจ้างตรวจคันนี้ (บาท)" Text={costText} Placeholder="0.00" inputMode="decimal" onChange={setCost} onBlur={() => touch("cost")}
               State={touched.cost && !carCost(plan, c, car) ? "Error" : undefined}
@@ -222,9 +233,6 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
           {differs && <TextArea LabelText="เหตุผลที่ค่าจ้างต่างจากสัญญา" Text={c.costReason ?? ""} Placeholder="เช่น ต้องใช้อุปกรณ์เสริม" onChange={(x) => put({ costReason: x })}
             onBlur={() => touch("costReason")} State={touched.costReason && !c.costReason?.trim() ? "Error" : undefined} HelperText={touched.costReason && !c.costReason?.trim() ? "กรุณาระบุเหตุผล" : undefined} />}
           {c.date && !inRound(c.date) && <Alert Color="Warning" Text={"วันที่ตรวจอยู่นอกรอบตรวจของแผน (" + rangeText(plan.from, plan.to) + ")"} SupportingText="ส่งได้ แต่ กบค. จะเห็นคำเตือนนี้ตอนพิจารณา" />}
-          {cal && <div className="flex"><DatePicker Type="Single" {...TH_PICKER} min={toDate(minDate)} max={toDate(TODAY)} today={toDate(TODAY)}
-            value={{ start: toDate(c.date ?? TODAY), end: toDate(c.date ?? TODAY) }} month={toDate(c.date ?? TODAY)}
-            onCancel={() => { setCal(false); touch("date"); }} onApply={(r) => { if (r.start) put({ date: toIso(r.start) }); setCal(false); touch("date"); }} /></div>}
           <div className="flex flex-col gap-2">
             <InputLabel LabelText="ผลการตรวจ" />
             <RadioTextCards row={!mob} options={RESULTS.map((r) => ({ Text: r }))} value={c.result ?? null}
