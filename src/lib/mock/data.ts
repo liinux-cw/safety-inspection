@@ -114,12 +114,13 @@ export const addMonths = (iso: string, n: number) => {
 export const VENDOR_BY_ID: Record<string, Vendor> = Object.fromEntries(VENDORS.map((v) => [v.id, v]));
 
 /* ---------- แผน ---------- */
-/** review = รออนุมัติ · returned = ส่งกลับแก้ไข · approved = อนุมัติแล้ว (ผู้รับจ้างเห็น) · closed = ปิดงานแล้ว */
-export type PlanStatus = "review" | "returned" | "approved" | "closed";
+/** review = รออนุมัติ · returned = ส่งกลับแก้ไข · approved = อนุมัติแล้ว (ผู้รับจ้างเห็น) · closing = ผู้รับจ้างส่งอนุมัติปิดงาน รอ กบค. · closed = ปิดงานแล้ว */
+export type PlanStatus = "review" | "returned" | "approved" | "closing" | "closed";
 export const STATUS_TEXT: Record<PlanStatus, [string, "Warning" | "Error" | "Info" | "Gray"]> = {
   review: ["รออนุมัติ", "Warning"],
   returned: ["ส่งกลับแก้ไข", "Error"],
   approved: ["อนุมัติแล้ว", "Info"],
+  closing: ["รออนุมัติปิดงาน", "Warning"],
   closed: ["ปิดงานแล้ว", "Gray"],
 };
 export interface Plan {
@@ -133,6 +134,8 @@ export interface Plan {
   vendorTel: string;
   /** เลขที่สัญญา/ใบสั่งจ้าง (ถ้ามี) */
   contract: string;
+  /** เหตุผลที่ กบค. ส่งกลับคำขอปิดงาน */
+  closeReturnReason?: string;
   /** ค่าจ้างตรวจตามสัญญารายคัน (บาท) — กบค. กำหนดทีละคันตอนสร้างแผน · คีย์ = รหัสยานพาหนะ */
   costs: Record<string, number>;
   cars: string[];

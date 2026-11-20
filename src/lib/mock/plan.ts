@@ -66,8 +66,8 @@ export const vendorCanEdit = (c: CarDocs) => !c.sentAt && !c.approvedAt;
 const putCar = (mr: string, car: string, fn: (c: CarDocs) => CarDocs) => setCar(mr, car, (c) => (vendorCanEdit(c) ? fn(c) : c));
 export const addFiles = (mr: string, car: string, files: DocFile[]) => putCar(mr, car, (c) => ({ ...c, files: [...c.files, ...files] }));
 export const removeFile = (mr: string, car: string, i: number) => putCar(mr, car, (c) => ({ ...c, files: c.files.filter((_, j) => j !== i) }));
-/** ผู้รับจ้างกรอกผลการตรวจ (วันที่ ค่าจ้าง ผล เหตุผล) */
-export const updateResult = (mr: string, car: string, patch: Partial<Pick<CarDocs, "date" | "cost" | "costReason" | "result" | "reason">>) => putCar(mr, car, (c) => ({ ...c, ...patch }));
+/** ผู้รับจ้างกรอกผลการตรวจ (วันที่ ค่าจ้าง ผล เหตุผล เอกสาร) */
+export const updateResult = (mr: string, car: string, patch: Partial<Pick<CarDocs, "date" | "cost" | "costReason" | "result" | "reason" | "files">>) => putCar(mr, car, (c) => ({ ...c, ...patch }));
 /** ข้อที่ยังขาดก่อนส่งได้ (ว่าง = ครบ) · p = แผน (ค่าจ้างตามสัญญา) */
 export function missing(c: CarDocs, p?: Plan, car?: string): string[] {
   const m: string[] = [];
@@ -96,11 +96,11 @@ export type DocState = "none" | "draft" | "ready" | "sent" | "approved" | "retur
 export const docState = (c: CarDocs, p?: Plan, car?: string): DocState =>
   c.approvedAt ? "approved" : c.sentAt ? "sent" : c.returnReason ? "returned" : !touchedAny(c) ? "none" : missing(c, p, car).length ? "draft" : "ready";
 export const DOC_TEXT: Record<DocState, [string, "Gray" | "Warning" | "Success" | "Info" | "Error" | "Brand"]> = {
-  none: ["ยังไม่บันทึกผล", "Gray"],
-  draft: ["กรอกยังไม่ครบ", "Warning"],
-  ready: ["พร้อมส่ง", "Brand"],
-  sent: ["รอ กบค. อนุมัติ", "Info"],
-  approved: ["อนุมัติแล้ว", "Success"],
+  none: ["รอดำเนินการ", "Gray"],
+  draft: ["กำลังดำเนินการ", "Info"],
+  ready: ["กำลังดำเนินการ", "Info"],
+  sent: ["รออนุมัติ", "Warning"],
+  approved: ["เสร็จสิ้น", "Success"],
   returned: ["ส่งกลับแก้ไข", "Error"],
 };
 const countOf = (s: MockState, p: Plan, st: DocState) => p.cars.filter((c) => docState(carDocs(s, p.mr, c), p, c) === st).length;
@@ -108,6 +108,15 @@ const countOf = (s: MockState, p: Plan, st: DocState) => p.cars.filter((c) => do
 export const approvedCount = (s: MockState, p: Plan) => countOf(s, p, "approved");
 /** จำนวนคันที่รอ กบค. อนุมัติ */
 export const pendingCount = (s: MockState, p: Plan) => countOf(s, p, "sent");
+/** ทุกคันในแผน กบค. อนุมัติผลแล้ว → ผู้รับจ้างส่งอนุมัติปิดงานได้ */
+export const allApproved = (s: MockState, p: Plan) => p.cars.length > 0 && approvedCount(s, p) === p.cars.length;
+const setPlan = (mr: string, fn: (p: Plan) => Plan) => setMock((x) => ({ ...x, plans: x.plans.map((p) => (p.mr === mr ? fn(p) : p)) }));
+/** ผู้รับจ้างส่งอนุมัติปิดงาน */
+export const requestClose = (mr: string) => setPlan(mr, (p) => (p.status === "approved" ? { ...p, status: "closing", closeReturnReason: undefined } : p));
+/** กบค. อนุมัติปิดงาน */
+export const approveClose = (mr: string) => setPlan(mr, (p) => (p.status === "closing" ? { ...p, status: "closed" } : p));
+/** กบค. ส่งกลับคำขอปิดงาน */
+export const returnClose = (mr: string, reason: string) => setPlan(mr, (p) => (p.status === "closing" ? { ...p, status: "approved", closeReturnReason: reason } : p));
 export const returnedCount = (s: MockState, p: Plan) => countOf(s, p, "returned");
 /** ค่าจ้างตรวจรวมของคันที่ส่งแล้ว/อนุมัติแล้ว */
 export const costTotal = (s: MockState, p: Plan) => p.cars.reduce((a, c) => { const d = carDocs(s, p.mr, c); return a + (d.sentAt || d.approvedAt ? carCost(p, d, c) : 0); }, 0);

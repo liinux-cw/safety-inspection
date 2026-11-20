@@ -42,8 +42,10 @@ export default function VendorPlans() {
   const data: TableValue[][] = list.slice((page - 1) * PER, page * PER).map((p) => {
     const ok = approvedCount(mock, p), ret = returnedCount(mock, p), pend = pendingCount(mock, p), draft = readyCars(mock, p).length - ret;
     const st: [string, "Success" | "Warning" | "Info" | "Gray" | "Error"] = p.status === "closed" ? ["ปิดงานแล้ว", "Gray"]
+      : p.status === "closing" ? ["รออนุมัติปิดงาน", "Warning"]
       : p.status !== "approved" ? ["รอแผนอนุมัติ", "Gray"]
-      : ret ? ["มีเอกสารที่ถูกส่งกลับแก้ไข", "Error"] : ok === p.cars.length ? ["อนุมัติครบแล้ว", "Success"]
+      : p.closeReturnReason ? ["คำขอปิดงานถูกส่งกลับ", "Error"]
+      : ret ? ["มีเอกสารที่ถูกส่งกลับแก้ไข", "Error"] : ok === p.cars.length ? ["พร้อมส่งปิดงาน", "Success"]
       : draft ? ["มีเอกสารยังไม่ส่ง", "Warning"] : pend ? ["รอ กบค. อนุมัติ", "Info"] : ["รอแนบเอกสาร", "Gray"];
     const open = { IconSwap: "quick_reference_all-24-300-round", label: "เปิดแผน " + p.mr, onClick: () => router.push("/docs/plan/?mr=" + p.mr) };
     return [p.mr, p.name, rangeText(p.from, p.to), p.cars.length + " คัน", ok + "/" + p.cars.length + " คัน", { pills: [st] }, { actions: [open], mobileActions: [open] }];

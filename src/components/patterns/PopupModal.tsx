@@ -2,8 +2,9 @@
 /* popup เนื้อหาอิสระ (ตาราง · อัปโหลด · รายการ) ตาม popupModal() ใน screens.js — ประกอบจากชิ้นไลบรารี (บันทึกใน figma-spec/COMPOSED.md)
    Desktop: Background overlay + กล่อง white รัศมี 12 กว้าง 640 (หรือ 800 ตามที่จอระบุ · 1140 = Modal Size=xl ของไลบรารี สำหรับ popup เลือกยานพาหนะ TripCarPicker BACKLOG ข้อ 89) กลางจอ (ห่างขอบบนอย่างน้อย 40)
             Modal header Alignment=Left (Title + Supporting text · ปุ่มปิด · ไม่มี Featured icon) · เนื้อหา ขอบใน 0/24/24 ช่องไฟ 24
-            Modal footer Alignment=Horizontal right: Secondary "ยกเลิก" + Primary ok (okDisabled = State Disabled)
-   Mobile: Bottom sheet (Bottom sheet header หัวเรื่อง · เนื้อหา ขอบในข้าง 16 ช่องไฟ 16 · Bottom sheet footer ปุ่ม lg) */
+            Modal footer Alignment=Horizontal right: Secondary "ยกเลิก" + Primary ok (okDisabled = State Disabled) · extra = Tertiary action (Tertiary brand button ชิดซ้าย)
+   Mobile: Bottom sheet (Bottom sheet header หัวเรื่อง · เนื้อหา ขอบในข้าง 16 ช่องไฟ 16 · Bottom sheet footer ปุ่ม lg)
+           มี extra = footer เป็น Secondary extra + Primary ok · ปุ่มยกเลิกย้ายไปเป็น Action text ของ Bottom sheet header */
 import { useEffect, type ReactNode } from "react";
 import { BackgroundOverlay } from "@/components/vms/BackgroundOverlay";
 import { BottomSheet } from "@/components/vms/BottomSheet";
@@ -12,6 +13,7 @@ import { ModalFooter } from "@/components/vms/ModalFooter";
 import { ModalHeader } from "@/components/vms/ModalHeader";
 import { PrimaryButton } from "@/components/vms/PrimaryButton";
 import { SecondaryButton } from "@/components/vms/SecondaryButton";
+import { TertiaryBrandButton } from "@/components/vms/TertiaryBrandButton";
 import { cx } from "@/lib/cx";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 
@@ -27,11 +29,13 @@ export interface PopupModalProps {
   okDisabled?: boolean;
   onOk?: () => void;
   onCancel?: () => void;
+  /** ปุ่มที่สาม เช่น บันทึกไว้ก่อน (desktop = Tertiary action ชิดซ้าย · มือถือ = ปุ่มรอง) */
+  extra?: { text: string; onClick: () => void };
   /** false = ไม่มีปุ่มหลัก (popup ดูอย่างเดียว) */
   showOk?: boolean;
 }
 
-export function PopupModal({ open, title, sub, width = 640, children, ok = "ยืนยัน", cancel = "ยกเลิก", okDisabled, onOk, onCancel, showOk = true }: PopupModalProps) {
+export function PopupModal({ open, title, sub, width = 640, children, ok = "ยืนยัน", cancel = "ยกเลิก", okDisabled, onOk, onCancel, extra, showOk = true }: PopupModalProps) {
   const mob = useBreakpoint() === "Mobile";
   useEffect(() => {
     if (!open || mob) return;
@@ -43,6 +47,8 @@ export function PopupModal({ open, title, sub, width = 640, children, ok = "ย�
   const Ok = showOk ? <PrimaryButton Text={ok} Size={mob ? "lg" : "md"} State={okDisabled ? "Disabled" : "Default"} onClick={onOk} /> : undefined;
   const Cancel = <SecondaryButton Text={cancel} Size={mob ? "lg" : "md"} onClick={onCancel} />;
   if (mob) {
+    if (extra) return <BottomSheet open onClose={onCancel} Title={title} ActionText={cancel} onAction={onCancel} labelledBy="popup-title"
+      Footer={<BottomSheetFooter SecondaryAction={<SecondaryButton Text={extra.text} Size="lg" onClick={extra.onClick} />} PrimaryAction={Ok} />}>{children}</BottomSheet>;
     return <BottomSheet open onClose={onCancel} Title={title} labelledBy="popup-title" Footer={<BottomSheetFooter SecondaryAction={Cancel} PrimaryAction={Ok} />}>{children}</BottomSheet>;
   }
   return (
@@ -53,7 +59,8 @@ export function PopupModal({ open, title, sub, width = 640, children, ok = "ย�
           className={cx("my-auto flex max-w-full flex-col rounded-lg bg-white animate-fade-in", width === 1140 ? "w-[1140px]" : width === 800 ? "w-[800px]" : "w-[640px]")}>
           <ModalHeader id="popup-title" Alignment="Left" FeaturedIcon={false} Title={title} SupportingText={sub} onClose={onCancel} />
           <div className="flex flex-col gap-6 px-6 pb-6">{children}</div>
-          <ModalFooter Alignment="Horizontal right" SecondaryAction={Cancel} PrimaryAction={Ok} />
+          <ModalFooter Alignment="Horizontal right" SecondaryAction={Cancel} PrimaryAction={Ok}
+            TertiaryAction={extra ? <TertiaryBrandButton Text={extra.text} onClick={extra.onClick} /> : undefined} />
         </div>
       </div>
     </>

@@ -37,3 +37,9 @@
 | ตารางและ popup ผลตรวจ (`src/app/_lib/DocsTable.tsx`) | Table / CheckTable / Mobile table + PopupModal 640 + Alert + DisplayBox + Text input + Date picker + Radio text card + File upload + Text area + Section label | "ยังขาด…" และ "ข้อมูลครบ" เป็น Alert (เดิมข้อความลอย) · ยังไม่มีเอกสาร = แถวใน DisplayBox |
 | ปุ่มหัวหน้ารายละเอียดแผน | Secondary danger button + Secondary button ใน Page header (มือถือ lg ใต้หัวข้อ) | เดิมห่อด้วยกล่องของตัวเองทำให้ปุ่มบนมือถือไม่เต็มแถว |
 | แถบต้นแบบ (`src/components/shell/PrototypeBar.tsx`) | Input dropdown + Dropdown list (บทบาท กบค./ผู้รับจ้าง) · Tertiary button "จำลองอนุมัติแผน" | ของต้นแบบเท่านั้น |
+
+## ค. ปุ่มที่สามใน popup (20 พ.ย. 2569)
+
+| ส่วน | ประกอบจาก | เหตุผล |
+|---|---|---|
+| popup บันทึกผลการตรวจ ปจ.2 ของผู้รับจ้าง: บันทึก · ยกเลิก · ส่งอนุมัติ | `PopupModal` prop `extra` → Modal footer Alignment=Horizontal right ช่อง Tertiary action (Tertiary brand button "บันทึก" ชิดซ้าย) + Secondary "ยกเลิก" + Primary "ส่งอนุมัติ" · มือถือ Bottom sheet footer Secondary "บันทึก" + Primary "ส่งอนุมัติ" และ "ยกเลิก" เป็น Action text ของ Bottom sheet header | Modal footer ของไลบรารีมีช่อง Tertiary action อยู่แล้ว · Bottom sheet footer มีได้ 2 ปุ่ม |
