@@ -1,0 +1,396 @@
+{
+ "component": "Table header cell",
+ "source": "(Component) VMS Plus",
+ "fileKey": "VmOC07pKEsDkHZagOgcSU2",
+ "page": "✅ Table",
+ "node": "2:14",
+ "props": {
+  "Header text#3243:0": {
+   "type": "BOOLEAN",
+   "defaultValue": true
+  },
+  "Text#3243:1": {
+   "type": "TEXT",
+   "defaultValue": "Header"
+  },
+  "Sort icon#3243:2": {
+   "type": "BOOLEAN",
+   "defaultValue": true
+  },
+  "Checkbox": {
+   "type": "VARIANT",
+   "defaultValue": "False",
+   "variantOptions": [
+    "False",
+    "True"
+   ]
+  }
+ },
+ "set": {
+  "name": "Table header cell",
+  "type": "COMPONENT_SET",
+  "w": 200,
+  "h": 138,
+  "sizing": [
+   "FIXED",
+   "HUG"
+  ],
+  "pl": 20,
+  "pr": 20,
+  "pt": 20,
+  "pb": 20,
+  "gap": 10,
+  "r": 5,
+  "dir": "VERTICAL",
+  "justify": "MIN",
+  "align": "MIN",
+  "fill": [
+   "#FFFFFF"
+  ],
+  "stroke": [
+   "#9747FF"
+  ],
+  "sw": 1,
+  "strokeAlign": "INSIDE"
+ },
+ "variants": [
+  {
+   "name": "Checkbox=False",
+   "type": "COMPONENT",
+   "w": 160,
+   "h": 44,
+   "sizing": [
+    "FILL",
+    "FIXED"
+   ],
+   "pl": 16,
+   "pr": 16,
+   "pt": 12,
+   "pb": 12,
+   "gap": 8,
+   "r": 0,
+   "dir": "HORIZONTAL",
+   "justify": "MIN",
+   "align": "CENTER",
+   "fill": [
+    "#F2F4F7"
+   ],
+   "sws": [
+    1,
+    0,
+    2,
+    0
+   ],
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/200",
+    "paddingLeft": "Spacing/400",
+    "paddingTop": "Spacing/300",
+    "paddingRight": "Spacing/400",
+    "paddingBottom": "Spacing/300",
+    "fills": "Color/surface/secondary"
+   },
+   "variant": {
+    "Checkbox": "False"
+   },
+   "kids": [
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 47,
+     "h": 21,
+     "sizing": [
+      "HUG",
+      "HUG"
+     ],
+     "fill": [
+      "#000000"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/text/primary",
+      "letterSpacing": "IBM/Label/03/letter-spacing",
+      "fontSize": "IBM/Label/03/font-size",
+      "fontFamily": "IBM/Label/03/font-family",
+      "paragraphSpacing": "IBM/Label/03/letter-spacing",
+      "fontWeight": "IBM/Label/03/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 14,
+      "lh": null,
+      "ls": -0.20000000298023224
+     },
+     "text": "Header"
+    },
+    {
+     "name": "Sort icon",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "variant": {
+      "Icon": "Swap"
+     },
+     "component": "Sort icon [Icon=Swap]",
+     "kids": [
+      {
+       "name": "swap_vert-20-300-round",
+       "type": "INSTANCE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "component": "swap_vert-20-300-round",
+       "kids": [
+        {
+         "name": "Bounding box",
+         "type": "RECTANGLE",
+         "w": 20,
+         "h": 20,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 0,
+         "fill": [
+          "#D9D9D9"
+         ],
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Vector",
+         "type": "VECTOR",
+         "w": 12,
+         "h": 15,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 0,
+         "fill": [
+          "#98A2B3"
+         ],
+         "sw": 0.02083333395421505,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "fills": "Color/icon/disabled"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Checkbox=True",
+   "type": "COMPONENT",
+   "w": 160,
+   "h": 44,
+   "sizing": [
+    "FILL",
+    "FIXED"
+   ],
+   "pl": 16,
+   "pr": 16,
+   "pt": 12,
+   "pb": 12,
+   "gap": 8,
+   "r": 0,
+   "dir": "HORIZONTAL",
+   "justify": "MIN",
+   "align": "CENTER",
+   "fill": [
+    "#F2F4F7"
+   ],
+   "sws": [
+    1,
+    0,
+    2,
+    0
+   ],
+   "strokeAlign": "INSIDE",
+   "vars": {
+    "itemSpacing": "Spacing/200",
+    "paddingLeft": "Spacing/400",
+    "paddingTop": "Spacing/300",
+    "paddingRight": "Spacing/400",
+    "paddingBottom": "Spacing/300",
+    "fills": "Color/surface/secondary"
+   },
+   "variant": {
+    "Checkbox": "True"
+   },
+   "kids": [
+    {
+     "name": "Checkbox",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "dir": "VERTICAL",
+     "justify": "CENTER",
+     "align": "CENTER",
+     "variant": {
+      "State": "Default",
+      "Type": "Unselected"
+     },
+     "component": "Checkbox [State=Default, Type=Unselected]",
+     "kids": [
+      {
+       "name": "Surface",
+       "type": "RECTANGLE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 4,
+       "stroke": [
+        "#D0D5DD"
+       ],
+       "sw": 2,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "topLeftRadius": "Radius/100",
+        "topRightRadius": "Radius/100",
+        "bottomLeftRadius": "Radius/100",
+        "bottomRightRadius": "Radius/100",
+        "strokes": "Color/border/primary"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Text",
+     "type": "TEXT",
+     "w": 47,
+     "h": 21,
+     "sizing": [
+      "HUG",
+      "HUG"
+     ],
+     "fill": [
+      "#000000"
+     ],
+     "sw": 1,
+     "strokeAlign": "OUTSIDE",
+     "vars": {
+      "fills": "Color/text/primary",
+      "letterSpacing": "IBM/Label/03/letter-spacing",
+      "fontSize": "IBM/Label/03/font-size",
+      "fontFamily": "IBM/Label/03/font-family",
+      "paragraphSpacing": "IBM/Label/03/letter-spacing",
+      "fontWeight": "IBM/Label/03/font-weight"
+     },
+     "font": {
+      "fam": "IBM Plex Sans Thai",
+      "style": "SemiBold",
+      "size": 14,
+      "lh": null,
+      "ls": -0.20000000298023224
+     },
+     "text": "Header"
+    },
+    {
+     "name": "Sort icon",
+     "type": "INSTANCE",
+     "w": 20,
+     "h": 20,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "variant": {
+      "Icon": "Swap"
+     },
+     "component": "Sort icon [Icon=Swap]",
+     "kids": [
+      {
+       "name": "swap_vert-20-300-round",
+       "type": "INSTANCE",
+       "w": 20,
+       "h": 20,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "component": "swap_vert-20-300-round",
+       "kids": [
+        {
+         "name": "Bounding box",
+         "type": "RECTANGLE",
+         "w": 20,
+         "h": 20,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 0,
+         "fill": [
+          "#D9D9D9"
+         ],
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Vector",
+         "type": "VECTOR",
+         "w": 12,
+         "h": 15,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 0,
+         "fill": [
+          "#98A2B3"
+         ],
+         "sw": 0.02083333395421505,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "fills": "Color/icon/disabled"
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

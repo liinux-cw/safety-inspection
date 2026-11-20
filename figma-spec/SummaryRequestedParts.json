@@ -1,0 +1,4072 @@
+{
+ "component": "SummaryRequestedParts",
+ "source": "Maintain-D",
+ "page": "Design",
+ "node": "0:1",
+ "props": {},
+ "variants": [
+  {
+   "name": "SummaryRequestedParts",
+   "type": "COMPONENT",
+   "w": 1440,
+   "h": 1024,
+   "sizing": [
+    "FIXED",
+    "FIXED"
+   ],
+   "r": 0,
+   "justify": "MIN",
+   "align": "MIN",
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "kids": [
+    {
+     "name": "Background overlay",
+     "type": "INSTANCE",
+     "w": 1440,
+     "h": 1024,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "Background overlay",
+     "kids": [
+      {
+       "name": "Background overlay",
+       "type": "RECTANGLE",
+       "w": 1440,
+       "h": 1024,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#000000"
+       ],
+       "paint": [
+        "#00000066"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/background/overlay"
+       }
+      }
+     ]
+    },
+    {
+     "name": "SummaryRequestedParts",
+     "type": "FRAME",
+     "w": 500,
+     "h": 864,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 12,
+     "dir": "VERTICAL",
+     "justify": "MIN",
+     "align": "MIN",
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "vars": {
+      "topLeftRadius": "Radius/300",
+      "topRightRadius": "Radius/300",
+      "bottomLeftRadius": "Radius/300",
+      "bottomRightRadius": "Radius/300",
+      "fills": "Color/surface/primary"
+     },
+     "kids": [
+      {
+       "name": "Modal header",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 101,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "sws": [
+        0,
+        0,
+        1,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "variant": {
+        "Back icon#2633:8": false,
+        "Padding bottom#2491:0": true,
+        "Divider#1278:0": true,
+        "Supporting text#2486:2": "Description",
+        "Supporting#2485:0": false,
+        "Featured icon#2487:8": false,
+        "Title#1276:1": "สรุปรายการอะไหล่",
+        "Close icon#1276:2": true,
+        "Alignment": "Left"
+       },
+       "component": "Modal header [Alignment=Left]",
+       "kids": [
+        {
+         "name": "Content",
+         "type": "FRAME",
+         "w": 500,
+         "h": 64,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "pt": 24,
+         "gap": 8,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/200",
+          "paddingLeft": "Spacing/600",
+          "paddingTop": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Tertiary button",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "HUG",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "1:1772",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "1:107",
+            "Leading icon#105:2": true,
+            "Button text#1153:0": false,
+            "Text#105:0": "Button",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Tertiary button [State=Default, Size=md]"
+          },
+          {
+           "name": "Title and icon",
+           "type": "FRAME",
+           "w": 404,
+           "h": 30,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 16,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/400"
+           },
+           "kids": [
+            {
+             "name": "Featured icon",
+             "type": "INSTANCE",
+             "visible": false,
+             "w": 48,
+             "h": 48,
+             "sizing": [
+              "FIXED",
+              "FIXED"
+             ],
+             "r": 9999,
+             "dir": "HORIZONTAL",
+             "justify": "CENTER",
+             "align": "CENTER",
+             "fill": [
+              "#FFF5FD"
+             ],
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "topLeftRadius": "Radius/full",
+              "topRightRadius": "Radius/full",
+              "bottomLeftRadius": "Radius/full",
+              "bottomRightRadius": "Radius/full",
+              "fills": "Color/component/utility/brand/50"
+             },
+             "variant": {
+              "Icon swap#2032:0": "1:2549",
+              "Color": "Brand",
+              "Size": "md"
+             },
+             "component": "Featured icon [Color=Brand, Size=md]"
+            },
+            {
+             "name": "Text and supporting text",
+             "type": "FRAME",
+             "w": 404,
+             "h": 30,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "gap": 4,
+             "r": 0,
+             "dir": "VERTICAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/100"
+             },
+             "kids": [
+              {
+               "name": "Text",
+               "type": "TEXT",
+               "w": 404,
+               "h": 30,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "fill": [
+                "#000000"
+               ],
+               "sw": 1,
+               "strokeAlign": "OUTSIDE",
+               "vars": {
+                "fills": "Color/text/primary",
+                "letterSpacing": "IBM/Title/01/letter-spacing",
+                "fontSize": "IBM/Title/01/font-size",
+                "fontFamily": "IBM/font-family",
+                "paragraphSpacing": "IBM/Title/01/font-size",
+                "fontWeight": "IBM/Title/01/font-weight"
+               },
+               "font": {
+                "fam": "IBM Plex Sans Thai",
+                "style": "SemiBold",
+                "size": 20,
+                "lh": null
+               },
+               "text": "สรุปรายการอะไหล่"
+              },
+              {
+               "name": "Supporting text",
+               "type": "TEXT",
+               "visible": false,
+               "w": 352,
+               "h": 24,
+               "sizing": [
+                "FIXED",
+                "FIXED"
+               ],
+               "fill": [
+                "#475467"
+               ],
+               "sw": 1,
+               "strokeAlign": "OUTSIDE",
+               "vars": {
+                "fills": "Color/text/secondary",
+                "letterSpacing": "IBM/Body/02/letter-spacing",
+                "fontSize": "IBM/Body/02/font-size",
+                "fontFamily": "IBM/font-family",
+                "paragraphSpacing": "IBM/Body/02/font-size",
+                "fontWeight": "IBM/Body/02/font-weight"
+               },
+               "font": {
+                "fam": "IBM Plex Sans Thai",
+                "style": "Regular",
+                "size": 16,
+                "lh": null
+               },
+               "text": "Description"
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "name": "Tertiary button",
+           "type": "INSTANCE",
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "HUG",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "1:3786",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "1:107",
+            "Leading icon#105:2": true,
+            "Button text#1153:0": false,
+            "Text#105:0": "Button",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Tertiary button [State=Default, Size=md]",
+           "kids": [
+            {
+             "name": "close-24-300-round",
+             "type": "INSTANCE",
+             "w": 20,
+             "h": 20,
+             "sizing": [
+              "FIXED",
+              "FIXED"
+             ],
+             "r": 0,
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "component": "close-24-300-round",
+             "kids": [
+              {
+               "name": "Bounding box",
+               "type": "RECTANGLE",
+               "w": 20,
+               "h": 20,
+               "sizing": [
+                "FIXED",
+                "FIXED"
+               ],
+               "r": 0,
+               "fill": [
+                "#D9D9D9"
+               ],
+               "sw": 1,
+               "strokeAlign": "INSIDE"
+              },
+              {
+               "name": "Vector",
+               "type": "VECTOR",
+               "w": 11,
+               "h": 11,
+               "sizing": [
+                "FIXED",
+                "FIXED"
+               ],
+               "r": 0,
+               "fill": [
+                "#475467"
+               ],
+               "sw": 0.02500000037252903,
+               "strokeAlign": "INSIDE",
+               "vars": {
+                "fills": "Color/component/button/tertiary/icon"
+               }
+              }
+             ]
+            },
+            {
+             "name": "Text",
+             "type": "TEXT",
+             "visible": false,
+             "w": 43,
+             "h": 21,
+             "sizing": [
+              "FIXED",
+              "FIXED"
+             ],
+             "fill": [
+              "#475467"
+             ],
+             "sw": 1,
+             "strokeAlign": "OUTSIDE",
+             "vars": {
+              "fills": "Color/component/button/tertiary/text",
+              "letterSpacing": "IBM/Label/03/letter-spacing",
+              "fontSize": "IBM/Label/03/font-size",
+              "fontFamily": "IBM/font-family",
+              "paragraphSpacing": "IBM/Label/03/letter-spacing",
+              "fontWeight": "IBM/Label/03/font-weight"
+             },
+             "font": {
+              "fam": "IBM Plex Sans Thai",
+              "style": "SemiBold",
+              "size": 14,
+              "lh": null,
+              "ls": -0.20000000298023224
+             },
+             "text": "Button"
+            },
+            {
+             "name": "crop_free-20-400-round",
+             "type": "INSTANCE",
+             "visible": false,
+             "w": 20,
+             "h": 20,
+             "sizing": [
+              "FIXED",
+              "FIXED"
+             ],
+             "r": 0,
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "component": "crop_free-20-400-round"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "w": 500,
+         "h": 21,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pt": 20,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingTop": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 500,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]",
+           "kids": [
+            {
+             "name": "Divider",
+             "type": "VECTOR",
+             "w": 500,
+             "h": 1,
+             "sizing": [
+              "FILL",
+              "FIXED"
+             ],
+             "r": 0,
+             "fill": [
+              "#D0D5DD"
+             ],
+             "sw": 1,
+             "strokeAlign": "CENTER",
+             "vars": {
+              "fills": "Color/icon/tertiary"
+             }
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Padding bottom",
+         "type": "FRAME",
+         "w": 500,
+         "h": 16,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        }
+       ]
+      },
+      {
+       "name": "Form",
+       "type": "FRAME",
+       "w": 500,
+       "h": 678,
+       "sizing": [
+        "FILL",
+        "FILL"
+       ],
+       "pl": 24,
+       "pr": 24,
+       "gap": 24,
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "itemSpacing": "Space/600",
+        "paddingLeft": "Spacing/600",
+        "paddingTop": "Spacing/none",
+        "paddingRight": "Spacing/600",
+        "paddingBottom": "Spacing/none"
+       },
+       "kids": [
+        {
+         "name": "Frame 1000003491",
+         "type": "FRAME",
+         "w": 452,
+         "h": 345,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 8,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Space/200"
+         },
+         "kids": [
+          {
+           "name": "Section label",
+           "type": "INSTANCE",
+           "w": 452,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "CENTER",
+           "align": "MIN",
+           "sws": [
+            1,
+            0,
+            0,
+            0
+           ],
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/none",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Secondary action#2299:6": false,
+            "Primary action#2299:3": true,
+            "Supporting text#2299:0": "Supporting text",
+            "Info icon#2298:0": false,
+            "Actions#1985:4": false,
+            "More actions#2004:6": false,
+            "Supporting#1985:3": false,
+            "Title#1985:6": "อะไหล่ที่เบิก",
+            "Breakpoint": "Desktop"
+           },
+           "component": "Section label [Breakpoint=Desktop]",
+           "kids": [
+            {
+             "name": "Content",
+             "type": "FRAME",
+             "w": 452,
+             "h": 24,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "gap": 12,
+             "r": 0,
+             "dir": "HORIZONTAL",
+             "justify": "SPACE_BETWEEN",
+             "align": "CENTER",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "kids": [
+              {
+               "name": "Label and supporting text",
+               "type": "FRAME",
+               "w": 452,
+               "h": 24,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "gap": 4,
+               "r": 0,
+               "dir": "VERTICAL",
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "vars": {
+                "itemSpacing": "Spacing/100"
+               },
+               "kids": [
+                {
+                 "name": "Label",
+                 "type": "FRAME",
+                 "w": 452,
+                 "h": 24,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 4,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "vars": {
+                  "itemSpacing": "Spacing/100"
+                 },
+                 "kids": [
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 76,
+                   "h": 24,
+                   "sizing": [
+                    "HUG",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#000000"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/primary",
+                    "letterSpacing": "IBM/Title/02/letter-spacing",
+                    "fontSize": "IBM/Title/02/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Title/02/font-size",
+                    "fontWeight": "IBM/Title/02/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "SemiBold",
+                    "size": 16,
+                    "lh": null
+                   },
+                   "text": "อะไหล่ที่เบิก"
+                  },
+                  {
+                   "name": "info-24-300-round",
+                   "type": "INSTANCE",
+                   "visible": false,
+                   "w": 24,
+                   "h": 24,
+                   "sizing": [
+                    "FIXED",
+                    "FIXED"
+                   ],
+                   "r": 0,
+                   "justify": "MIN",
+                   "align": "MIN",
+                   "sw": 1,
+                   "strokeAlign": "INSIDE",
+                   "component": "info-24-300-round"
+                  }
+                 ]
+                },
+                {
+                 "name": "Supporting text",
+                 "type": "TEXT",
+                 "visible": false,
+                 "w": 415,
+                 "h": 18,
+                 "sizing": [
+                  "FIXED",
+                  "FIXED"
+                 ],
+                 "fill": [
+                  "#475467"
+                 ],
+                 "sw": 1,
+                 "strokeAlign": "OUTSIDE",
+                 "vars": {
+                  "fills": "Color/text/secondary",
+                  "letterSpacing": "IBM/Helper-text/02/letter-spacing",
+                  "fontSize": "IBM/Helper-text/02/font-size",
+                  "fontFamily": "IBM/font-family",
+                  "paragraphSpacing": "IBM/Helper-text/02/letter-spacing",
+                  "fontWeight": "IBM/Helper-text/02/font-weight"
+                 },
+                 "font": {
+                  "fam": "IBM Plex Sans Thai",
+                  "style": "Regular",
+                  "size": 12,
+                  "lh": null,
+                  "ls": -0.20000000298023224
+                 },
+                 "text": "Supporting text"
+                }
+               ]
+              },
+              {
+               "name": "Actions",
+               "type": "FRAME",
+               "visible": false,
+               "w": 158,
+               "h": 40,
+               "sizing": [
+                "HUG",
+                "HUG"
+               ],
+               "r": 0,
+               "dir": "HORIZONTAL",
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE"
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "name": "Content",
+           "type": "FRAME",
+           "w": 452,
+           "h": 297,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "pl": 24,
+           "pr": 24,
+           "pt": 24,
+           "pb": 24,
+           "gap": 16,
+           "r": 8,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "fill": [
+            "#F9FAFB"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Margin",
+            "paddingLeft": "Spacing/600",
+            "paddingTop": "Spacing/600",
+            "paddingRight": "Spacing/600",
+            "paddingBottom": "Spacing/600",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "kids": [
+            {
+             "name": "Frame 1000003498",
+             "type": "FRAME",
+             "w": 404,
+             "h": 137,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "gap": 8,
+             "r": 0,
+             "dir": "VERTICAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Space/200"
+             },
+             "kids": [
+              {
+               "name": "Text",
+               "type": "TEXT",
+               "w": 404,
+               "h": 21,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "fill": [
+                "#475467"
+               ],
+               "sw": 1,
+               "strokeAlign": "OUTSIDE",
+               "vars": {
+                "fills": "Color/text/secondary",
+                "letterSpacing": "IBM/Label/03/letter-spacing",
+                "fontSize": "IBM/Label/03/font-size",
+                "fontFamily": "IBM/Label/03/font-family",
+                "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                "fontWeight": "IBM/Label/03/font-weight"
+               },
+               "font": {
+                "fam": "IBM Plex Sans Thai",
+                "style": "SemiBold",
+                "size": 14,
+                "lh": null,
+                "ls": -0.20000000298023224
+               },
+               "text": "เบิกที่ Smart Inventory "
+              },
+              {
+               "name": "Frame 1000003483",
+               "type": "FRAME",
+               "w": 404,
+               "h": 108,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "gap": 8,
+               "r": 0,
+               "dir": "VERTICAL",
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "kids": [
+                {
+                 "name": "Frame 1000003427",
+                 "type": "FRAME",
+                 "w": 404,
+                 "h": 21,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 16,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "kids": [
+                  {
+                   "name": "Supporting text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                    "fontSize": "IBM/Helper-text/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                    "fontWeight": "IBM/Helper-text/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224
+                   },
+                   "text": "ผ้าเบรก x2"
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Label/03/letter-spacing",
+                    "fontSize": "IBM/Label/03/font-size",
+                    "fontFamily": "IBM/Label/03/font-family",
+                    "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                    "fontWeight": "IBM/Label/03/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224,
+                    "align": "RIGHT"
+                   },
+                   "text": "2,580 บาท"
+                  }
+                 ]
+                },
+                {
+                 "name": "Frame 1000003428",
+                 "type": "FRAME",
+                 "w": 404,
+                 "h": 21,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 16,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "kids": [
+                  {
+                   "name": "Supporting text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                    "fontSize": "IBM/Helper-text/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                    "fontWeight": "IBM/Helper-text/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224
+                   },
+                   "text": "ไส้กรองแอร์ x1"
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Label/03/letter-spacing",
+                    "fontSize": "IBM/Label/03/font-size",
+                    "fontFamily": "IBM/Label/03/font-family",
+                    "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                    "fontWeight": "IBM/Label/03/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224,
+                    "align": "RIGHT"
+                   },
+                   "text": "650 บาท"
+                  }
+                 ]
+                },
+                {
+                 "name": "Frame 1000003430",
+                 "type": "FRAME",
+                 "w": 404,
+                 "h": 21,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 16,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "kids": [
+                  {
+                   "name": "Supporting text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                    "fontSize": "IBM/Helper-text/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                    "fontWeight": "IBM/Helper-text/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224
+                   },
+                   "text": "ขาช้างหน้า x2"
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Label/03/letter-spacing",
+                    "fontSize": "IBM/Label/03/font-size",
+                    "fontFamily": "IBM/Label/03/font-family",
+                    "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                    "fontWeight": "IBM/Label/03/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224,
+                    "align": "RIGHT"
+                   },
+                   "text": "2,500 บาท"
+                  }
+                 ]
+                },
+                {
+                 "name": "Frame 1000003431",
+                 "type": "FRAME",
+                 "w": 404,
+                 "h": 21,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 16,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "kids": [
+                  {
+                   "name": "Supporting text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                    "fontSize": "IBM/Helper-text/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                    "fontWeight": "IBM/Helper-text/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224
+                   },
+                   "text": "ขาช้างหลัง x2"
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Label/03/letter-spacing",
+                    "fontSize": "IBM/Label/03/font-size",
+                    "fontFamily": "IBM/Label/03/font-family",
+                    "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                    "fontWeight": "IBM/Label/03/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224,
+                    "align": "RIGHT"
+                   },
+                   "text": "1,900 บาท"
+                  }
+                 ]
+                }
+               ]
+              }
+             ]
+            },
+            {
+             "name": "Content divider",
+             "type": "INSTANCE",
+             "w": 404,
+             "h": 1,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "gap": 4,
+             "r": 0,
+             "dir": "HORIZONTAL",
+             "justify": "CENTER",
+             "align": "CENTER",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/100"
+             },
+             "variant": {
+              "Text#2631:0": "หรือ",
+              "Type": "Default"
+             },
+             "component": "Content divider [Type=Default]",
+             "kids": [
+              {
+               "name": "Divider",
+               "type": "VECTOR",
+               "w": 404,
+               "h": 1,
+               "sizing": [
+                "FILL",
+                "FIXED"
+               ],
+               "r": 0,
+               "fill": [
+                "#D0D5DD"
+               ],
+               "sw": 1,
+               "strokeAlign": "CENTER",
+               "vars": {
+                "fills": "Color/icon/tertiary"
+               }
+              }
+             ]
+            },
+            {
+             "name": "Frame 1000003499",
+             "type": "FRAME",
+             "w": 404,
+             "h": 79,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "gap": 8,
+             "r": 0,
+             "dir": "VERTICAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Space/200"
+             },
+             "kids": [
+              {
+               "name": "Text",
+               "type": "TEXT",
+               "w": 404,
+               "h": 21,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "fill": [
+                "#475467"
+               ],
+               "sw": 1,
+               "strokeAlign": "OUTSIDE",
+               "vars": {
+                "fills": "Color/text/secondary",
+                "letterSpacing": "IBM/Label/03/letter-spacing",
+                "fontSize": "IBM/Label/03/font-size",
+                "fontFamily": "IBM/Label/03/font-family",
+                "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                "fontWeight": "IBM/Label/03/font-weight"
+               },
+               "font": {
+                "fam": "IBM Plex Sans Thai",
+                "style": "SemiBold",
+                "size": 14,
+                "lh": null,
+                "ls": -0.20000000298023224
+               },
+               "text": "เบิกที่คลังสำรอง"
+              },
+              {
+               "name": "Frame 1000003484",
+               "type": "FRAME",
+               "w": 404,
+               "h": 50,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "gap": 8,
+               "r": 0,
+               "dir": "VERTICAL",
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "kids": [
+                {
+                 "name": "Frame 1000003427",
+                 "type": "FRAME",
+                 "w": 404,
+                 "h": 21,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 16,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "kids": [
+                  {
+                   "name": "Supporting text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                    "fontSize": "IBM/Helper-text/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                    "fontWeight": "IBM/Helper-text/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224
+                   },
+                   "text": "ผ้าเบรก x1"
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Label/03/letter-spacing",
+                    "fontSize": "IBM/Label/03/font-size",
+                    "fontFamily": "IBM/Label/03/font-family",
+                    "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                    "fontWeight": "IBM/Label/03/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224,
+                    "align": "RIGHT"
+                   },
+                   "text": "1,290 บาท"
+                  }
+                 ]
+                },
+                {
+                 "name": "Frame 1000003428",
+                 "type": "FRAME",
+                 "w": 404,
+                 "h": 21,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 16,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "kids": [
+                  {
+                   "name": "Supporting text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                    "fontSize": "IBM/Helper-text/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                    "fontWeight": "IBM/Helper-text/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224
+                   },
+                   "text": "น้ำมันไฮดรอลิก x3"
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Label/03/letter-spacing",
+                    "fontSize": "IBM/Label/03/font-size",
+                    "fontFamily": "IBM/Label/03/font-family",
+                    "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                    "fontWeight": "IBM/Label/03/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224,
+                    "align": "RIGHT"
+                   },
+                   "text": "1,350 บาท"
+                  }
+                 ]
+                }
+               ]
+              }
+             ]
+            },
+            {
+             "name": "Content item row",
+             "type": "INSTANCE",
+             "visible": false,
+             "w": 698,
+             "h": 52,
+             "sizing": [
+              "FIXED",
+              "HUG"
+             ],
+             "gap": 24,
+             "r": 0,
+             "dir": "HORIZONTAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/600",
+              "paddingLeft": "Spacing/none",
+              "paddingTop": "Spacing/none",
+              "paddingRight": "Spacing/none",
+              "paddingBottom": "Spacing/none"
+             },
+             "variant": {
+              "Item 4 swap#2542:6": "1:3954",
+              "Item 3 swap#2542:2": "1:3954",
+              "Item 1 swap#2513:12": "1:3954",
+              "Item 4#2542:4": false,
+              "Item 2 swap#2513:14": "1:3954",
+              "Item 3#2542:0": false,
+              "Item 2#2511:0": true,
+              "Column width": "Full"
+             },
+             "component": "Content item row [Column width=Full]"
+            },
+            {
+             "name": "Content item row",
+             "type": "INSTANCE",
+             "visible": false,
+             "w": 698,
+             "h": 52,
+             "sizing": [
+              "FIXED",
+              "HUG"
+             ],
+             "gap": 24,
+             "r": 0,
+             "dir": "HORIZONTAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/600",
+              "paddingLeft": "Spacing/none",
+              "paddingTop": "Spacing/none",
+              "paddingRight": "Spacing/none",
+              "paddingBottom": "Spacing/none"
+             },
+             "variant": {
+              "Item 4 swap#2542:6": "1:3954",
+              "Item 3 swap#2542:2": "1:3954",
+              "Item 1 swap#2513:12": "1:3954",
+              "Item 4#2542:4": false,
+              "Item 2 swap#2513:14": "1:3954",
+              "Item 3#2542:0": false,
+              "Item 2#2511:0": true,
+              "Column width": "Full"
+             },
+             "component": "Content item row [Column width=Full]"
+            },
+            {
+             "name": "Content item row",
+             "type": "INSTANCE",
+             "visible": false,
+             "w": 698,
+             "h": 52,
+             "sizing": [
+              "FIXED",
+              "HUG"
+             ],
+             "gap": 24,
+             "r": 0,
+             "dir": "HORIZONTAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/600",
+              "paddingLeft": "Spacing/none",
+              "paddingTop": "Spacing/none",
+              "paddingRight": "Spacing/none",
+              "paddingBottom": "Spacing/none"
+             },
+             "variant": {
+              "Item 4 swap#2542:6": "1:3954",
+              "Item 3 swap#2542:2": "1:3954",
+              "Item 1 swap#2513:12": "1:3954",
+              "Item 4#2542:4": false,
+              "Item 2 swap#2513:14": "1:3954",
+              "Item 3#2542:0": false,
+              "Item 2#2511:0": true,
+              "Column width": "Full"
+             },
+             "component": "Content item row [Column width=Full]"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Frame 1000003490",
+         "type": "FRAME",
+         "w": 452,
+         "h": 316,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 8,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Space/200"
+         },
+         "kids": [
+          {
+           "name": "Section label",
+           "type": "INSTANCE",
+           "w": 452,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "CENTER",
+           "align": "MIN",
+           "sws": [
+            1,
+            0,
+            0,
+            0
+           ],
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/none",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Secondary action#2299:6": false,
+            "Primary action#2299:3": true,
+            "Supporting text#2299:0": "Supporting text",
+            "Info icon#2298:0": false,
+            "Actions#1985:4": false,
+            "More actions#2004:6": false,
+            "Supporting#1985:3": false,
+            "Title#1985:6": "อะไหล่ที่จัดซื้อ",
+            "Breakpoint": "Desktop"
+           },
+           "component": "Section label [Breakpoint=Desktop]",
+           "kids": [
+            {
+             "name": "Content",
+             "type": "FRAME",
+             "w": 452,
+             "h": 24,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "gap": 12,
+             "r": 0,
+             "dir": "HORIZONTAL",
+             "justify": "SPACE_BETWEEN",
+             "align": "CENTER",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "kids": [
+              {
+               "name": "Label and supporting text",
+               "type": "FRAME",
+               "w": 452,
+               "h": 24,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "gap": 4,
+               "r": 0,
+               "dir": "VERTICAL",
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "vars": {
+                "itemSpacing": "Spacing/100"
+               },
+               "kids": [
+                {
+                 "name": "Label",
+                 "type": "FRAME",
+                 "w": 452,
+                 "h": 24,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 4,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "vars": {
+                  "itemSpacing": "Spacing/100"
+                 },
+                 "kids": [
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 89,
+                   "h": 24,
+                   "sizing": [
+                    "HUG",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#000000"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/primary",
+                    "letterSpacing": "IBM/Title/02/letter-spacing",
+                    "fontSize": "IBM/Title/02/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Title/02/font-size",
+                    "fontWeight": "IBM/Title/02/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "SemiBold",
+                    "size": 16,
+                    "lh": null
+                   },
+                   "text": "อะไหล่ที่จัดซื้อ"
+                  },
+                  {
+                   "name": "info-24-300-round",
+                   "type": "INSTANCE",
+                   "visible": false,
+                   "w": 24,
+                   "h": 24,
+                   "sizing": [
+                    "FIXED",
+                    "FIXED"
+                   ],
+                   "r": 0,
+                   "justify": "MIN",
+                   "align": "MIN",
+                   "sw": 1,
+                   "strokeAlign": "INSIDE",
+                   "component": "info-24-300-round"
+                  }
+                 ]
+                },
+                {
+                 "name": "Supporting text",
+                 "type": "TEXT",
+                 "visible": false,
+                 "w": 415,
+                 "h": 18,
+                 "sizing": [
+                  "FIXED",
+                  "FIXED"
+                 ],
+                 "fill": [
+                  "#475467"
+                 ],
+                 "sw": 1,
+                 "strokeAlign": "OUTSIDE",
+                 "vars": {
+                  "fills": "Color/text/secondary",
+                  "letterSpacing": "IBM/Helper-text/02/letter-spacing",
+                  "fontSize": "IBM/Helper-text/02/font-size",
+                  "fontFamily": "IBM/font-family",
+                  "paragraphSpacing": "IBM/Helper-text/02/letter-spacing",
+                  "fontWeight": "IBM/Helper-text/02/font-weight"
+                 },
+                 "font": {
+                  "fam": "IBM Plex Sans Thai",
+                  "style": "Regular",
+                  "size": 12,
+                  "lh": null,
+                  "ls": -0.20000000298023224
+                 },
+                 "text": "Supporting text"
+                }
+               ]
+              },
+              {
+               "name": "Actions",
+               "type": "FRAME",
+               "visible": false,
+               "w": 158,
+               "h": 40,
+               "sizing": [
+                "HUG",
+                "HUG"
+               ],
+               "r": 0,
+               "dir": "HORIZONTAL",
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE"
+              }
+             ]
+            }
+           ]
+          },
+          {
+           "name": "Content",
+           "type": "FRAME",
+           "w": 452,
+           "h": 268,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "pl": 24,
+           "pr": 24,
+           "pt": 24,
+           "pb": 24,
+           "gap": 16,
+           "r": 8,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "fill": [
+            "#F9FAFB"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Margin",
+            "paddingLeft": "Spacing/600",
+            "paddingTop": "Spacing/600",
+            "paddingRight": "Spacing/600",
+            "paddingBottom": "Spacing/600",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "kids": [
+            {
+             "name": "Frame 1000003496",
+             "type": "FRAME",
+             "w": 404,
+             "h": 79,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "gap": 8,
+             "r": 0,
+             "dir": "VERTICAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Space/200"
+             },
+             "kids": [
+              {
+               "name": "Text",
+               "type": "TEXT",
+               "w": 404,
+               "h": 21,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "fill": [
+                "#475467"
+               ],
+               "sw": 1,
+               "strokeAlign": "OUTSIDE",
+               "vars": {
+                "fills": "Color/text/secondary",
+                "letterSpacing": "IBM/Label/03/letter-spacing",
+                "fontSize": "IBM/Label/03/font-size",
+                "fontFamily": "IBM/Label/03/font-family",
+                "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                "fontWeight": "IBM/Label/03/font-weight"
+               },
+               "font": {
+                "fam": "IBM Plex Sans Thai",
+                "style": "SemiBold",
+                "size": 14,
+                "lh": null,
+                "ls": -0.20000000298023224
+               },
+               "text": "จัดซื้ออะไหล่เพิ่มโดย Smart Inventory "
+              },
+              {
+               "name": "Frame 1000003487",
+               "type": "FRAME",
+               "w": 404,
+               "h": 50,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "gap": 8,
+               "r": 0,
+               "dir": "VERTICAL",
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "kids": [
+                {
+                 "name": "Frame 1000003430",
+                 "type": "FRAME",
+                 "w": 404,
+                 "h": 21,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 16,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "kids": [
+                  {
+                   "name": "Supporting text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                    "fontSize": "IBM/Helper-text/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                    "fontWeight": "IBM/Helper-text/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224
+                   },
+                   "text": "ไส้กรองอากาศ FT-0330 x1"
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Label/03/letter-spacing",
+                    "fontSize": "IBM/Label/03/font-size",
+                    "fontFamily": "IBM/Label/03/font-family",
+                    "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                    "fontWeight": "IBM/Label/03/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224,
+                    "align": "RIGHT"
+                   },
+                   "text": "890 บาท"
+                  }
+                 ]
+                },
+                {
+                 "name": "Frame 1000003427",
+                 "type": "FRAME",
+                 "w": 404,
+                 "h": 21,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 16,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "kids": [
+                  {
+                   "name": "Supporting text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                    "fontSize": "IBM/Helper-text/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                    "fontWeight": "IBM/Helper-text/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224
+                   },
+                   "text": "ผ้าเบรก x2"
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Label/03/letter-spacing",
+                    "fontSize": "IBM/Label/03/font-size",
+                    "fontFamily": "IBM/Label/03/font-family",
+                    "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                    "fontWeight": "IBM/Label/03/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224,
+                    "align": "RIGHT"
+                   },
+                   "text": "2,580 บาท"
+                  }
+                 ]
+                }
+               ]
+              }
+             ]
+            },
+            {
+             "name": "Content divider",
+             "type": "INSTANCE",
+             "w": 404,
+             "h": 1,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "gap": 4,
+             "r": 0,
+             "dir": "HORIZONTAL",
+             "justify": "CENTER",
+             "align": "CENTER",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/100"
+             },
+             "variant": {
+              "Text#2631:0": "หรือ",
+              "Type": "Default"
+             },
+             "component": "Content divider [Type=Default]",
+             "kids": [
+              {
+               "name": "Divider",
+               "type": "VECTOR",
+               "w": 404,
+               "h": 1,
+               "sizing": [
+                "FILL",
+                "FIXED"
+               ],
+               "r": 0,
+               "fill": [
+                "#D0D5DD"
+               ],
+               "sw": 1,
+               "strokeAlign": "CENTER",
+               "vars": {
+                "fills": "Color/icon/tertiary"
+               }
+              }
+             ]
+            },
+            {
+             "name": "Frame 1000003497",
+             "type": "FRAME",
+             "w": 404,
+             "h": 108,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "gap": 8,
+             "r": 0,
+             "dir": "VERTICAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Space/200"
+             },
+             "kids": [
+              {
+               "name": "Text",
+               "type": "TEXT",
+               "w": 404,
+               "h": 21,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "fill": [
+                "#475467"
+               ],
+               "sw": 1,
+               "strokeAlign": "OUTSIDE",
+               "vars": {
+                "fills": "Color/text/secondary",
+                "letterSpacing": "IBM/Label/03/letter-spacing",
+                "fontSize": "IBM/Label/03/font-size",
+                "fontFamily": "IBM/Label/03/font-family",
+                "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                "fontWeight": "IBM/Label/03/font-weight"
+               },
+               "font": {
+                "fam": "IBM Plex Sans Thai",
+                "style": "SemiBold",
+                "size": 14,
+                "lh": null,
+                "ls": -0.20000000298023224
+               },
+               "text": "จัดซื้ออะไหล่เพิ่มโดย กบค."
+              },
+              {
+               "name": "Frame 1000003480",
+               "type": "FRAME",
+               "w": 404,
+               "h": 79,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "gap": 8,
+               "r": 0,
+               "dir": "VERTICAL",
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "vars": {
+                "itemSpacing": "Space/200"
+               },
+               "kids": [
+                {
+                 "name": "Frame 1000003427",
+                 "type": "FRAME",
+                 "w": 404,
+                 "h": 21,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 16,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "kids": [
+                  {
+                   "name": "Supporting text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                    "fontSize": "IBM/Helper-text/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                    "fontWeight": "IBM/Helper-text/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224
+                   },
+                   "text": "ผ้าเบรก x1"
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Label/03/letter-spacing",
+                    "fontSize": "IBM/Label/03/font-size",
+                    "fontFamily": "IBM/Label/03/font-family",
+                    "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                    "fontWeight": "IBM/Label/03/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224,
+                    "align": "RIGHT"
+                   },
+                   "text": "1,290 บาท"
+                  }
+                 ]
+                },
+                {
+                 "name": "Frame 1000003432",
+                 "type": "FRAME",
+                 "w": 404,
+                 "h": 21,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 16,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "kids": [
+                  {
+                   "name": "Supporting text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                    "fontSize": "IBM/Helper-text/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                    "fontWeight": "IBM/Helper-text/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224
+                   },
+                   "text": "ขาช้างหลัง x2"
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Label/03/letter-spacing",
+                    "fontSize": "IBM/Label/03/font-size",
+                    "fontFamily": "IBM/Label/03/font-family",
+                    "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                    "fontWeight": "IBM/Label/03/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224,
+                    "align": "RIGHT"
+                   },
+                   "text": "1,900 บาท"
+                  }
+                 ]
+                },
+                {
+                 "name": "Frame 1000003431",
+                 "type": "FRAME",
+                 "w": 404,
+                 "h": 21,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 16,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "kids": [
+                  {
+                   "name": "Supporting text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                    "fontSize": "IBM/Helper-text/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                    "fontWeight": "IBM/Helper-text/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224
+                   },
+                   "text": "ไส้กรองแอร์ x3"
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 194,
+                   "h": 21,
+                   "sizing": [
+                    "FILL",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#475467"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/secondary",
+                    "letterSpacing": "IBM/Label/03/letter-spacing",
+                    "fontSize": "IBM/Label/03/font-size",
+                    "fontFamily": "IBM/Label/03/font-family",
+                    "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                    "fontWeight": "IBM/Label/03/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "Regular",
+                    "size": 14,
+                    "lh": null,
+                    "ls": -0.20000000298023224,
+                    "align": "RIGHT"
+                   },
+                   "text": "1,950 บาท"
+                  }
+                 ]
+                }
+               ]
+              }
+             ]
+            },
+            {
+             "name": "Content item row",
+             "type": "INSTANCE",
+             "visible": false,
+             "w": 698,
+             "h": 52,
+             "sizing": [
+              "FIXED",
+              "HUG"
+             ],
+             "gap": 24,
+             "r": 0,
+             "dir": "HORIZONTAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/600",
+              "paddingLeft": "Spacing/none",
+              "paddingTop": "Spacing/none",
+              "paddingRight": "Spacing/none",
+              "paddingBottom": "Spacing/none"
+             },
+             "variant": {
+              "Item 4 swap#2542:6": "1:3954",
+              "Item 3 swap#2542:2": "1:3954",
+              "Item 1 swap#2513:12": "1:3954",
+              "Item 4#2542:4": false,
+              "Item 2 swap#2513:14": "1:3954",
+              "Item 3#2542:0": false,
+              "Item 2#2511:0": true,
+              "Column width": "Full"
+             },
+             "component": "Content item row [Column width=Full]"
+            },
+            {
+             "name": "Content item row",
+             "type": "INSTANCE",
+             "visible": false,
+             "w": 698,
+             "h": 52,
+             "sizing": [
+              "FIXED",
+              "HUG"
+             ],
+             "gap": 24,
+             "r": 0,
+             "dir": "HORIZONTAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/600",
+              "paddingLeft": "Spacing/none",
+              "paddingTop": "Spacing/none",
+              "paddingRight": "Spacing/none",
+              "paddingBottom": "Spacing/none"
+             },
+             "variant": {
+              "Item 4 swap#2542:6": "1:3954",
+              "Item 3 swap#2542:2": "1:3954",
+              "Item 1 swap#2513:12": "1:3954",
+              "Item 4#2542:4": false,
+              "Item 2 swap#2513:14": "1:3954",
+              "Item 3#2542:0": false,
+              "Item 2#2511:0": true,
+              "Column width": "Full"
+             },
+             "component": "Content item row [Column width=Full]"
+            },
+            {
+             "name": "Content item row",
+             "type": "INSTANCE",
+             "visible": false,
+             "w": 698,
+             "h": 52,
+             "sizing": [
+              "FIXED",
+              "HUG"
+             ],
+             "gap": 24,
+             "r": 0,
+             "dir": "HORIZONTAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/600",
+              "paddingLeft": "Spacing/none",
+              "paddingTop": "Spacing/none",
+              "paddingRight": "Spacing/none",
+              "paddingBottom": "Spacing/none"
+             },
+             "variant": {
+              "Item 4 swap#2542:6": "1:3954",
+              "Item 3 swap#2542:2": "1:3954",
+              "Item 1 swap#2513:12": "1:3954",
+              "Item 4#2542:4": false,
+              "Item 2 swap#2513:14": "1:3954",
+              "Item 3#2542:0": false,
+              "Item 2#2511:0": true,
+              "Column width": "Full"
+             },
+             "component": "Content item row [Column width=Full]"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "_Modal content",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 452,
+         "h": 152,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "pl": 16,
+         "pr": 16,
+         "pt": 16,
+         "pb": 16,
+         "gap": 16,
+         "r": 8,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "fill": [
+          "#F9FAFB"
+         ],
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/400",
+          "paddingLeft": "Spacing/400",
+          "paddingTop": "Spacing/400",
+          "paddingRight": "Spacing/400",
+          "paddingBottom": "Spacing/400",
+          "topLeftRadius": "Radius/200",
+          "topRightRadius": "Radius/200",
+          "bottomLeftRadius": "Radius/200",
+          "bottomRightRadius": "Radius/200",
+          "fills": "Color/surface/secondary-subtle"
+         },
+         "component": "_Modal content"
+        },
+        {
+         "name": "Content item row",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 698,
+         "h": 52,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "gap": 24,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/600",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Item 4 swap#2542:6": "1:3954",
+          "Item 3 swap#2542:2": "1:3954",
+          "Item 1 swap#2513:12": "1:3954",
+          "Item 4#2542:4": false,
+          "Item 2 swap#2513:14": "1:3954",
+          "Item 3#2542:0": false,
+          "Item 2#2511:0": true,
+          "Column width": "Full"
+         },
+         "component": "Content item row [Column width=Full]"
+        },
+        {
+         "name": "Content item row",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 698,
+         "h": 52,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "gap": 24,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/600",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Item 4 swap#2542:6": "1:3954",
+          "Item 3 swap#2542:2": "1:3954",
+          "Item 1 swap#2513:12": "1:3954",
+          "Item 4#2542:4": false,
+          "Item 2 swap#2513:14": "1:3954",
+          "Item 3#2542:0": false,
+          "Item 2#2511:0": true,
+          "Column width": "Full"
+         },
+         "component": "Content item row [Column width=Full]"
+        },
+        {
+         "name": "Content item row",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 698,
+         "h": 52,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "gap": 24,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/600",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Item 4 swap#2542:6": "1:3954",
+          "Item 3 swap#2542:2": "1:3954",
+          "Item 1 swap#2513:12": "1:3954",
+          "Item 4#2542:4": false,
+          "Item 2 swap#2513:14": "1:3954",
+          "Item 3#2542:0": false,
+          "Item 2#2511:0": true,
+          "Column width": "Full"
+         },
+         "component": "Content item row [Column width=Full]"
+        },
+        {
+         "name": "Content item row",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 698,
+         "h": 52,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "gap": 24,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/600",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Item 4 swap#2542:6": "1:3954",
+          "Item 3 swap#2542:2": "1:3954",
+          "Item 1 swap#2513:12": "1:3954",
+          "Item 4#2542:4": false,
+          "Item 2 swap#2513:14": "1:3954",
+          "Item 3#2542:0": false,
+          "Item 2#2511:0": true,
+          "Column width": "Full"
+         },
+         "component": "Content item row [Column width=Full]"
+        },
+        {
+         "name": "Content item row",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 698,
+         "h": 52,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "gap": 24,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/600",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Item 4 swap#2542:6": "1:3954",
+          "Item 3 swap#2542:2": "1:3954",
+          "Item 1 swap#2513:12": "1:3954",
+          "Item 4#2542:4": false,
+          "Item 2 swap#2513:14": "1:3954",
+          "Item 3#2542:0": false,
+          "Item 2#2511:0": true,
+          "Column width": "Full"
+         },
+         "component": "Content item row [Column width=Full]"
+        },
+        {
+         "name": "Content item row",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 698,
+         "h": 52,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "gap": 24,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/600",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Item 4 swap#2542:6": "1:3954",
+          "Item 3 swap#2542:2": "1:3954",
+          "Item 1 swap#2513:12": "1:3954",
+          "Item 4#2542:4": false,
+          "Item 2 swap#2513:14": "1:3954",
+          "Item 3#2542:0": false,
+          "Item 2#2511:0": true,
+          "Column width": "Full"
+         },
+         "component": "Content item row [Column width=Full]"
+        },
+        {
+         "name": "Vertical scrollbar",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 16,
+         "h": 596,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "pl": 4,
+         "pr": 4,
+         "pt": 4,
+         "pb": 4,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingLeft": "Spacing/100",
+          "paddingTop": "Spacing/100",
+          "paddingRight": "Spacing/100",
+          "paddingBottom": "Spacing/100"
+         },
+         "variant": {
+          "Length": "50%"
+         },
+         "component": "Vertical scrollbar [Length=50%]"
+        },
+        {
+         "name": "Frame 1000003479",
+         "type": "FRAME",
+         "w": 452,
+         "h": 178,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 8,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Space/200"
+         },
+         "kids": [
+          {
+           "name": "Section header",
+           "type": "INSTANCE",
+           "w": 452,
+           "h": 30,
+           "sizing": [
+            "FIXED",
+            "HUG"
+           ],
+           "gap": 20,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sws": [
+            1,
+            0,
+            0,
+            0
+           ],
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/500",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Badge#1985:2": false,
+            "More actions#2004:6": true,
+            "Divider#1985:5": false,
+            "Actions#1985:4": false,
+            "Supporting text#1985:3": false,
+            "Title#1985:6": "รวมค่าอะไหล่",
+            "Breakpoint": "Desktop"
+           },
+           "component": "Section header [Breakpoint=Desktop]",
+           "kids": [
+            {
+             "name": "Content",
+             "type": "FRAME",
+             "w": 452,
+             "h": 30,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "gap": 12,
+             "r": 0,
+             "dir": "HORIZONTAL",
+             "justify": "MIN",
+             "align": "MIN",
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/300"
+             },
+             "kids": [
+              {
+               "name": "Text and supporting text",
+               "type": "FRAME",
+               "w": 452,
+               "h": 30,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "gap": 8,
+               "r": 0,
+               "dir": "VERTICAL",
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "vars": {
+                "itemSpacing": "Spacing/200"
+               },
+               "kids": [
+                {
+                 "name": "Text and badge",
+                 "type": "FRAME",
+                 "w": 452,
+                 "h": 30,
+                 "sizing": [
+                  "FILL",
+                  "HUG"
+                 ],
+                 "gap": 12,
+                 "r": 0,
+                 "dir": "HORIZONTAL",
+                 "justify": "MIN",
+                 "align": "CENTER",
+                 "sw": 1,
+                 "strokeAlign": "INSIDE",
+                 "vars": {
+                  "itemSpacing": "Spacing/300"
+                 },
+                 "kids": [
+                  {
+                   "name": "Line",
+                   "type": "RECTANGLE",
+                   "w": 4,
+                   "h": 24,
+                   "sizing": [
+                    "FIXED",
+                    "FIXED"
+                   ],
+                   "r": 9999,
+                   "fill": [
+                    "#A80689"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "INSIDE",
+                   "vars": {
+                    "topLeftRadius": "Radius/full",
+                    "topRightRadius": "Radius/full",
+                    "bottomLeftRadius": "Radius/full",
+                    "bottomRightRadius": "Radius/full",
+                    "fills": "Color/icon/brand"
+                   }
+                  },
+                  {
+                   "name": "Text",
+                   "type": "TEXT",
+                   "w": 108,
+                   "h": 30,
+                   "sizing": [
+                    "HUG",
+                    "HUG"
+                   ],
+                   "fill": [
+                    "#000000"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "fills": "Color/text/primary",
+                    "letterSpacing": "IBM/Title/01/letter-spacing",
+                    "fontSize": "IBM/Title/01/font-size",
+                    "fontFamily": "IBM/font-family",
+                    "paragraphSpacing": "IBM/Title/01/font-size",
+                    "fontWeight": "IBM/Title/01/font-weight"
+                   },
+                   "font": {
+                    "fam": "IBM Plex Sans Thai",
+                    "style": "SemiBold",
+                    "size": 20,
+                    "lh": null
+                   },
+                   "text": "รวมค่าอะไหล่"
+                  },
+                  {
+                   "name": "Badge outline",
+                   "type": "INSTANCE",
+                   "visible": false,
+                   "w": 51,
+                   "h": 24,
+                   "sizing": [
+                    "HUG",
+                    "FIXED"
+                   ],
+                   "pl": 8,
+                   "pr": 8,
+                   "pt": 4,
+                   "pb": 4,
+                   "gap": 4,
+                   "r": 4,
+                   "dir": "HORIZONTAL",
+                   "justify": "CENTER",
+                   "align": "CENTER",
+                   "fill": [
+                    "#FFFFFF"
+                   ],
+                   "stroke": [
+                    "#D0D5DD"
+                   ],
+                   "sw": 1,
+                   "strokeAlign": "OUTSIDE",
+                   "vars": {
+                    "itemSpacing": "Spacing/100",
+                    "paddingLeft": "Spacing/200",
+                    "paddingTop": "Spacing/100",
+                    "paddingRight": "Spacing/200",
+                    "paddingBottom": "Spacing/100",
+                    "topLeftRadius": "Radius/100",
+                    "topRightRadius": "Radius/100",
+                    "bottomLeftRadius": "Radius/100",
+                    "bottomRightRadius": "Radius/100",
+                    "fills": "Color/surface/primary",
+                    "strokes": "Color/border/primary"
+                   },
+                   "variant": {
+                    "Text#2104:3": "Badge",
+                    "Color": "Gray"
+                   },
+                   "component": "Badge outline [Color=Gray]"
+                  }
+                 ]
+                },
+                {
+                 "name": "Supporting text",
+                 "type": "TEXT",
+                 "visible": false,
+                 "w": 1080,
+                 "h": 21,
+                 "sizing": [
+                  "FIXED",
+                  "FIXED"
+                 ],
+                 "fill": [
+                  "#475467"
+                 ],
+                 "sw": 1,
+                 "strokeAlign": "OUTSIDE",
+                 "vars": {
+                  "fills": "Color/text/secondary",
+                  "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+                  "fontSize": "IBM/Helper-text/01/font-size",
+                  "fontFamily": "IBM/font-family",
+                  "paragraphSpacing": "IBM/Helper-text/01/font-size",
+                  "fontWeight": "IBM/Helper-text/01/font-weight"
+                 },
+                 "font": {
+                  "fam": "IBM Plex Sans Thai",
+                  "style": "Regular",
+                  "size": 14,
+                  "lh": null,
+                  "ls": -0.20000000298023224
+                 },
+                 "text": "จำนวนที่เกินยอดในคลัง จะถูกตั้งเป็นรายการจัดซื้อให้อัตโนมัติ"
+                }
+               ]
+              },
+              {
+               "name": "Actions",
+               "type": "FRAME",
+               "visible": false,
+               "w": 348,
+               "h": 40,
+               "sizing": [
+                "FIXED",
+                "HUG"
+               ],
+               "gap": 12,
+               "r": 0,
+               "dir": "HORIZONTAL",
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "vars": {
+                "itemSpacing": "Spacing/300"
+               }
+              }
+             ]
+            },
+            {
+             "name": "Divider",
+             "type": "VECTOR",
+             "visible": false,
+             "w": 1440,
+             "h": 1,
+             "sizing": [
+              "FIXED",
+              "FIXED"
+             ],
+             "r": 0,
+             "fill": [
+              "#D0D5DD"
+             ],
+             "sw": 1,
+             "strokeAlign": "CENTER",
+             "vars": {
+              "fills": "Color/icon/tertiary"
+             }
+            }
+           ]
+          },
+          {
+           "name": "Frame 1000003431",
+           "type": "FRAME",
+           "w": 452,
+           "h": 21,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 16,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "kids": [
+            {
+             "name": "Supporting text",
+             "type": "TEXT",
+             "w": 218,
+             "h": 21,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "fill": [
+              "#475467"
+             ],
+             "sw": 1,
+             "strokeAlign": "OUTSIDE",
+             "vars": {
+              "fills": "Color/text/secondary",
+              "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+              "fontSize": "IBM/Helper-text/01/font-size",
+              "fontFamily": "IBM/font-family",
+              "paragraphSpacing": "IBM/Helper-text/01/font-size",
+              "fontWeight": "IBM/Helper-text/01/font-weight"
+             },
+             "font": {
+              "fam": "IBM Plex Sans Thai",
+              "style": "Regular",
+              "size": 14,
+              "lh": null,
+              "ls": -0.20000000298023224
+             },
+             "text": "เบิกจาก Smart Inventory "
+            },
+            {
+             "name": "Text",
+             "type": "TEXT",
+             "w": 218,
+             "h": 21,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "fill": [
+              "#475467"
+             ],
+             "sw": 1,
+             "strokeAlign": "OUTSIDE",
+             "vars": {
+              "fills": "Color/text/secondary",
+              "letterSpacing": "IBM/Label/03/letter-spacing",
+              "fontSize": "IBM/Label/03/font-size",
+              "fontFamily": "IBM/Label/03/font-family",
+              "paragraphSpacing": "IBM/Label/03/letter-spacing",
+              "fontWeight": "IBM/Label/03/font-weight"
+             },
+             "font": {
+              "fam": "IBM Plex Sans Thai",
+              "style": "SemiBold",
+              "size": 14,
+              "lh": null,
+              "ls": -0.20000000298023224,
+              "align": "RIGHT"
+             },
+             "text": "5,730 บาท"
+            }
+           ]
+          },
+          {
+           "name": "Frame 1000003433",
+           "type": "FRAME",
+           "w": 452,
+           "h": 21,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 16,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "kids": [
+            {
+             "name": "Supporting text",
+             "type": "TEXT",
+             "w": 218,
+             "h": 21,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "fill": [
+              "#475467"
+             ],
+             "sw": 1,
+             "strokeAlign": "OUTSIDE",
+             "vars": {
+              "fills": "Color/text/secondary",
+              "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+              "fontSize": "IBM/Helper-text/01/font-size",
+              "fontFamily": "IBM/font-family",
+              "paragraphSpacing": "IBM/Helper-text/01/font-size",
+              "fontWeight": "IBM/Helper-text/01/font-weight"
+             },
+             "font": {
+              "fam": "IBM Plex Sans Thai",
+              "style": "Regular",
+              "size": 14,
+              "lh": null,
+              "ls": -0.20000000298023224
+             },
+             "text": "เบิกจากคลังสำรอง"
+            },
+            {
+             "name": "Text",
+             "type": "TEXT",
+             "w": 218,
+             "h": 21,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "fill": [
+              "#475467"
+             ],
+             "sw": 1,
+             "strokeAlign": "OUTSIDE",
+             "vars": {
+              "fills": "Color/text/secondary",
+              "letterSpacing": "IBM/Label/03/letter-spacing",
+              "fontSize": "IBM/Label/03/font-size",
+              "fontFamily": "IBM/Label/03/font-family",
+              "paragraphSpacing": "IBM/Label/03/letter-spacing",
+              "fontWeight": "IBM/Label/03/font-weight"
+             },
+             "font": {
+              "fam": "IBM Plex Sans Thai",
+              "style": "SemiBold",
+              "size": 14,
+              "lh": null,
+              "ls": -0.20000000298023224,
+              "align": "RIGHT"
+             },
+             "text": "2,640 บาท"
+            }
+           ]
+          },
+          {
+           "name": "Frame 1000003427",
+           "type": "FRAME",
+           "w": 452,
+           "h": 21,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 16,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "kids": [
+            {
+             "name": "Supporting text",
+             "type": "TEXT",
+             "w": 218,
+             "h": 21,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "fill": [
+              "#475467"
+             ],
+             "sw": 1,
+             "strokeAlign": "OUTSIDE",
+             "vars": {
+              "fills": "Color/text/secondary",
+              "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+              "fontSize": "IBM/Helper-text/01/font-size",
+              "fontFamily": "IBM/font-family",
+              "paragraphSpacing": "IBM/Helper-text/01/font-size",
+              "fontWeight": "IBM/Helper-text/01/font-weight"
+             },
+             "font": {
+              "fam": "IBM Plex Sans Thai",
+              "style": "Regular",
+              "size": 14,
+              "lh": null,
+              "ls": -0.20000000298023224
+             },
+             "text": "จัดซื้ออะไหล่เพิ่มโดย Smart Inventory "
+            },
+            {
+             "name": "Text",
+             "type": "TEXT",
+             "w": 218,
+             "h": 21,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "fill": [
+              "#475467"
+             ],
+             "sw": 1,
+             "strokeAlign": "OUTSIDE",
+             "vars": {
+              "fills": "Color/text/secondary",
+              "letterSpacing": "IBM/Label/03/letter-spacing",
+              "fontSize": "IBM/Label/03/font-size",
+              "fontFamily": "IBM/Label/03/font-family",
+              "paragraphSpacing": "IBM/Label/03/letter-spacing",
+              "fontWeight": "IBM/Label/03/font-weight"
+             },
+             "font": {
+              "fam": "IBM Plex Sans Thai",
+              "style": "SemiBold",
+              "size": 14,
+              "lh": null,
+              "ls": -0.20000000298023224,
+              "align": "RIGHT"
+             },
+             "text": "2,180 บาท"
+            }
+           ]
+          },
+          {
+           "name": "Frame 1000003432",
+           "type": "FRAME",
+           "w": 452,
+           "h": 21,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 16,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "kids": [
+            {
+             "name": "Supporting text",
+             "type": "TEXT",
+             "w": 218,
+             "h": 21,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "fill": [
+              "#475467"
+             ],
+             "sw": 1,
+             "strokeAlign": "OUTSIDE",
+             "vars": {
+              "fills": "Color/text/secondary",
+              "letterSpacing": "IBM/Helper-text/01/letter-spacing",
+              "fontSize": "IBM/Helper-text/01/font-size",
+              "fontFamily": "IBM/font-family",
+              "paragraphSpacing": "IBM/Helper-text/01/font-size",
+              "fontWeight": "IBM/Helper-text/01/font-weight"
+             },
+             "font": {
+              "fam": "IBM Plex Sans Thai",
+              "style": "Regular",
+              "size": 14,
+              "lh": null,
+              "ls": -0.20000000298023224
+             },
+             "text": "จัดซื้ออะไหล่เพิ่มโดย กบค."
+            },
+            {
+             "name": "Text",
+             "type": "TEXT",
+             "w": 218,
+             "h": 21,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "fill": [
+              "#475467"
+             ],
+             "sw": 1,
+             "strokeAlign": "OUTSIDE",
+             "vars": {
+              "fills": "Color/text/secondary",
+              "letterSpacing": "IBM/Label/03/letter-spacing",
+              "fontSize": "IBM/Label/03/font-size",
+              "fontFamily": "IBM/Label/03/font-family",
+              "paragraphSpacing": "IBM/Label/03/letter-spacing",
+              "fontWeight": "IBM/Label/03/font-weight"
+             },
+             "font": {
+              "fam": "IBM Plex Sans Thai",
+              "style": "SemiBold",
+              "size": 14,
+              "lh": null,
+              "ls": -0.20000000298023224,
+              "align": "RIGHT"
+             },
+             "text": "5,140 บาท"
+            }
+           ]
+          },
+          {
+           "name": "Frame 1000003429",
+           "type": "FRAME",
+           "w": 452,
+           "h": 24,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 16,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "kids": [
+            {
+             "name": "Text",
+             "type": "TEXT",
+             "w": 218,
+             "h": 21,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "fill": [
+              "#475467"
+             ],
+             "sw": 1,
+             "strokeAlign": "OUTSIDE",
+             "vars": {
+              "fills": "Color/text/secondary",
+              "letterSpacing": "IBM/Label/03/letter-spacing",
+              "fontSize": "IBM/Label/03/font-size",
+              "fontFamily": "IBM/Label/03/font-family",
+              "paragraphSpacing": "IBM/Label/03/letter-spacing",
+              "fontWeight": "IBM/Label/03/font-weight"
+             },
+             "font": {
+              "fam": "IBM Plex Sans Thai",
+              "style": "SemiBold",
+              "size": 14,
+              "lh": null,
+              "ls": -0.20000000298023224
+             },
+             "text": "รวม"
+            },
+            {
+             "name": "Text",
+             "type": "TEXT",
+             "w": 218,
+             "h": 24,
+             "sizing": [
+              "FILL",
+              "HUG"
+             ],
+             "fill": [
+              "#475467"
+             ],
+             "sw": 1,
+             "strokeAlign": "OUTSIDE",
+             "vars": {
+              "fills": "Color/text/secondary",
+              "letterSpacing": "IBM/Label/02/letter-spacing",
+              "fontSize": "IBM/Label/02/font-size",
+              "fontFamily": "IBM/Label/02/font-family",
+              "paragraphSpacing": "IBM/Label/02/font-size",
+              "fontWeight": "IBM/Label/02/font-weight"
+             },
+             "font": {
+              "fam": "IBM Plex Sans Thai",
+              "style": "SemiBold",
+              "size": 16,
+              "lh": null,
+              "ls": -0.20000000298023224,
+              "align": "RIGHT"
+             },
+             "text": "18,880 บาท"
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal footer",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 85,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pb": 24,
+       "r": [
+        0,
+        0,
+        12,
+        12
+       ],
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "fill": [
+        "#FFFFFF"
+       ],
+       "sws": [
+        1,
+        0,
+        0,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingBottom": "Spacing/600",
+        "bottomLeftRadius": "Radius/300",
+        "bottomRightRadius": "Radius/300",
+        "fills": "Color/surface/primary"
+       },
+       "variant": {
+        "Tertiary action#2560:61": false,
+        "Divider#2487:0": true,
+        "Primary action#2505:14": true,
+        "Padding top#2487:4": false,
+        "Secondary action#106:3": true,
+        "Alignment": "Horizontal right"
+       },
+       "component": "Modal footer [Alignment=Horizontal right]",
+       "kids": [
+        {
+         "name": "Padding top",
+         "type": "FRAME",
+         "visible": false,
+         "w": 560,
+         "h": 24,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "w": 500,
+         "h": 21,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pb": 20,
+         "gap": 8,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingBottom": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 500,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]",
+           "kids": [
+            {
+             "name": "Divider",
+             "type": "VECTOR",
+             "w": 500,
+             "h": 1,
+             "sizing": [
+              "FILL",
+              "FIXED"
+             ],
+             "r": 0,
+             "fill": [
+              "#D0D5DD"
+             ],
+             "sw": 1,
+             "strokeAlign": "CENTER",
+             "vars": {
+              "fills": "Color/icon/tertiary"
+             }
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "name": "Actions",
+         "type": "FRAME",
+         "w": 500,
+         "h": 40,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MAX",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Tertiary brand button",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 59,
+           "h": 40,
+           "sizing": [
+            "HUG",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "1:107",
+            "Button text#1153:12": true,
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "1:107",
+            "Leading icon#105:2": false,
+            "Text#105:0": "Button",
+            "State": "Default"
+           },
+           "component": "Tertiary brand button [State=Default]"
+          },
+          {
+           "name": "Primary and secondary actions",
+           "type": "FRAME",
+           "w": 452,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 12,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MAX",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/300"
+           },
+           "kids": [
+            {
+             "name": "Secondary button",
+             "type": "INSTANCE",
+             "w": 100,
+             "h": 40,
+             "sizing": [
+              "FIXED",
+              "FIXED"
+             ],
+             "pl": 12,
+             "pr": 12,
+             "pt": 8,
+             "pb": 8,
+             "gap": 4,
+             "r": 8,
+             "dir": "HORIZONTAL",
+             "justify": "CENTER",
+             "align": "CENTER",
+             "fill": [
+              "#FFFFFF"
+             ],
+             "stroke": [
+              "#D0D5DD"
+             ],
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/100",
+              "paddingLeft": "Spacing/300",
+              "paddingTop": "Spacing/200",
+              "paddingRight": "Spacing/300",
+              "paddingBottom": "Spacing/200",
+              "topLeftRadius": "Radius/200",
+              "topRightRadius": "Radius/200",
+              "bottomLeftRadius": "Radius/200",
+              "bottomRightRadius": "Radius/200",
+              "fills": "Color/component/button/secondary/surface",
+              "strokes": "Color/border/primary"
+             },
+             "variant": {
+              "Leading icon swap#133:10": "1:107",
+              "Button text#1246:27": true,
+              "Trailing icon#105:4": false,
+              "Trailing icon swap#133:12": "1:107",
+              "Leading icon#105:2": false,
+              "Text#105:0": "ปิด",
+              "State": "Default",
+              "Size": "md"
+             },
+             "component": "Secondary button [State=Default, Size=md]",
+             "kids": [
+              {
+               "name": "crop_free-20-400-round",
+               "type": "INSTANCE",
+               "visible": false,
+               "w": 20,
+               "h": 20,
+               "sizing": [
+                "FIXED",
+                "FIXED"
+               ],
+               "r": 0,
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "component": "crop_free-20-400-round"
+              },
+              {
+               "name": "Text",
+               "type": "TEXT",
+               "w": 76,
+               "h": 21,
+               "sizing": [
+                "FILL",
+                "HUG"
+               ],
+               "fill": [
+                "#475467"
+               ],
+               "sw": 1,
+               "strokeAlign": "OUTSIDE",
+               "vars": {
+                "fills": "Color/component/button/secondary/text",
+                "letterSpacing": "IBM/Label/03/letter-spacing",
+                "fontSize": "IBM/Label/03/font-size",
+                "fontFamily": "IBM/font-family",
+                "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                "fontWeight": "IBM/Label/03/font-weight"
+               },
+               "font": {
+                "fam": "IBM Plex Sans Thai",
+                "style": "SemiBold",
+                "size": 14,
+                "lh": null,
+                "ls": -0.20000000298023224,
+                "align": "CENTER"
+               },
+               "text": "ปิด"
+              },
+              {
+               "name": "crop_free-20-400-round",
+               "type": "INSTANCE",
+               "visible": false,
+               "w": 20,
+               "h": 20,
+               "sizing": [
+                "FIXED",
+                "FIXED"
+               ],
+               "r": 0,
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "component": "crop_free-20-400-round"
+              }
+             ]
+            },
+            {
+             "name": "Primary button",
+             "type": "INSTANCE",
+             "w": 100,
+             "h": 40,
+             "sizing": [
+              "FIXED",
+              "FIXED"
+             ],
+             "pl": 12,
+             "pr": 12,
+             "pt": 8,
+             "pb": 8,
+             "gap": 4,
+             "r": 8,
+             "dir": "HORIZONTAL",
+             "justify": "CENTER",
+             "align": "CENTER",
+             "fill": [
+              "#A80689"
+             ],
+             "sw": 1,
+             "strokeAlign": "INSIDE",
+             "vars": {
+              "itemSpacing": "Spacing/100",
+              "paddingLeft": "Spacing/300",
+              "paddingTop": "Spacing/200",
+              "paddingRight": "Spacing/300",
+              "paddingBottom": "Spacing/200",
+              "topLeftRadius": "Radius/200",
+              "topRightRadius": "Radius/200",
+              "bottomLeftRadius": "Radius/200",
+              "bottomRightRadius": "Radius/200",
+              "fills": "Color/component/button/primary/surface"
+             },
+             "variant": {
+              "Leading icon swap#133:10": "1:107",
+              "Trailing icon#105:4": false,
+              "Trailing icon swap#133:12": "1:107",
+              "Leading icon#105:2": false,
+              "Button text#1246:11": true,
+              "Text#105:0": "ยืนยัน",
+              "State": "Default",
+              "Size": "md"
+             },
+             "component": "Primary button [State=Default, Size=md]",
+             "kids": [
+              {
+               "name": "crop_free-20-400-round",
+               "type": "INSTANCE",
+               "visible": false,
+               "w": 20,
+               "h": 20,
+               "sizing": [
+                "FIXED",
+                "FIXED"
+               ],
+               "r": 0,
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "component": "crop_free-20-400-round"
+              },
+              {
+               "name": "Text",
+               "type": "TEXT",
+               "w": 34,
+               "h": 21,
+               "sizing": [
+                "HUG",
+                "HUG"
+               ],
+               "fill": [
+                "#FFFFFF"
+               ],
+               "sw": 1,
+               "strokeAlign": "OUTSIDE",
+               "vars": {
+                "fills": "Color/component/button/primary/text",
+                "letterSpacing": "IBM/Label/03/letter-spacing",
+                "fontSize": "IBM/Label/03/font-size",
+                "fontFamily": "IBM/font-family",
+                "paragraphSpacing": "IBM/Label/03/letter-spacing",
+                "fontWeight": "IBM/Label/03/font-weight"
+               },
+               "font": {
+                "fam": "IBM Plex Sans Thai",
+                "style": "SemiBold",
+                "size": 14,
+                "lh": null,
+                "ls": -0.20000000298023224
+               },
+               "text": "ยืนยัน"
+              },
+              {
+               "name": "crop_free-20-400-round",
+               "type": "INSTANCE",
+               "visible": false,
+               "w": 20,
+               "h": 20,
+               "sizing": [
+                "FIXED",
+                "FIXED"
+               ],
+               "r": 0,
+               "justify": "MIN",
+               "align": "MIN",
+               "sw": 1,
+               "strokeAlign": "INSIDE",
+               "component": "crop_free-20-400-round"
+              }
+             ]
+            }
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
