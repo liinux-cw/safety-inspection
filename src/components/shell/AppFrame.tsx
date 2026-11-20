@@ -33,7 +33,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
   const path = (usePathname() || "/").replace(/\/$/, "");
   const active = path.startsWith("/docs") ? DOCS_LABEL : MT_LABEL;
   const vendor = vendorOf(useRole());
-  const menu = SIDEBAR_MENU.map((g) => (g.items ? { ...g, items: g.items.filter((s) => (vendor ? s.Text === DOCS_LABEL : s.Text === MT_LABEL)) } : g));
+  const menu = SIDEBAR_MENU.map((g) => (g.items ? { ...g, items: g.items.filter((s) => s.Text !== (vendor ? MT_LABEL : DOCS_LABEL)) } : g));
 
   const expanded = pinned || hover;
   return (

@@ -11,6 +11,7 @@ import { DisplayBox } from "@/components/patterns/DisplayBox";
 import { PopupModal } from "@/components/patterns/PopupModal";
 import { Alert } from "@/components/vms/Alert";
 import { ContentDivider } from "@/components/vms/ContentDivider";
+import { ContentItemRow } from "@/components/vms/ContentItemRow";
 import { DatePicker } from "@/components/vms/DatePicker";
 import { FileUpload } from "@/components/vms/FileUpload";
 import { InputLabel } from "@/components/vms/InputLabel";
@@ -187,7 +188,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
       showOk={review} ok="ยืนยันผลการพิจารณา" okDisabled={!decided} onOk={confirm} cancel={review ? "ยกเลิก" : "ปิด"}
       onCancel={() => { if (!ro && st !== "none" && left.length) notify("บันทึกไว้แล้ว ยังขาด: " + left.join(", ")); onClose(); }}>
       <div className="flex flex-col gap-4">
-        {mob && <p className="text-sm text-gray-600">{summary}</p>}
+        {mob && <ContentItemRow perRow={2} items={[["ทะเบียน", v.plate], ["รหัส", v.code], ["ประเภทยานพาหนะ", v.type], ["วาระการตรวจ", v.cycle + " เดือน"]]} />}
         {st === "approved" && <Alert Color="Success" Text={"กบค. อนุมัติแล้วเมื่อ " + dateText(c.approvedAt!)} SupportingText="ผลที่อนุมัติแล้วแก้ไขหรือลบไม่ได้ ดูและดาวน์โหลดได้" />}
         {st === "sent" && <Alert Color="Info" Text={"ส่งอนุมัติแล้วเมื่อ " + dateText(c.sentAt!) + " · รอ กบค. อนุมัติ"} SupportingText={canEdit ? "ระหว่างรออนุมัติแก้ไขหรือลบไม่ได้ ดูและดาวน์โหลดได้" : undefined} />}
         {st === "returned" && <Alert Color="Error" Text="กบค. ส่งกลับแก้ไข" SupportingText={c.returnReason + (canEdit ? " · แก้ไขแล้วกดส่งอนุมัติอีกครั้ง" : "")} />}
@@ -203,6 +204,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
             ["ครบกำหนดตรวจเดิม", dateText(v.due)],
             ...(c.date && !inRound(c.date) ? [["หมายเหตุ", "วันที่ตรวจอยู่นอกรอบตรวจของแผน"] as [string, string]] : []),
             ...(c.result === "ตรวจไม่ได้" ? [["เหตุผลที่ตรวจไม่ได้", c.reason || "-"] as [string, string]] : []),
+            ...(!c.files.length ? [[docLabel(c), "ยังไม่มีเอกสาร"] as [string, string]] : []),
           ]} />
         ) : <>
           <div className="flex flex-col gap-4 sm:flex-row">
@@ -232,14 +234,12 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
           )}
         </>}
 
-        {ro && !c.files.length
-          ? <Alert Color="Gray" Text="ยังไม่มีเอกสาร" />
-          : <FileUpload LabelText={docLabel(c)} files={c.files} hint={UPLOAD_HINT} max={UPLOAD_MAX_FILES} accept={UPLOAD_ACCEPT} readonly={ro}
+        {!(ro && !c.files.length) && <FileUpload LabelText={docLabel(c)} files={c.files} hint={UPLOAD_HINT} max={UPLOAD_MAX_FILES} accept={UPLOAD_ACCEPT} readonly={ro}
               HelperText={error ?? fileErr ?? undefined} Error={!!error || !!fileErr}
               onFiles={(f) => { touch("files"); onFiles(f); }} onDelete={(i) => { removeFile(plan.mr, car, i); setError(null); touch("files"); }} onDownload={(i) => downloadFile(c.files[i].name)} />}
         {!ro && out && <Alert Color={out.Color} Text={out.Text} />}
         {!ro && st !== "none" && (left.length
-          ? <Alert Color="Warning" Text={"ยังขาด: " + left.join(", ")} />
+          ? <Alert Color="Gray" Text={"ยังขาด: " + left.join(", ")} />
           : <Alert Color="Success" Text="ข้อมูลครบ พร้อมส่งอนุมัติ" SupportingText="กดปุ่มส่งอนุมัติที่หน้าแผน" />)}
 
         {review && <>

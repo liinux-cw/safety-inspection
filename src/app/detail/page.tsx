@@ -17,12 +17,14 @@ import { SectionHeader } from "@/components/vms/SectionHeader";
 import { approveDocs, approvedCount, deletePlan, editable, pendingCars, pendingCount } from "@/lib/mock/plan";
 import { PrimaryButton } from "@/components/vms/PrimaryButton";
 import { notify, useHydrated, useMock, useQuery } from "@/lib/mock/store";
+import { useBreakpoint } from "@/lib/useBreakpoint";
 
 export default function PlanDetail() {
   const router = useRouter();
   const mock = useMock();
   const mr = useQuery("mr");
   const hydrated = useHydrated();
+  const mob = useBreakpoint() === "Mobile";
   const plan = mock.plans.find((p) => p.mr === mr);
   const [del, setDel] = useState(false);
   /* D: ติ๊กหลายคันที่รออนุมัติ แล้วอนุมัติพร้อมกัน */
@@ -30,16 +32,16 @@ export default function PlanDetail() {
   const [bulk, setBulk] = useState(false);
   const pend = plan ? pendingCars(mock, plan) : [];
   const sel = ticked.filter((c) => pend.includes(c));
-  const crumbs = [{ Text: "Safety Inspection" }, { Text: "แผนตรวจ ปจ.2", href: "/" }, { Text: "รายละเอียดแผน" }];
+  const crumbs = [{ Text: "งานซ่อมและบำรุงรักษา" }, { Text: "แผนตรวจ ปจ.2", href: "/" }, { Text: "รายละเอียดแผน" }];
   return (
     <AppFrame>
       <RoleGate kbk>
         {!hydrated ? null : !plan ? <EmptyStateDataEmpty Text="ไม่พบแผนนี้" SupportingText="แผนอาจถูกลบไปแล้ว" /> : <>
           <PageHeader Title={plan.name} SupportingText={plan.mr} onBack={() => router.push("/")} crumbs={crumbs}
-            Actions={editable(plan) ? <div className="flex gap-3">
-              <SecondaryDangerButton Text="ลบ" LeadingIconSwap="delete-24-300-round" onClick={() => setDel(true)} />
-              <SecondaryButton Text="แก้ไข" LeadingIconSwap="stylus-24-300-round" onClick={() => router.push("/edit/?mr=" + plan.mr)} />
-            </div> : undefined} />
+            Actions={editable(plan) ? <>
+              <SecondaryDangerButton Text="ลบ" LeadingIconSwap="delete-24-300-round" Size={mob ? "lg" : "md"} onClick={() => setDel(true)} />
+              <SecondaryButton Text="แก้ไข" LeadingIconSwap="stylus-24-300-round" Size={mob ? "lg" : "md"} onClick={() => router.push("/edit/?mr=" + plan.mr)} />
+            </> : undefined} />
           <div className="flex flex-col gap-8">
             {pendingCount(mock, plan) > 0 && <Alert Color="Info" Text={"มีผลการตรวจ ปจ.2 รออนุมัติ " + pendingCount(mock, plan) + " คัน"} SupportingText="ติ๊กหลายคันแล้วกดอนุมัติพร้อมกัน หรือกดไอคอนพิจารณาท้ายแถวเพื่อดูทีละคัน/ส่งกลับแก้ไข" />}
             <PlanInfo plan={plan} />
