@@ -17,7 +17,7 @@ import { SecondaryButton } from "@/components/vms/SecondaryButton";
 import { SectionHeader } from "@/components/vms/SectionHeader";
 import { cx } from "@/lib/cx";
 import { UPLOAD_HINT } from "@/lib/mock/data";
-import { addFiles, approvedCount, carDocs, missing, readyCars, removeFile, returnedCount, submitDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
+import { addFiles, approvedCount, carDocs, missing, readyCars, removeFile, returnedCount, submitDocs, updateResult, vendorCanEdit, vendorCanWork, vendorSees } from "@/lib/mock/plan";
 import { TODAY, VEHICLE_BY_ID } from "@/lib/mock/data";
 import { useProtoForm } from "@/lib/protoForm";
 import { notify, useHydrated, useMock, useQuery, useRole, vendorOf } from "@/lib/mock/store";
@@ -31,9 +31,9 @@ export default function VendorPlan() {
   const mr = useQuery("mr");
   const hydrated = useHydrated();
   const [ask, setAsk] = useState(false);
-  const plan = mock.plans.find((p) => p.mr === mr && p.vendor === vendor);
+  const plan = mock.plans.find((p) => p.mr === mr && p.vendor === vendor && vendorSees(p));
   const ready = plan ? readyCars(mock, plan) : [];
-  /* ผู้รับจ้างบันทึก/ส่งผลได้ทันทีหลังสร้างแผน จนกว่าแผนจะปิด */
+  /* ผู้รับจ้างบันทึก/ส่งผลได้เมื่อแผนอนุมัติแล้ว จนกว่า กบค. ขอปิดงาน */
   const open = !!plan && vendorCanWork(plan);
   /* ต้นแบบ: กรอกข้อมูลตัวอย่าง = กรอกผลผ่าน + ค่าจ้าง + ไฟล์ตัวอย่างให้ทุกคันที่ยังแก้ได้และยังไม่ครบ · ล้างค่า = ล้างผลและไฟล์ของคันที่ยังแก้ได้ */
   const editableCars = plan && open ? plan.cars.filter((c) => vendorCanEdit(carDocs(mock, plan.mr, c))) : [];
@@ -53,7 +53,7 @@ export default function VendorPlan() {
   return (
     <AppFrame>
       <RoleGate vendor>
-        {!hydrated ? null : !plan ? <EmptyStateDataEmpty Text="ไม่พบแผนนี้" SupportingText="แผนนี้ไม่ได้ระบุคุณเป็นผู้รับจ้าง หรือถูกลบไปแล้ว" /> : <>
+        {!hydrated ? null : !plan ? <EmptyStateDataEmpty Text="ไม่พบแผนนี้" SupportingText="แผนนี้ไม่ได้ระบุคุณเป็นผู้รับจ้าง ยังไม่ได้รับอนุมัติ หรือถูกลบไปแล้ว" /> : <>
           <PageHeader Title={plan.name} SupportingText={plan.mr} onBack={() => router.push("/docs/")}
             crumbs={[{ Text: "Safety Inspection" }, { Text: "เอกสาร ปจ.2", href: "/docs/" }, { Text: plan.mr }]} />
           <div className="flex flex-col gap-8">
@@ -62,7 +62,7 @@ export default function VendorPlan() {
                 {returnedCount(mock, plan) > 0 && <Alert Color="Error" Text={"กบค. ส่งกลับแก้ไข " + returnedCount(mock, plan) + " คัน"} SupportingText="เปิดคันที่ถูกส่งกลับเพื่อดูเหตุผล แก้ไขผลหรือเอกสาร แล้วกดส่งอนุมัติอีกครั้ง" />}
                 <Alert Color="Info" Text="บันทึกผลตรวจ ปจ.2 รายคันแล้วกดส่งอนุมัติให้ กบค." SupportingText={"ต่อคัน: วันที่ตรวจ · ค่าจ้างตรวจ (ตั้งต้นตามสัญญาของคันนั้น) · ผลการตรวจ · เอกสาร ปจ.2 (" + UPLOAD_HINT + ", อย่างน้อย 1 ไฟล์) · ตรวจไม่ได้ = เหตุผล + หนังสือรับรองจากผู้แทนหน่วยงาน · ส่งแล้วแก้ไขไม่ได้ระหว่างรอ กบค. อนุมัติ"} />
               </>
-              : <Alert Color="Gray" Text="แผนนี้ปิดงานแล้ว" SupportingText="ดูและดาวน์โหลดเอกสารที่ส่งไปแล้วได้อย่างเดียว" />}
+              : <Alert Color="Gray" Text={plan.status === "closing" ? "แผนนี้อยู่ระหว่างขออนุมัติปิดงาน" : "แผนนี้ปิดงานแล้ว"} SupportingText="ดูและดาวน์โหลดเอกสารที่ส่งไปแล้วได้อย่างเดียว" />}
             <PlanInfo plan={plan} />
             <section className="flex flex-col gap-4">
               <SectionHeader Title="ผลการตรวจ ปจ.2 รายคัน" Badge={"อนุมัติแล้ว " + approvedCount(mock, plan) + "/" + plan.cars.length + " คัน"} />

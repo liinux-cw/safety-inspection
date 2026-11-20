@@ -127,11 +127,11 @@ export function PlanForm({ plan }: { plan?: Plan }) {
     const done = d;
     if (plan) {
       updatePlan(plan.mr, done);
-      notify("บันทึกและส่งอนุมัติแผน " + plan.mr + " สำเร็จ");
+      notify("บันทึกแผน " + plan.mr + " และส่งให้หัวหน้า กบค. อนุมัติอีกครั้งแล้ว");
       router.push("/detail/?mr=" + plan.mr);
     } else {
       const mr = createPlan(done);
-      notify("สร้างแผนตรวจ ปจ.2 " + mr + " สำเร็จ · ส่งให้ " + (VENDOR_BY_ID[d.vendor]?.name ?? "ผู้รับจ้าง") + " แล้ว");
+      notify("สร้างแผนตรวจ ปจ.2 " + mr + " และส่งให้หัวหน้า กบค. อนุมัติแล้ว");
       router.push("/");
     }
   };
@@ -169,7 +169,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
       <PageHeader Title={heading} SupportingText={plan?.mr} onBack={leave}
         crumbs={[{ Text: "Safety Inspection" }, { Text: "แผนตรวจ ปจ.2", onClick: leave }, { Text: heading }]} />
       <div className="flex flex-col gap-8">
-        {plan?.status === "returned" && <Alert Color="Error" Text="ผู้อนุมัติส่งกลับให้แก้ไข" SupportingText="แก้ไขแล้วกดบันทึกและส่งอนุมัติอีกครั้ง" />}
+        {plan?.status === "returned" && <Alert Color="Error" Text="หัวหน้า กบค. ส่งกลับให้แก้ไข" SupportingText={(plan.returnReason ? plan.returnReason + " · " : "") + "แก้ไขแล้วกดบันทึกและส่งอนุมัติอีกครั้ง"} />}
         <section className="flex flex-col gap-4">
           <SectionHeader Title="ข้อมูลแผน" />
           <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-2")}>
@@ -190,7 +190,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
         </section>
 
         <section className="flex flex-col gap-4">
-          <SectionHeader Title="ข้อมูลผู้รับจ้าง" SupportingText="ผู้รับจ้างเห็นแผนทันทีหลังสร้าง แล้วบันทึกผลตรวจส่งให้ กบค. อนุมัติได้เลย" />
+          <SectionHeader Title="ข้อมูลผู้รับจ้าง" SupportingText="ผู้รับจ้างเห็นแผนหลังหัวหน้า กบค. อนุมัติแผน แล้วบันทึกผลตรวจส่งให้ กบค. พิจารณา" />
           <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-2")}>
             {vendorLocked ? <TextInput LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} State="Readonly" readOnly HelperText="เปลี่ยนไม่ได้ ผู้รับจ้างบันทึกผลตรวจในแผนนี้แล้ว" /> :
             <InputDropdown LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} Placeholder="เลือกผู้รับจ้าง" open={dd === "vendor"} onOpenChange={ddOpen("vendor")}

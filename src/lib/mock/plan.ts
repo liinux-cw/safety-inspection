@@ -9,8 +9,10 @@ export const draftOf = (p: Plan): Draft => ({ name: p.name, fy: p.fy, from: p.fr
 
 /** แก้ไข/ลบได้เฉพาะแผนที่ยังไม่อนุมัติ (รออนุมัติ · ส่งกลับแก้ไข) */
 export const editable = (p: Plan) => p.status === "review" || p.status === "returned";
-/** ผู้รับจ้างบันทึก/ส่งผลได้ทันทีหลัง กบค. สร้างแผน จนกว่าแผนจะปิด (เจ้าของงาน 20 พ.ย. 2569: ไม่ต้องรอแผนอนุมัติ) */
-export const vendorCanWork = (p: Plan) => p.status !== "closed";
+/** ผู้รับจ้างเห็นแผนหลังหัวหน้า กบค. อนุมัติแล้ว (เจ้าของงาน 20 พ.ย. 2569) */
+export const vendorSees = (p: Plan) => p.status === "approved" || p.status === "closing" || p.status === "closed";
+/** ผู้รับจ้างบันทึก/ส่งผลได้เมื่อแผนอนุมัติแล้วและยังไม่ขอปิดงาน */
+export const vendorCanWork = (p: Plan) => p.status === "approved";
 /** คันที่ผู้รับจ้างเริ่มกรอกผลแล้ว — เอาออกจากแผนไม่ได้ */
 export const hasWork = (s: MockState, mr: string, car: string) => { const d = s.docs[mr]?.[car]; return !!d && !!(d.date || d.result || d.files.length || d.sentAt || d.approvedAt); };
 /** ค่าจ้างของคัน (ไม่ระบุ = ตามสัญญา) */
@@ -35,12 +37,12 @@ type Done = Draft;
 export function createPlan(d: Done): string {
   const s = getMock();
   const mr = "MRZ" + (s.lastMr + 1);
-  setMock((x) => ({ ...x, lastMr: x.lastMr + 1, plans: [{ mr, ...d, cars: [...d.cars], status: "review" }, ...x.plans] }));
+  setMock((x) => ({ ...x, lastMr: x.lastMr + 1, plans: [{ mr, ...d, cars: [...d.cars], status: "review", submittedAt: TODAY }, ...x.plans] }));
   return mr;
 }
 /** บันทึกแผนที่แก้ไข — แผนที่ส่งกลับแก้ไขกลับไปรออนุมัติ */
 export function updatePlan(mr: string, d: Done) {
-  setMock((x) => ({ ...x, plans: x.plans.map((p) => (p.mr === mr ? { ...p, ...d, cars: [...d.cars], status: "review" } : p)) }));
+  setMock((x) => ({ ...x, plans: x.plans.map((p) => (p.mr === mr ? { ...p, ...d, cars: [...d.cars], status: "review", submittedAt: TODAY, returnReason: undefined } : p)) }));
 }
 export function deletePlan(mr: string) {
   setMock((x) => {
@@ -49,9 +51,28 @@ export function deletePlan(mr: string) {
     return { ...x, plans: x.plans.filter((p) => p.mr !== mr), docs };
   });
 }
-/** ต้นแบบเท่านั้น: จำลองผู้อนุมัติอนุมัติแผนที่รออนุมัติ (ขั้นอนุมัติเป็นงานอีกส่วน) */
-export function approveAll() {
-  setMock((x) => ({ ...x, plans: x.plans.map((p) => (p.status === "review" ? { ...p, status: "approved" } : p)) }));
+/* ---------- หัวหน้า กบค.: อนุมัติแผน / ปิดงาน ---------- */
+const setPlan = (mr: string, fn: (p: Plan) => Plan) => setMock((x) => ({ ...x, plans: x.plans.map((p) => (p.mr === mr ? fn(p) : p)) }));
+/** อนุมัติแผน (หลายแผนพร้อมกันได้) → ผู้รับจ้างเห็นแผน */
+export const approvePlans = (mrs: string[], head: string) =>
+  setMock((x) => ({ ...x, plans: x.plans.map((p) => (mrs.includes(p.mr) && p.status === "review" ? { ...p, status: "approved", approvedBy: head, approvedAt: TODAY, returnReason: undefined } : p)) }));
+/** ส่งกลับแก้ไขแผน (ต้องมีเหตุผล) → กบค. แก้แล้วส่งใหม่ */
+export const returnPlan = (mr: string, reason: string) => setPlan(mr, (p) => (p.status === "review" ? { ...p, status: "returned", returnReason: reason } : p));
+/** เงื่อนไขขอปิดงาน: มียานพาหนะ และผลตรวจอนุมัติครบทุกคัน */
+export const canClose = (s: MockState, p: Plan) => p.status === "approved" && p.cars.length > 0 && approvedCount(s, p) === p.cars.length;
+/** กบค. ขอปิดงาน → หัวหน้า กบค. ที่เลือก */
+export const requestClose = (mr: string, head: string, note: string) =>
+  setPlan(mr, (p) => ({ ...p, status: "closing", closeApprover: head, closeNote: note || undefined, closeRequestedAt: TODAY, closeReturnReason: undefined }));
+/** อนุมัติปิดงาน (หลายแผนพร้อมกันได้) */
+export const approveClose = (mrs: string[]) =>
+  setMock((x) => ({ ...x, plans: x.plans.map((p) => (mrs.includes(p.mr) && p.status === "closing" ? { ...p, status: "closed", closedAt: TODAY } : p)) }));
+/** ไม่อนุมัติปิดงาน → แผนกลับเป็นอนุมัติแล้ว พร้อมเหตุผล */
+export const returnClose = (mr: string, reason: string) => setPlan(mr, (p) => (p.status === "closing" ? { ...p, status: "approved", closeReturnReason: reason } : p));
+/** สรุปผลตรวจของแผน */
+export function resultSummary(s: MockState, p: Plan) {
+  const out = { ผ่าน: 0, ไม่ผ่าน: 0, ระงับ: 0, ตรวจไม่ได้: 0 } as Record<string, number>;
+  for (const c of p.cars) { const d = carDocs(s, p.mr, c); if (d.approvedAt && d.result) out[d.result] += 1; }
+  return out;
 }
 
 /* ---------- เอกสาร ปจ.2 (ผู้รับจ้าง แนบ/ส่ง · กบค. อนุมัติ/ส่งกลับแก้ไข) ---------- */

@@ -38,3 +38,6 @@
 | ตารางและ popup ผลตรวจ (`src/app/_lib/DocsTable.tsx`) | Table / CheckTable / Mobile table + PopupModal 640 + Alert + DisplayBox + Text input + Date picker + Radio text card + File upload + Text area + Section label | "ยังขาด…" และ "ข้อมูลครบ" เป็น Alert (เดิมข้อความลอย) · ยังไม่มีเอกสาร = แถวใน DisplayBox |
 | ปุ่มหัวหน้ารายละเอียดแผน | Secondary danger button + Secondary button ใน Page header (มือถือ lg ใต้หัวข้อ) | เดิมห่อด้วยกล่องของตัวเองทำให้ปุ่มบนมือถือไม่เต็มแถว |
 | แถบต้นแบบ (`src/components/shell/PrototypeBar.tsx`) | Input dropdown + Dropdown list (บทบาท กบค./ผู้รับจ้าง) · Tertiary button "จำลองอนุมัติแผน" | ของต้นแบบเท่านั้น |
+| หน้า "แผนรออนุมัติ" ของหัวหน้า กบค. (`src/app/approvals/page.tsx`) | Page header + Tabs/Tab item (Badge) + Table header (Primary button อนุมัติ) + CheckTable + Table + Table pagination + ConfirmDialog | อนุมัติหลายแผนพร้อมกัน (เจ้าของงาน 20 พ.ย. 2569) |
+| รายละเอียดเพื่ออนุมัติ (`src/app/approvals/detail/page.tsx`) | Page header + Alert + DisplayBox (PlanInfo) + Table/Mobile table + Section label + Radio text card ×2 + Text area + ปุ่มล่าง Secondary/Primary lg | แบบหน้าอนุมัติของต้นแบบบำรุงรักษา (decisionSection) |
+| สรุปปิดงาน (`src/app/close/page.tsx`) | Page header + Alert + DisplayBox (สรุปผล) + ตารางผลตรวจ + PopupModal (Input dropdown ผู้อนุมัติ + Text area หมายเหตุ) | prototype พี่มิก P5-Close / P5-CloseRequest |

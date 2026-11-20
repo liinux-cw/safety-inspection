@@ -1,6 +1,6 @@
 "use client";
 /* ผู้รับจ้าง · เมนู Safety Inspection > เอกสาร ปจ.2 — /docs/
-   รายการแผนที่ระบุผู้รับจ้างรายนี้ เห็นทันทีหลัง กบค. สร้างแผน · เปิดแผนเพื่อแนบเอกสาร ปจ.2 รายคันแล้วส่งให้ กบค. อนุมัติ */
+   รายการแผนที่ระบุผู้รับจ้างรายนี้ เห็นหลังหัวหน้า กบค. อนุมัติแผน · เปิดแผนเพื่อแนบเอกสาร ปจ.2 รายคันแล้วส่งให้ กบค. อนุมัติ */
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { RoleGate } from "@/app/_lib/RoleGate";
@@ -14,7 +14,7 @@ import { Table, type TableColumn, type TableValue } from "@/components/vms/Table
 import { TableHeader } from "@/components/vms/TableHeader";
 import { TablePagination } from "@/components/vms/TablePagination";
 import { rangeText } from "@/lib/mock/data";
-import { approvedCount, pendingCount, readyCars, returnedCount } from "@/lib/mock/plan";
+import { approvedCount, pendingCount, readyCars, returnedCount, vendorSees } from "@/lib/mock/plan";
 import { useMock, useRole, vendorOf } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 
@@ -36,7 +36,7 @@ export default function VendorPlans() {
   const vendor = vendorOf(useRole());
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const mine = useMemo(() => mock.plans.filter((p) => p.vendor === vendor), [mock.plans, vendor]);
+  const mine = useMemo(() => mock.plans.filter((p) => p.vendor === vendor && vendorSees(p)), [mock.plans, vendor]);
   const q = query.trim();
   const list = mine.filter((p) => (!q || p.mr.includes(q) || p.name.includes(q)));
   const data: TableValue[][] = list.slice((page - 1) * PER, page * PER).map((p) => {
@@ -52,7 +52,7 @@ export default function VendorPlans() {
     <AppFrame>
       <RoleGate vendor>
         <PageHeader Title="เอกสาร ปจ.2" SupportingText="แผนตรวจ ปจ.2 ที่คุณเป็นผู้รับจ้าง แนบเอกสารรายคันแล้วส่งอนุมัติ" crumbs={[{ Text: "Safety Inspection" }, { Text: "เอกสาร ปจ.2" }]} />
-        {!mine.length ? <EmptyStateDataEmpty Text="ยังไม่มีแผนที่ต้องส่งเอกสาร" SupportingText="เมื่อ กบค. สร้างแผนที่ระบุคุณเป็นผู้รับจ้าง แผนจะแสดงที่นี่" /> : (
+        {!mine.length ? <EmptyStateDataEmpty Text="ยังไม่มีแผนที่ต้องส่งเอกสาร" SupportingText="เมื่อแผนที่ระบุคุณเป็นผู้รับจ้างได้รับอนุมัติ แผนจะแสดงที่นี่" /> : (
           <section className="flex flex-col gap-6">
             <TableHeader Placeholder="ค้นหาเลขที่ MR, ชื่อแผน" query={query} onQuery={(v) => { setQuery(v); setPage(1); }} FilterButton={false} />
             {!list.length ? <EmptyStateSearchNotFound Actions={<SecondaryButton Text="ล้างตัวกรอง" Size={mob ? "lg" : "md"} onClick={() => { setQuery(""); setPage(1); }} />} /> : mob ? (

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { DocsTable } from "@/app/_lib/DocsTable";
 import { PlanInfo } from "@/app/_lib/PlanInfo";
+import { PlanStatusAlert } from "@/app/_lib/PlanStatusAlert";
 import { RoleGate } from "@/app/_lib/RoleGate";
 import { ConfirmDialog } from "@/components/patterns/ConfirmDialog";
 import { AppFrame } from "@/components/shell/AppFrame";
@@ -30,7 +31,7 @@ export default function PlanDetail() {
   /* D: ติ๊กหลายคันที่รออนุมัติ แล้วอนุมัติพร้อมกัน */
   const [ticked, setTicked] = useState<string[]>([]);
   const [bulk, setBulk] = useState(false);
-  const pend = plan ? pendingCars(mock, plan) : [];
+  const pend = plan && plan.status === "approved" ? pendingCars(mock, plan) : [];
   const sel = ticked.filter((c) => pend.includes(c));
   const crumbs = [{ Text: "Safety Inspection" }, { Text: "แผนตรวจ ปจ.2", href: "/" }, { Text: "รายละเอียดแผน" }];
   return (
@@ -41,14 +42,15 @@ export default function PlanDetail() {
             Actions={editable(plan) ? <>
               <SecondaryDangerButton Text="ลบ" LeadingIconSwap="delete-24-300-round" Size={mob ? "lg" : "md"} onClick={() => setDel(true)} />
               <SecondaryButton Text="แก้ไข" LeadingIconSwap="stylus-24-300-round" Size={mob ? "lg" : "md"} onClick={() => router.push("/edit/?mr=" + plan.mr)} />
-            </> : undefined} />
+            </> : plan.status === "approved" ? <PrimaryButton Text="สรุปปิดงาน" LeadingIconSwap="task_alt-24-300-round" Size={mob ? "lg" : "md"} onClick={() => router.push("/close/?mr=" + plan.mr)} /> : undefined} />
           <div className="flex flex-col gap-8">
+            <PlanStatusAlert plan={plan} />
             {pendingCount(mock, plan) > 0 && <Alert Color="Info" Text={"มีผลการตรวจ ปจ.2 รออนุมัติ " + pendingCount(mock, plan) + " คัน"} SupportingText="ติ๊กหลายคันแล้วกดอนุมัติพร้อมกัน หรือกดไอคอนพิจารณาท้ายแถวเพื่อดูทีละคัน/ส่งกลับแก้ไข" />}
             <PlanInfo plan={plan} />
             <section className="flex flex-col gap-4">
               <SectionHeader Title="ผลการตรวจ ปจ.2 รายคัน" Badge={"อนุมัติแล้ว " + approvedCount(mock, plan) + "/" + plan.cars.length + " คัน"}
                 Actions={pend.length ? <PrimaryButton Text={"อนุมัติ" + (sel.length ? " (" + sel.length + " คัน)" : "")} LeadingIconSwap="done_all-24-300-round" State={sel.length ? "Default" : "Disabled"} onClick={() => sel.length && setBulk(true)} /> : undefined} />
-              {plan.cars.length ? <DocsTable plan={plan} canEdit={false} canReview={plan.status !== "closed"} {...(pend.length ? { ticked: sel, onTicked: setTicked } : {})} /> : <EmptyStateDataEmpty Graphic="vehicle" Text="ไม่มียานพาหนะในแผน" />}
+              {plan.cars.length ? <DocsTable plan={plan} canEdit={false} canReview={plan.status === "approved"} {...(pend.length ? { ticked: sel, onTicked: setTicked } : {})} /> : <EmptyStateDataEmpty Graphic="vehicle" Text="ไม่มียานพาหนะในแผน" />}
             </section>
           </div>
           <ConfirmDialog spec={bulk ? { title: "อนุมัติผลตรวจ ปจ.2 " + sel.length + " คัน", sub: "ผลตรวจและเอกสารของยานพาหนะที่เลือกจะถูกล็อก ส่งกลับแก้ไขไม่ได้อีก", cancel: "ยกเลิก", ok: "อนุมัติ" } : null}
