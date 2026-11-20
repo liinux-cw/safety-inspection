@@ -18,7 +18,7 @@ import { SectionHeader } from "@/components/vms/SectionHeader";
 import { cx } from "@/lib/cx";
 import { UPLOAD_HINT } from "@/lib/mock/data";
 import { addFiles, approvedCount, carDocs, missing, readyCars, removeFile, returnedCount, submitDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
-import { TODAY, VEHICLE_BY_ID, bahtText } from "@/lib/mock/data";
+import { TODAY, VEHICLE_BY_ID } from "@/lib/mock/data";
 import { useProtoForm } from "@/lib/protoForm";
 import { notify, useHydrated, useMock, useQuery, useRole, vendorOf } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
@@ -42,7 +42,7 @@ export default function VendorPlan() {
     dirty: editableCars.some((c) => { const d = carDocs(mock, plan.mr, c); return !!(d.files.length || d.result || d.date || d.cost); }),
     fill: () => editableCars.forEach((c) => {
       const d = carDocs(mock, plan.mr, c);
-      if (!missing(d, plan).length) return;
+      if (!missing(d, plan, c).length) return;
       updateResult(plan.mr, c, { date: d.date ?? TODAY, result: d.result ?? "ผ่าน", reason: d.result === "ตรวจไม่ได้" ? d.reason || "ยานพาหนะอยู่ระหว่างซ่อม ไม่สามารถทดสอบได้" : d.reason });
       if (!d.files.length) addFiles(plan.mr, c, [{ name: "ปจ2-" + VEHICLE_BY_ID[c].plate.split(" ")[0] + ".pdf", size: "1.2 MB" }]);
     }),
@@ -61,7 +61,7 @@ export default function VendorPlan() {
             {open
               ? <>
                 {returnedCount(mock, plan) > 0 && <Alert Color="Error" Text={"กบค. ส่งกลับแก้ไข " + returnedCount(mock, plan) + " คัน"} SupportingText="เปิดคันที่ถูกส่งกลับเพื่อดูเหตุผล แก้ไขผลหรือเอกสาร แล้วกดส่งอนุมัติอีกครั้ง" />}
-                <Alert Color="Info" Text="บันทึกผลตรวจ ปจ.2 รายคันแล้วกดส่งอนุมัติให้ กบค." SupportingText={"ต่อคัน: วันที่ตรวจ · ค่าจ้างตรวจ (ตั้งต้นตามสัญญา " + bahtText(plan.unitCost) + ") · ผลการตรวจ · เอกสาร ปจ.2 (" + UPLOAD_HINT + ", อย่างน้อย 1 ไฟล์) · ตรวจไม่ได้ = เหตุผล + หนังสือรับรองจากผู้แทนหน่วยงาน · ส่งแล้วแก้ไขไม่ได้ระหว่างรอ กบค. อนุมัติ"} />
+                <Alert Color="Info" Text="บันทึกผลตรวจ ปจ.2 รายคันแล้วกดส่งอนุมัติให้ กบค." SupportingText={"ต่อคัน: วันที่ตรวจ · ค่าจ้างตรวจ (ตั้งต้นตามสัญญาของคันนั้น) · ผลการตรวจ · เอกสาร ปจ.2 (" + UPLOAD_HINT + ", อย่างน้อย 1 ไฟล์) · ตรวจไม่ได้ = เหตุผล + หนังสือรับรองจากผู้แทนหน่วยงาน · ส่งแล้วแก้ไขไม่ได้ระหว่างรอ กบค. อนุมัติ"} />
               </>
               : waiting
                 ? <Alert Color="Warning" Text="แผนนี้ยังไม่อนุมัติ" SupportingText="ดูรายละเอียดแผนและยานพาหนะเพื่อเตรียมงานได้ บันทึกและส่งผลตรวจได้เมื่อแผนอนุมัติแล้ว" />

@@ -1,42 +1,43 @@
 "use client";
 /* ฟอร์มสร้าง/แก้ไขแผนตรวจ ปจ.2 (กบค.) — อิงฟอร์มสร้างแผนของต้นแบบบำรุงรักษาตามวาระ แต่ไม่มีแท็บไตรมาสและไม่มีอะไหล่
-   ข้อมูลแผน: ชื่อแผน · ปีงบประมาณ · รอบตรวจ (เดือน ถึง เดือน) · ผู้รับจ้าง (ผู้รับจ้างเห็นแผนนี้ในเมนูเอกสาร ปจ.2 หลังอนุมัติ)
-   ยานพาหนะในแผน: ตาราง + ปุ่ม "เพิ่มยานพาหนะ" (VehiclePicker) · เอาออกทีละคัน
+   3 section: ข้อมูลแผน (ชื่อแผน · ปีงบอัตโนมัติ · รอบตรวจ) · ข้อมูลผู้รับจ้าง (ผู้รับจ้าง · เบอร์ · เลขที่สัญญา — แยก section ให้ย้ายไปแผนเดินทางได้ทั้งก้อน)
+   · ยานพาหนะในแผน: ตาราง + ค่าจ้างตรวจตามสัญญารายคัน (กำหนดทีละคันจากไอคอนท้ายแถว หรือติ๊กหลายคันแล้วกำหนดพร้อมกัน) + "เพิ่มยานพาหนะ" (VehiclePicker) · เอาออกทีละคัน
    "บันทึกและส่งอนุมัติ" กดได้เมื่อกรอกครบ + มียานพาหนะอย่างน้อย 1 คัน · ออกจากหน้าตอนแก้ค้าง = ยืนยันก่อน */
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { CheckTable } from "@/components/patterns/CheckTable";
 import { ConfirmDialog } from "@/components/patterns/ConfirmDialog";
+import { FormModal } from "@/components/patterns/FormModal";
 import { Alert } from "@/components/vms/Alert";
 import { DropdownList } from "@/components/vms/DropdownList";
 import { DropdownListItem } from "@/components/vms/DropdownListItem";
 import { EmptyStateDataEmpty } from "@/components/vms/EmptyStateDataEmpty";
 import { EmptyStateSearchNotFound } from "@/components/vms/EmptyStateSearchNotFound";
 import { InputDropdown } from "@/components/vms/InputDropdown";
-import { MobileCards } from "@/components/vms/MobileTable";
 import { PageHeader } from "@/components/vms/PageHeader";
 import { PrimaryButton } from "@/components/vms/PrimaryButton";
 import { SecondaryButton } from "@/components/vms/SecondaryButton";
 import { SectionHeader } from "@/components/vms/SectionHeader";
-import { Table, type TableColumn, type TableValue } from "@/components/vms/Table";
+import type { TableColumn } from "@/components/vms/Table";
 import { TableHeader } from "@/components/vms/TableHeader";
 import { TablePagination } from "@/components/vms/TablePagination";
 import { TextInput } from "@/components/vms/TextInput";
 import { cx } from "@/lib/cx";
 import { MONTH_OPTIONS, VEHICLES, VEHICLE_BY_ID, VENDORS, VENDOR_BY_ID, bahtText, dateText, dueSub, fiscalYearOf, monthText, rangeText, type Plan } from "@/lib/mock/data";
-import { EMPTY_DRAFT, budget, createPlan, draftOf, fyRange, hasWork, takenMap, updatePlan, type Draft } from "@/lib/mock/plan";
+import { EMPTY_DRAFT, budget, contractCost, createPlan, draftOf, fyRange, hasWork, takenMap, updatePlan, type Draft } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 import { VehiclePicker } from "./VehiclePicker";
 
 const COLS: TableColumn[] = [
-  { head: "ทะเบียน", width: 210, Style: "Lead text" },
-  { head: "ประเภทยานพาหนะ", width: 160 },
+  { head: "ทะเบียน", width: 220 },
   { head: "สังกัด", width: 150 },
   { head: "ผู้ครอบครอง/เบอร์ติดต่อ" },
-  { head: "วาระการตรวจ", width: 120 },
-  { head: "ครบกำหนดตรวจ", width: 160 },
-  { head: "", width: 72 },
+  { head: "วาระ", width: 90 },
+  { head: "ครบกำหนดตรวจ", width: 150 },
+  { head: "ค่าจ้างตรวจ (บาท)", width: 160 },
+  { head: "", width: 104 },
 ];
 const PER = 10;
 const LEAVE = { title: "ยืนยันการออกจากหน้านี้", sub: "ข้อมูลที่กรอกไว้จะไม่ถูกบันทึก", cancel: "อยู่ต่อ", ok: "ออกจากหน้านี้", danger: true };
@@ -59,7 +60,18 @@ export function PlanForm({ plan }: { plan?: Plan }) {
   const [page, setPage] = useState(1);
   /* C: ชื่อแผนเติมให้จากรอบตรวจจนกว่าจะพิมพ์เอง · แก้ไขแผนเดิม = ถือว่าพิมพ์เองแล้ว */
   const [nameEdited, setNameEdited] = useState(edit);
-  const [costText, setCostText] = useState(start.unitCost ? String(start.unitCost) : "");
+  /* ค่าจ้างรายคัน: costFor = รหัสยานพาหนะที่กำลังกำหนด (1 คัน หรือหลายคันที่ติ๊ก) */
+  const [ticked, setTicked] = useState<string[]>([]);
+  const [costFor, setCostFor] = useState<string[] | null>(null);
+  const [costText, setCostText] = useState("");
+  const openCost = (ids: string[]) => { setCostFor(ids); setCostText(ids.length === 1 && d.costs[ids[0]] ? String(d.costs[ids[0]]) : ""); };
+  const costN = Number(costText);
+  const applyCost = () => {
+    if (!costFor || !(costN > 0)) return;
+    put({ costs: { ...d.costs, ...Object.fromEntries(costFor.map((id) => [id, costN])) } });
+    notify("กำหนดค่าจ้างตรวจ " + bahtText(costN) + " ให้ " + costFor.length + " คันแล้ว");
+    setCostFor(null); setTicked([]);
+  };
   const autoName = (from: string, to: string) => (from && to ? "ตรวจ ปจ.2 รอบ " + rangeText(from, to) : "");
   /* C: ปีงบคิดจากเดือนเริ่มต้น · เดือนสิ้นสุดต้องอยู่ปีงบเดียวกันและไม่ก่อนเดือนเริ่มต้น */
   const pickFrom = (m: string) => {
@@ -75,24 +87,24 @@ export function PlanForm({ plan }: { plan?: Plan }) {
   const taken = useMemo(() => takenMap(mock, plan?.mr), [mock, plan?.mr]);
   const dirty = JSON.stringify(d) !== JSON.stringify(start);
   const rangeBad = !!d.from && !!d.to && d.to < d.from;
+  const noCost = d.cars.filter((id) => !(contractCost(d, id) > 0));
   const err = {
     name: touched.name && !d.name.trim() ? "กรุณาระบุชื่อแผน" : undefined,
     from: touched.from && !d.from ? "กรุณาเลือกเดือนเริ่มต้น" : undefined,
     to: touched.to && !d.to ? "กรุณาเลือกเดือนสิ้นสุด" : rangeBad ? "เดือนสิ้นสุดต้องไม่ก่อนเดือนเริ่มต้น" : undefined,
     vendor: touched.vendor && !d.vendor ? "กรุณาเลือกผู้รับจ้าง" : undefined,
     vendorTel: touched.vendorTel && !d.vendorTel.trim() ? "กรุณาระบุเบอร์โทรผู้รับจ้าง" : undefined,
-    unitCost: touched.unitCost && !(d.unitCost > 0) ? "กรุณาระบุค่าจ้างตรวจต่อคัน" : undefined,
   };
-  const complete = !!d.name.trim() && !!d.fy && !!d.from && !!d.to && !rangeBad && !!d.vendor && !!d.vendorTel.trim() && d.unitCost > 0 && d.cars.length > 0;
+  const complete = !!d.name.trim() && !!d.fy && !!d.from && !!d.to && !rangeBad && !!d.vendor && !!d.vendorTel.trim() && d.cars.length > 0 && noCost.length === 0;
 
   useProtoForm({
     dirty,
     fill: () => {
       const free = VEHICLES.filter((v) => !taken[v.id]).slice(0, 4).map((v) => v.id);
-      setD({ name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", vendor: "ven3", vendorTel: "02-555-0303", contract: "PO-2570-0150", unitCost: 9000, cars: free });
-      setCostText("9000"); setNameEdited(false);
+      setD({ name: "ตรวจ ปจ.2 รอบ ธ.ค. 2569 – ก.พ. 2570", fy: "2570", from: "2026-12", to: "2027-02", vendor: "ven3", vendorTel: "02-555-0303", contract: "PO-2570-0150", costs: Object.fromEntries(free.map((id, i) => [id, i % 2 ? 9500 : 9000])), cars: free });
+      setNameEdited(false);
     },
-    clear: () => { setD(start); setTouched({}); setCostText(start.unitCost ? String(start.unitCost) : ""); setNameEdited(edit); },
+    clear: () => { setD(start); setTouched({}); setNameEdited(edit); setTicked([]); },
   });
 
   const leave = () => (dirty ? setLeaving(true) : router.push(plan ? "/detail/?mr=" + plan.mr : "/"));
@@ -116,16 +128,22 @@ export function PlanForm({ plan }: { plan?: Plan }) {
   const last = Math.max(1, Math.ceil(shownCars.length / PER)), pg = Math.min(page, last);
   const removeCar = (id: string) => (worked(id)
     ? notify("เอา " + VEHICLE_BY_ID[id].plate + " ออกไม่ได้ ผู้รับจ้างบันทึกผลตรวจคันนี้แล้ว", "Error")
-    : put({ cars: d.cars.filter((c) => c !== id) }));
-  const rows: TableValue[][] = shownCars.slice((pg - 1) * PER, pg * PER).map((v) => {
-    const del = { IconSwap: "delete-24-300-round", label: "เอาออก " + v.plate, onClick: () => removeCar(v.id) };
-    return [
-      { text: v.plate, sub: worked(v.id) ? v.code + " · มีผลตรวจแล้ว เอาออกไม่ได้" : v.code }, v.type, v.org, { text: v.owner, sub: v.tel }, v.cycle + " เดือน",
-      { text: dateText(v.due), sub: dueSub(v.due) },
-      { actions: [del], mobileActions: [del] },
+    : (put({ cars: d.cars.filter((c) => c !== id) }), setTicked(ticked.filter((c) => c !== id))));
+  const rows = shownCars.slice((pg - 1) * PER, pg * PER).map((v) => {
+    const cost = contractCost(d, v.id);
+    const acts = [
+      { IconSwap: "payments-24-300-round", label: "กำหนดค่าจ้าง " + v.plate, onClick: () => openCost([v.id]) },
+      { IconSwap: "delete-24-300-round", label: "เอาออก " + v.plate, onClick: () => removeCar(v.id) },
     ];
+    return {
+      key: v.id, text: v.plate, sub: worked(v.id) ? v.code + " · มีผลตรวจแล้ว เอาออกไม่ได้" : v.code + " · " + v.type,
+      mobileSub: v.org + " · " + (cost > 0 ? bahtText(cost) : "ยังไม่กำหนดค่าจ้าง"),
+      cells: [v.org, { text: v.owner, sub: v.tel }, v.cycle + " เดือน", { text: dateText(v.due), sub: dueSub(v.due) },
+        cost > 0 ? bahtText(cost) : { text: "ยังไม่กำหนด", sub: "กดไอคอนกำหนดค่าจ้าง" }, { actions: acts }],
+      mobileActions: acts,
+    };
   });
-  const rowKey = (r: TableValue[]) => { const v = r[0]; return v && typeof v === "object" && "text" in v ? v.text : String(v); };
+  const setCostBtn = ticked.length ? <SecondaryButton key="cost" Text={"กำหนดค่าจ้าง (" + ticked.length + " คัน)"} LeadingIconSwap="payments-24-300-round" Size={mob ? "lg" : "md"} onClick={() => openCost(ticked)} /> : null;
   const addBtn = <SecondaryButton key="add" Text="เพิ่มยานพาหนะ" LeadingIconSwap="add-24-300-round" Size={mob ? "lg" : "md"} onClick={() => setPicker(true)} />;
   const vendor = VENDOR_BY_ID[d.vendor];
   const heading = edit ? "แก้ไขแผนตรวจ ปจ.2" : "สร้างแผนตรวจ ปจ.2";
@@ -152,32 +170,33 @@ export function PlanForm({ plan }: { plan?: Plan }) {
               <DropdownList emptyText={d.from ? undefined : "เลือกเดือนเริ่มต้นก่อน"}>{(d.from ? MONTH_OPTIONS.filter((m) => m >= d.from && m <= fyRange(d.fy).to) : []).map((m) => <DropdownListItem key={m} Text={monthText(m)} State={m === d.to ? "Selected" : "Default"}
                 onClick={() => { pickTo(m); setDd(""); }} />)}</DropdownList>
             </InputDropdown>
+          </div>
+        </section>
+
+        <section className="flex flex-col gap-4">
+          <SectionHeader Title="ข้อมูลผู้รับจ้าง" SupportingText="ผู้รับจ้างเห็นแผนทันทีหลังสร้าง และบันทึกผลตรวจได้เมื่อแผนอนุมัติแล้ว" />
+          <div className={cx("grid gap-4", mob ? "grid-cols-1" : "grid-cols-2")}>
             {vendorLocked ? <TextInput LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} State="Readonly" readOnly HelperText="เปลี่ยนไม่ได้ ผู้รับจ้างบันทึกผลตรวจในแผนนี้แล้ว" /> :
             <InputDropdown LabelText="ผู้รับจ้าง" Text={vendor?.name ?? ""} Placeholder="เลือกผู้รับจ้าง" open={dd === "vendor"} onOpenChange={ddOpen("vendor")}
-              State={err.vendor ? "Error" : undefined} HelperText={err.vendor ?? "ผู้รับจ้างเห็นแผนทันทีหลังสร้าง และบันทึกผลตรวจได้เมื่อแผนอนุมัติแล้ว"}>
+              State={err.vendor ? "Error" : undefined} HelperText={err.vendor}>
               <DropdownList>{VENDORS.map((v) => <DropdownListItem key={v.id} Text={v.name} SupportingText={v.tel} State={v.id === d.vendor ? "Selected" : "Default"}
                 onClick={() => { put({ vendor: v.id, vendorTel: v.tel }); setDd(""); }} />)}</DropdownList>
             </InputDropdown>}
             <TextInput LabelText="เบอร์โทรผู้รับจ้าง" Text={d.vendorTel} Placeholder="0XX-XXX-XXXX" onChange={(v) => put({ vendorTel: v })} onBlur={() => touch("vendorTel")}
               State={err.vendorTel ? "Error" : undefined} HelperText={err.vendorTel} />
             <TextInput LabelText="เลขที่สัญญา/ใบสั่งจ้าง" Optional Text={d.contract} Placeholder="ระบุเลขที่สัญญาหรือใบสั่งจ้าง" onChange={(v) => put({ contract: v })} />
-            <TextInput LabelText="ค่าจ้างตรวจต่อคัน (บาท)" Text={costText} Placeholder="0.00" inputMode="decimal" onBlur={() => touch("unitCost")}
-              onChange={(v) => { const t = v.replace(/[^\d.]/g, ""); setCostText(t); put({ unitCost: Number(t) || 0 }); }}
-              State={err.unitCost ? "Error" : undefined} HelperText={err.unitCost ?? (d.unitCost > 0 ? "งบรวมตามสัญญา " + bahtText(budget(d)) + " (" + d.cars.length + " คัน)" : "ผู้รับจ้างจะเห็นเป็นค่าตั้งต้นของทุกคัน")} />
           </div>
         </section>
 
         <section className="flex flex-col gap-4">
-          <SectionHeader Title="ยานพาหนะในแผน" Badge={cars.length + " คัน"} SupportingText="วาระและวันครบกำหนดดึงจากทะเบียนการตรวจ ปจ.2" />
+          <SectionHeader Title="ยานพาหนะในแผน" Badge={cars.length + " คัน · งบรวม " + bahtText(budget(d))}
+            SupportingText="วาระและวันครบกำหนดดึงจากทะเบียนการตรวจ ปจ.2 · ค่าจ้างตรวจกำหนดรายคัน (ผู้รับจ้างเห็นเป็นค่าตั้งต้นของคันนั้น)" />
+          {cars.length > 0 && noCost.length > 0 && <Alert Color="Warning" Text={"ยังไม่กำหนดค่าจ้างตรวจ " + noCost.length + " คัน"} SupportingText="ติ๊กหลายคันแล้วกด กำหนดค่าจ้าง เพื่อใส่ค่าเดียวกันพร้อมกัน หรือกดไอคอนท้ายแถวทีละคัน" />}
           {cars.length ? <>
-            <TableHeader Placeholder="ค้นหาทะเบียน, รหัส, สังกัด" query={query} onQuery={(v) => { setQuery(v); setPage(1); }} FilterButton={false} Actions={addBtn} />
+            <TableHeader Placeholder="ค้นหาทะเบียน, รหัส, สังกัด" query={query} onQuery={(v) => { setQuery(v); setPage(1); }} FilterButton={false} Actions={setCostBtn ? <div className="flex flex-wrap gap-3">{setCostBtn}{addBtn}</div> : addBtn} />
             {!shownCars.length ? <EmptyStateSearchNotFound Text="ไม่พบยานพาหนะ" />
-              : mob ? (
-                <div className="flex flex-col gap-5">
-                  <MobileCards columns={COLS} rows={rows} rowKey={rowKey} />
-                  <TablePagination total={shownCars.length} page={pg} perPage={PER} onPage={setPage} />
-                </div>
-              ) : <Table columns={COLS} rows={rows} rowKey={rowKey} Pagination={<TablePagination total={shownCars.length} page={pg} perPage={PER} onPage={setPage} />} />}
+              : <CheckTable columns={COLS} rows={rows} ticked={ticked} onTicked={setTicked} scope={shownCars.map((v) => ({ key: v.id }))}
+                  Pagination={<TablePagination total={shownCars.length} page={pg} perPage={PER} onPage={setPage} />} />}
           </> : (
             <EmptyStateDataEmpty Graphic="vehicle" Text="ยังไม่มียานพาหนะในแผน" SupportingText="เพิ่มยานพาหนะประเภท 09 ที่ต้องตรวจ ปจ.2 อย่างน้อย 1 คัน" Actions={addBtn} />
           )}
@@ -190,6 +209,10 @@ export function PlanForm({ plan }: { plan?: Plan }) {
       </div>
       <VehiclePicker open={picker} from={d.from} to={d.to} pool={VEHICLES.filter((v) => !d.cars.includes(v.id))} taken={taken} onCancel={() => setPicker(false)}
         onAdd={(ids) => { put({ cars: [...d.cars, ...ids] }); setPicker(false); notify("เพิ่มยานพาหนะเข้าแผน " + ids.length + " คันแล้ว"); }} />
+      <FormModal open={!!costFor} title={"กำหนดค่าจ้างตรวจ" + (costFor && costFor.length === 1 ? " · " + VEHICLE_BY_ID[costFor[0]].plate : " · " + (costFor?.length ?? 0) + " คัน")}
+        sub={costFor && costFor.length > 1 ? "ใส่ค่าเดียวกันให้ทุกคันที่ติ๊ก" : "ค่าจ้างตามสัญญาของยานพาหนะคันนี้"}
+        fields={[{ label: "ค่าจ้างตรวจ (บาท)", value: costText, placeholder: "0.00", error: costText && !(costN > 0) ? "กรุณาระบุจำนวนเงินมากกว่า 0" : undefined }]}
+        onField={(_, v) => setCostText(v.replace(/[^\d.]/g, ""))} ok="บันทึก" okDisabled={!(costN > 0)} onOk={applyCost} onCancel={() => setCostFor(null)} />
       <ConfirmDialog spec={leaving ? LEAVE : null} onCancel={() => setLeaving(false)} onOk={() => { setLeaving(false); router.push(plan ? "/detail/?mr=" + plan.mr : "/"); }} />
     </>
   );

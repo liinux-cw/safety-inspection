@@ -27,7 +27,7 @@ import {
   RESULTS, RESULT_COLOR, TODAY, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, addMonths, bahtText, dateText, dueSub, fileOk, rangeText, sizeText,
   type CarDocs, type InspectResult, type Plan, type Vehicle,
 } from "@/lib/mock/data";
-import { DOC_TEXT, addFiles, approveDocs, carCost, carDocs, costDiffers, docState, missing, removeFile, returnDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
+import { DOC_TEXT, addFiles, approveDocs, carCost, carDocs, contractCost, costDiffers, docState, missing, removeFile, returnDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
 import { TH_PICKER } from "@/lib/thaiDate";
@@ -39,7 +39,7 @@ const COLS: TableColumn[] = [
   { head: "ครบกำหนดตรวจ", width: 150 },
   { head: "วันที่ตรวจ", width: 120 },
   { head: "ผล ปจ.2", width: 120 },
-  { head: "ค่าจ้างตรวจ", width: 140 },
+  { head: "ค่าจ้างตรวจ", width: 150 },
   { head: "สถานะ", width: 160 },
   { head: "", width: 72 },
 ];
@@ -59,7 +59,7 @@ export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan
   const rows: TableValue[][] = plan.cars.slice((pg - 1) * PER, pg * PER).map((id) => {
     const v = VEHICLE_BY_ID[id];
     const c = carDocs(mock, plan.mr, id);
-    const st = docState(c, plan);
+    const st = docState(c, plan, id);
     const editHere = canEdit && vendorCanWork(plan) && vendorCanEdit(c);
     const reviewHere = !!canReview && st === "sent";
     const act = editHere ? { IconSwap: "edit_note-24-300-round", label: "บันทึกผลตรวจ " + v.plate, onClick: () => setOpen(id) }
@@ -69,7 +69,7 @@ export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan
       { text: v.plate, sub: v.code + " · " + v.type }, v.org, { text: dateText(v.due), sub: dueSub(v.due) },
       c.date ? dateText(c.date) : "-",
       c.result ? { pills: [[c.result, RESULT_COLOR[c.result]]] } : "-",
-      st === "none" ? "-" : { text: bahtText(carCost(plan, c)), sub: costDiffers(plan, c) ? "ต่างจากสัญญา" : undefined },
+      { text: bahtText(carCost(plan, c, id)), sub: costDiffers(plan, c, id) ? "ต่างจากสัญญา (" + bahtText(contractCost(plan, id)) + ")" : st === "none" ? "ตามสัญญา" : undefined },
       { pills: [DOC_TEXT[st]] },
       { actions: [act], mobileActions: [act] },
     ];
@@ -77,7 +77,7 @@ export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan
   const pageCars = plan.cars.slice((pg - 1) * PER, pg * PER);
   const checkRows = rows.map((r, i) => {
     const id = pageCars[i], v = VEHICLE_BY_ID[id], a = r[7] as { actions: { IconSwap: string; label: string; onClick?: () => void }[] };
-    return { key: id, text: v.plate, sub: v.code + " · " + v.type, disabled: docState(carDocs(mock, plan.mr, id), plan) !== "sent", cells: r.slice(1), mobileActions: a.actions };
+    return { key: id, text: v.plate, sub: v.code + " · " + v.type, disabled: docState(carDocs(mock, plan.mr, id), plan, id) !== "sent", cells: r.slice(1), mobileActions: a.actions };
   });
   const rowKey = (r: TableValue[]) => { const v = r[0]; return v && typeof v === "object" && "text" in v ? v.text : String(v); };
 
@@ -85,7 +85,7 @@ export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan
     <>
       {ticked && onTicked ? (
         <CheckTable columns={COLS} rows={checkRows} ticked={ticked} onTicked={onTicked}
-          scope={plan.cars.map((id) => ({ key: id, disabled: docState(carDocs(mock, plan.mr, id), plan) !== "sent" }))}
+          scope={plan.cars.map((id) => ({ key: id, disabled: docState(carDocs(mock, plan.mr, id), plan, id) !== "sent" }))}
           Pagination={<TablePagination total={plan.cars.length} page={pg} perPage={PER} onPage={setPage} />} />
       ) : mob ? (
         <div className="flex flex-col gap-5">
@@ -111,13 +111,14 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const mock = useMock();
   const v = VEHICLE_BY_ID[car];
   const c = carDocs(mock, plan.mr, car);
-  const st = docState(c, plan);
+  const st = docState(c, plan, car);
+  const contract = contractCost(plan, car);
   const waitPlan = canEdit && !vendorCanWork(plan) && plan.status !== "closed";
   const ro = !canEdit || !vendorCanWork(plan) || !vendorCanEdit(c);
   const review = canReview && st === "sent";
   const [error, setError] = useState<string | null>(null);
   const [cal, setCal] = useState(false);
-  const [costText, setCostText] = useState(String(carCost(plan, c)));
+  const [costText, setCostText] = useState(String(carCost(plan, c, car)));
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const touch = (k: string) => setTouched((t) => ({ ...t, [k]: true }));
   const [decision, setDecision] = useState<"" | "approve" | "return">("");
@@ -125,19 +126,19 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const [rTouched, setRTouched] = useState(false);
   const reasonErr = rTouched && !reason.trim();
   const decided = decision === "approve" || (decision === "return" && !!reason.trim());
-  const left = missing(c, plan);
-  const differs = costDiffers(plan, c);
+  const left = missing(c, plan, car);
+  const differs = costDiffers(plan, c, car);
 
   const setCost = (t: string) => {
     const clean = t.replace(/[^\d.]/g, "");
     setCostText(clean);
     const n = Number(clean);
     /* B: เท่ากับสัญญา = ไม่เก็บค่า (ใช้ค่าตามสัญญา) · ว่าง = 0 (ต้องกรอก) */
-    updateResult(plan.mr, car, { cost: !clean || Number.isNaN(n) ? 0 : n === plan.unitCost ? undefined : n });
+    updateResult(plan.mr, car, { cost: !clean || Number.isNaN(n) ? 0 : n === contract ? undefined : n });
   };
   const sample = () => {
     if (!c.date) updateResult(plan.mr, car, { date: TODAY });
-    if (!carCost(plan, c)) setCost(String(plan.unitCost));
+    if (!carCost(plan, c, car)) setCost(String(contract));
     if (!c.result) updateResult(plan.mr, car, { result: "ผ่าน" });
     if (c.result === "ตรวจไม่ได้" && !c.reason) updateResult(plan.mr, car, { reason: "ยานพาหนะอยู่ระหว่างซ่อม ไม่สามารถทดสอบได้" });
     if (!c.files.length) addFiles(plan.mr, car, [{ name: "ปจ2-" + v.plate.split(" ")[0] + "-ตัวอย่าง.pdf", size: "1.2 MB" }]);
@@ -146,7 +147,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const clearAll = () => {
     updateResult(plan.mr, car, { date: undefined, cost: undefined, costReason: undefined, result: undefined, reason: undefined });
     for (let i = c.files.length - 1; i >= 0; i--) removeFile(plan.mr, car, i);
-    setCostText(String(plan.unitCost)); setTouched({}); setError(null);
+    setCostText(String(contract)); setTouched({}); setError(null);
   };
   /* ต้นแบบ: กรอกข้อมูลตัวอย่าง — ผู้รับจ้าง = กรอกผลผ่าน + ไฟล์ตัวอย่าง · กบค. = เลือกอนุมัติ */
   useProtoForm(review ? {
@@ -196,7 +197,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
         {ro ? (
           <DisplayBox perRow={2} pairs={[
             ["วันที่ตรวจ", c.date ? dateText(c.date) : "-"],
-            ["ค่าจ้างตรวจคันนี้", st === "none" ? "ตามสัญญา " + bahtText(plan.unitCost) : bahtText(carCost(plan, c)) + (differs ? " (สัญญา " + bahtText(plan.unitCost) + ")" : "")],
+            ["ค่าจ้างตรวจคันนี้", st === "none" ? "ตามสัญญา " + bahtText(contract) : bahtText(carCost(plan, c, car)) + (differs ? " (สัญญา " + bahtText(contract) + ")" : "")],
             ...(differs ? [["เหตุผลที่ค่าจ้างต่างจากสัญญา", c.costReason || "-"] as [string, string]] : []),
             ["ผลการตรวจ", c.result ? <PillOutline key="r" Text={c.result} Color={RESULT_COLOR[c.result]} /> : "-"],
             ["ครบกำหนดตรวจเดิม", dateText(v.due)],
@@ -211,8 +212,8 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
                 onClick={() => setCal(true)} />
             </div>
             <TextInput className="min-w-0 flex-1" LabelText="ค่าจ้างตรวจคันนี้ (บาท)" Text={costText} Placeholder="0.00" inputMode="decimal" onChange={setCost} onBlur={() => touch("cost")}
-              State={touched.cost && !carCost(plan, c) ? "Error" : undefined}
-              HelperText={touched.cost && !carCost(plan, c) ? "กรุณาระบุค่าจ้างตรวจ" : differs ? "ต่างจากสัญญา (" + bahtText(plan.unitCost) + ") ต้องระบุเหตุผล" : "ตามสัญญา แก้ได้ถ้าจำเป็น"} />
+              State={touched.cost && !carCost(plan, c, car) ? "Error" : undefined}
+              HelperText={touched.cost && !carCost(plan, c, car) ? "กรุณาระบุค่าจ้างตรวจ" : differs ? "ต่างจากสัญญา (" + bahtText(contract) + ") ต้องระบุเหตุผล" : "ตามสัญญา แก้ได้ถ้าจำเป็น"} />
           </div>
           {differs && <TextArea LabelText="เหตุผลที่ค่าจ้างต่างจากสัญญา" Text={c.costReason ?? ""} Placeholder="เช่น ต้องใช้อุปกรณ์เสริม" onChange={(x) => updateResult(plan.mr, car, { costReason: x })}
             onBlur={() => touch("costReason")} State={touched.costReason && !c.costReason?.trim() ? "Error" : undefined} HelperText={touched.costReason && !c.costReason?.trim() ? "กรุณาระบุเหตุผล" : undefined} />}
