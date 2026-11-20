@@ -22,7 +22,7 @@ const COLS: TableColumn[] = [
   { head: "สังกัด", width: 150 },
   { head: "ผู้ครอบครอง/เบอร์ติดต่อ", width: 190 },
   { head: "สถานะยานพาหนะ", width: 170 },
-  { head: "วาระ", width: 90 },
+  { head: "วาระ", width: 150 },
   { head: "ครบกำหนดตรวจ" },
 ];
 const SEARCH = "ค้นหาทะเบียน, รหัส, สังกัด";
@@ -66,7 +66,7 @@ function Picker({ pool, taken, onAdd, onCancel, from = "", to = "" }: PickerProp
       key: v.id, text: v.plate, sub: inPlan ?? v.code + " · " + v.type,
       mobileSub: [inPlan, v.org, "ครบกำหนด " + dateText(v.due)].filter(Boolean).join(" · "),
       disabled: !!taken[v.id],
-      cells: [v.org, { text: v.owner, sub: v.tel }, { text: v.status, sub: warn }, v.cycle + " เดือน",
+      cells: [v.org, { text: v.owner, sub: v.tel }, { text: v.status, sub: warn }, { text: v.cycle + " เดือน", sub: v.cycleSub },
         { text: dateText(v.due), sub: dueSub(v.due) + (dueInRange(v.due, from, to) ? " · ครบกำหนดในรอบนี้" : "") }],
     };
   });

@@ -31,7 +31,7 @@ import { useBreakpoint } from "@/lib/useBreakpoint";
 const COLS: TableColumn[] = [
   { head: "ทะเบียน", width: 220, Style: "Lead text" },
   { head: "สังกัด" },
-  { head: "วาระ", width: 100 },
+  { head: "วาระ", width: 160 },
   { head: "ครบกำหนดตรวจ", width: 160 },
   { head: "ค่าจ้างตรวจ", width: 150 },
 ];
@@ -66,7 +66,7 @@ export default function ApprovalDetail() {
 
   const rows: TableValue[][] = plan ? plan.cars.map((id) => {
     const v = withDue(mock, VEHICLE_BY_ID[id]);
-    return [{ text: v.plate, sub: v.code + " · " + v.type }, v.org, v.cycle + " เดือน", { text: dateText(v.due), sub: dueSub(v.due) }, bahtText(contractCost(plan, id))];
+    return [{ text: v.plate, sub: v.code + " · " + v.type }, v.org, { text: v.cycle + " เดือน", sub: v.cycleSub }, { text: dateText(v.due), sub: dueSub(v.due) }, bahtText(contractCost(plan, id))];
   }) : [];
   const rowKey = (r: TableValue[]) => { const v = r[0]; return v && typeof v === "object" && "text" in v ? v.text : String(v); };
 
