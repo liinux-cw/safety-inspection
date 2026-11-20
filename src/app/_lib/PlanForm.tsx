@@ -34,7 +34,7 @@ const COLS: TableColumn[] = [
   { head: "ทะเบียน", width: 220 },
   { head: "สังกัด", width: 150 },
   { head: "ผู้ครอบครอง/เบอร์ติดต่อ" },
-  { head: "วาระ", width: 90 },
+  { head: "วาระ", width: 150 },
   { head: "ครบกำหนดตรวจ", width: 150 },
   { head: "ค่าจ้างตรวจ (บาท)", width: 160 },
   { head: "", width: 72 },
@@ -154,7 +154,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
       key: v.id, text: v.plate, sub: worked(v.id) ? v.code + " · มีผลตรวจแล้ว เอาออกไม่ได้" : v.code + " · " + v.type,
       mobileSub: v.org + " · ครบกำหนด " + dateText(v.due),
       mobileExtra: input,
-      cells: [v.org, { text: v.owner, sub: v.tel }, v.cycle + " เดือน", { text: dateText(v.due), sub: dueSub(v.due) },
+      cells: [v.org, { text: v.owner, sub: v.tel }, { text: v.cycle + " เดือน", sub: v.cycleSub }, { text: dateText(v.due), sub: dueSub(v.due) },
         { node: input }, { actions: acts }],
       mobileActions: acts,
     };
