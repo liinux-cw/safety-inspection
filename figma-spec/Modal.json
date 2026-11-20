@@ -1,0 +1,7285 @@
+{
+ "component": "Modal",
+ "source": "(Component) VMS Plus",
+ "fileKey": "VmOC07pKEsDkHZagOgcSU2",
+ "page": "✅ Modals",
+ "node": "2:16",
+ "props": {
+  "Type": {
+   "type": "VARIANT",
+   "defaultValue": "Centered image",
+   "variantOptions": [
+    "Centered image",
+    "Centered image with input",
+    "Destructive centered image with input",
+    "Form",
+    "Card list",
+    "Left aligned image",
+    "Centered image carousel"
+   ]
+  },
+  "Size": {
+   "type": "VARIANT",
+   "defaultValue": "md",
+   "variantOptions": [
+    "md",
+    "lg",
+    "xl"
+   ]
+  }
+ },
+ "set": {
+  "name": "Modal",
+  "type": "COMPONENT_SET",
+  "w": 1480,
+  "h": 8372,
+  "sizing": [
+   "HUG",
+   "HUG"
+  ],
+  "pl": 20,
+  "pr": 20,
+  "pt": 20,
+  "pb": 20,
+  "gap": 20,
+  "r": 5,
+  "dir": "VERTICAL",
+  "justify": "MIN",
+  "align": "MIN",
+  "stroke": [
+   "#9747FF"
+  ],
+  "sw": 1,
+  "strokeAlign": "INSIDE"
+ },
+ "variants": [
+  {
+   "name": "Type=Centered image, Size=md",
+   "type": "COMPONENT",
+   "w": 1440,
+   "h": 1024,
+   "sizing": [
+    "FIXED",
+    "FIXED"
+   ],
+   "r": 0,
+   "justify": "MIN",
+   "align": "MIN",
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "variant": {
+    "Type": "Centered image",
+    "Size": "md"
+   },
+   "kids": [
+    {
+     "name": "Background overlay",
+     "type": "INSTANCE",
+     "w": 1440,
+     "h": 1024,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "Background overlay",
+     "kids": [
+      {
+       "name": "Background overlay",
+       "type": "RECTANGLE",
+       "w": 1440,
+       "h": 1024,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#000000"
+       ],
+       "paint": [
+        "#00000066"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/background/overlay"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Modal",
+     "type": "FRAME",
+     "w": 500,
+     "h": 434,
+     "sizing": [
+      "FIXED",
+      "HUG"
+     ],
+     "r": 12,
+     "dir": "VERTICAL",
+     "justify": "MIN",
+     "align": "MIN",
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "vars": {
+      "topLeftRadius": "Radius/300",
+      "topRightRadius": "Radius/300",
+      "bottomLeftRadius": "Radius/300",
+      "bottomRightRadius": "Radius/300",
+      "fills": "Color/surface/primary"
+     },
+     "kids": [
+      {
+       "name": "Content",
+       "type": "FRAME",
+       "w": 500,
+       "h": 264,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pl": 24,
+       "pr": 24,
+       "pt": 24,
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingLeft": "Spacing/600",
+        "paddingTop": "Spacing/600",
+        "paddingRight": "Spacing/600",
+        "paddingBottom": "Spacing/none"
+       },
+       "kids": [
+        {
+         "name": "Images",
+         "type": "INSTANCE",
+         "w": 452,
+         "h": 240,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 8,
+         "justify": "MIN",
+         "align": "MIN",
+         "paint": [
+          "image"
+         ],
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "topLeftRadius": "Radius/200",
+          "topRightRadius": "Radius/200",
+          "bottomLeftRadius": "Radius/200",
+          "bottomRightRadius": "Radius/200"
+         },
+         "variant": {
+          "Buttons#2635:15": true,
+          "Indicator pagination#2635:14": false,
+          "Size": "sm",
+          "Type": "Image"
+         },
+         "component": "Images [Size=sm, Type=Image]",
+         "kids": [
+          {
+           "name": "Indicator pagination",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 56,
+           "h": 8,
+           "sizing": [
+            "HUG",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Indicator 5#2714:2": true,
+            "Indicator 4#2714:1": true,
+            "Indicator 3#2714:0": true
+           },
+           "component": "Indicator pagination"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal header",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 82,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "sws": [
+        0,
+        0,
+        1,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "variant": {
+        "Divider#1278:0": false,
+        "Supporting text#2486:2": "คุณต้องการอนุมัติคำขอใช้ยานพาหนะหรือไม่ ?",
+        "Back icon#2633:8": true,
+        "Supporting#2485:0": true,
+        "Padding bottom#2491:0": false,
+        "Featured icon#2487:8": false,
+        "Title#1276:1": "ยืนยันอนุมัติคำขอ",
+        "Close icon#1276:2": false,
+        "Alignment": "Center"
+       },
+       "component": "Modal header [Alignment=Center]",
+       "kids": [
+        {
+         "name": "Content",
+         "type": "FRAME",
+         "w": 500,
+         "h": 82,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "pt": 24,
+         "gap": 16,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/400",
+          "paddingLeft": "Spacing/600",
+          "paddingTop": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Featured icon",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 48,
+           "h": 48,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 9999,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#FFF5FD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "topLeftRadius": "Radius/full",
+            "topRightRadius": "Radius/full",
+            "bottomLeftRadius": "Radius/full",
+            "bottomRightRadius": "Radius/full",
+            "fills": "Color/component/utility/brand/50"
+           },
+           "variant": {
+            "Icon swap#2032:0": "522:18597",
+            "Color": "Brand",
+            "Size": "md"
+           },
+           "component": "Featured icon [Color=Brand, Size=md]"
+          },
+          {
+           "name": "Text and supporting text",
+           "type": "FRAME",
+           "w": 452,
+           "h": 58,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           }
+          }
+         ]
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "visible": false,
+         "w": 560,
+         "h": 21,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "pt": 20,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingTop": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 560,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Padding bottom",
+         "type": "FRAME",
+         "visible": false,
+         "w": 560,
+         "h": 16,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Tertiary button",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 40,
+         "h": 40,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "pl": 8,
+         "pr": 8,
+         "pt": 8,
+         "pb": 8,
+         "gap": 4,
+         "r": 8,
+         "dir": "HORIZONTAL",
+         "justify": "CENTER",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/100",
+          "paddingLeft": "Spacing/200",
+          "paddingTop": "Spacing/200",
+          "paddingRight": "Spacing/200",
+          "paddingBottom": "Spacing/200",
+          "topLeftRadius": "Radius/200",
+          "topRightRadius": "Radius/200",
+          "bottomLeftRadius": "Radius/200",
+          "bottomRightRadius": "Radius/200"
+         },
+         "variant": {
+          "Leading icon swap#133:10": "1084:414",
+          "Trailing icon#105:4": false,
+          "Trailing icon swap#133:12": "133:3719",
+          "Leading icon#105:2": true,
+          "Button text#1153:0": false,
+          "Text#105:0": "Button",
+          "State": "Default",
+          "Size": "md"
+         },
+         "component": "Tertiary button [State=Default, Size=md]",
+         "kids": [
+          {
+           "name": "close-24-300-round",
+           "type": "INSTANCE",
+           "w": 20,
+           "h": 20,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "component": "close-24-300-round"
+          },
+          {
+           "name": "Text",
+           "type": "TEXT",
+           "visible": false,
+           "w": 47,
+           "h": 21,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "fill": [
+            "#475467"
+           ],
+           "sw": 1,
+           "strokeAlign": "OUTSIDE",
+           "vars": {
+            "fills": "Color/component/button/tertiary/text",
+            "letterSpacing": "IBM/Label/03/letter-spacing",
+            "fontSize": "IBM/Label/03/font-size",
+            "fontFamily": "IBM/Label/03/font-family",
+            "paragraphSpacing": "IBM/Label/03/letter-spacing",
+            "fontWeight": "IBM/Label/03/font-weight"
+           },
+           "font": {
+            "fam": "IBM Plex Sans Thai",
+            "style": "SemiBold",
+            "size": 14,
+            "lh": null,
+            "ls": -0.20000000298023224
+           },
+           "text": "Button"
+          },
+          {
+           "name": "crop_free-20-400-round",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 20,
+           "h": 20,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "component": "crop_free-20-400-round"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal footer",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 88,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pb": 24,
+       "r": [
+        0,
+        0,
+        12,
+        12
+       ],
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "fill": [
+        "#FFFFFF"
+       ],
+       "sws": [
+        1,
+        0,
+        0,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingBottom": "Spacing/600",
+        "bottomLeftRadius": "Radius/300",
+        "bottomRightRadius": "Radius/300",
+        "fills": "Color/surface/primary"
+       },
+       "variant": {
+        "Primary action#2505:14": true,
+        "Padding top#2487:4": true,
+        "Divider#2487:0": false,
+        "Tertiary action#2560:61": true,
+        "Secondary action#106:3": true,
+        "Alignment": "Horizontal fill"
+       },
+       "component": "Modal footer [Alignment=Horizontal fill]",
+       "kids": [
+        {
+         "name": "Padding top",
+         "type": "FRAME",
+         "w": 500,
+         "h": 24,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "visible": false,
+         "w": 560,
+         "h": 21,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "pb": 20,
+         "gap": 8,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingBottom": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 560,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Actions",
+         "type": "FRAME",
+         "w": 500,
+         "h": 40,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Secondary button",
+           "type": "INSTANCE",
+           "w": 220,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "FIXED"
+           ],
+           "pl": 12,
+           "pr": 12,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#FFFFFF"
+           ],
+           "stroke": [
+            "#D0D5DD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/300",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/300",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200",
+            "fills": "Color/component/button/secondary/surface",
+            "strokes": "Color/border/primary"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "133:3719",
+            "Button text#1246:27": true,
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": false,
+            "Text#105:0": "ไม่ใช่ตอนนี้",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Secondary button [State=Default, Size=md]"
+          },
+          {
+           "name": "Primary button",
+           "type": "INSTANCE",
+           "w": 220,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "FIXED"
+           ],
+           "pl": 12,
+           "pr": 12,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#A80689"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/300",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/300",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200",
+            "fills": "Color/component/button/primary/surface"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "133:3719",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": false,
+            "Button text#1246:11": true,
+            "Text#105:0": "อนุมัติคำขอ",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Primary button [State=Default, Size=md]"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Type=Centered image with input, Size=md",
+   "type": "COMPONENT",
+   "w": 1440,
+   "h": 1024,
+   "sizing": [
+    "FIXED",
+    "FIXED"
+   ],
+   "r": 0,
+   "justify": "MIN",
+   "align": "MIN",
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "variant": {
+    "Type": "Centered image with input",
+    "Size": "md"
+   },
+   "kids": [
+    {
+     "name": "Background overlay",
+     "type": "INSTANCE",
+     "w": 1440,
+     "h": 1024,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "Background overlay",
+     "kids": [
+      {
+       "name": "Background overlay",
+       "type": "RECTANGLE",
+       "w": 1440,
+       "h": 1024,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#000000"
+       ],
+       "paint": [
+        "#00000066"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/background/overlay"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Modal",
+     "type": "FRAME",
+     "w": 500,
+     "h": 514,
+     "sizing": [
+      "FIXED",
+      "HUG"
+     ],
+     "r": 12,
+     "dir": "VERTICAL",
+     "justify": "MIN",
+     "align": "MIN",
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "vars": {
+      "topLeftRadius": "Radius/300",
+      "topRightRadius": "Radius/300",
+      "bottomLeftRadius": "Radius/300",
+      "bottomRightRadius": "Radius/300",
+      "fills": "Color/surface/primary"
+     },
+     "kids": [
+      {
+       "name": "Content",
+       "type": "FRAME",
+       "w": 500,
+       "h": 264,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pl": 24,
+       "pr": 24,
+       "pt": 24,
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingLeft": "Spacing/600",
+        "paddingTop": "Spacing/600",
+        "paddingRight": "Spacing/600",
+        "paddingBottom": "Spacing/none"
+       },
+       "kids": [
+        {
+         "name": "Images",
+         "type": "INSTANCE",
+         "w": 452,
+         "h": 240,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 8,
+         "justify": "MIN",
+         "align": "MIN",
+         "paint": [
+          "image"
+         ],
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "topLeftRadius": "Radius/200",
+          "topRightRadius": "Radius/200",
+          "bottomLeftRadius": "Radius/200",
+          "bottomRightRadius": "Radius/200"
+         },
+         "variant": {
+          "Buttons#2635:15": true,
+          "Indicator pagination#2635:14": false,
+          "Size": "sm",
+          "Type": "Image"
+         },
+         "component": "Images [Size=sm, Type=Image]",
+         "kids": [
+          {
+           "name": "Indicator pagination",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 56,
+           "h": 8,
+           "sizing": [
+            "HUG",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Indicator 5#2714:2": true,
+            "Indicator 4#2714:1": true,
+            "Indicator 3#2714:0": true
+           },
+           "component": "Indicator pagination"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal header",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 122,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "sws": [
+        0,
+        0,
+        1,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "variant": {
+        "Divider#1278:0": false,
+        "Supporting text#2486:2": "ระบบจะแจ้งเตือนผู้สร้างคำขอ ผู้ใช้ยานพาหนะ และผู้ขับขี่ ให้ดำเนินการแก้ไขและส่งคำขอใหม่อีกครั้ง",
+        "Back icon#2633:8": true,
+        "Supporting#2485:0": true,
+        "Padding bottom#2491:0": true,
+        "Featured icon#2487:8": false,
+        "Title#1276:1": "ยืนยันตีกลับคำขอ",
+        "Close icon#1276:2": false,
+        "Alignment": "Center"
+       },
+       "component": "Modal header [Alignment=Center]",
+       "kids": [
+        {
+         "name": "Content",
+         "type": "FRAME",
+         "w": 500,
+         "h": 106,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "pt": 24,
+         "gap": 16,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/400",
+          "paddingLeft": "Spacing/600",
+          "paddingTop": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Featured icon",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 48,
+           "h": 48,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 9999,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#FFF5FD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "topLeftRadius": "Radius/full",
+            "topRightRadius": "Radius/full",
+            "bottomLeftRadius": "Radius/full",
+            "bottomRightRadius": "Radius/full",
+            "fills": "Color/component/utility/brand/50"
+           },
+           "variant": {
+            "Icon swap#2032:0": "522:18597",
+            "Color": "Brand",
+            "Size": "md"
+           },
+           "component": "Featured icon [Color=Brand, Size=md]"
+          },
+          {
+           "name": "Text and supporting text",
+           "type": "FRAME",
+           "w": 452,
+           "h": 82,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           }
+          }
+         ]
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "visible": false,
+         "w": 560,
+         "h": 21,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "pt": 20,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingTop": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 560,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Padding bottom",
+         "type": "FRAME",
+         "w": 500,
+         "h": 16,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Tertiary button",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 40,
+         "h": 40,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "pl": 8,
+         "pr": 8,
+         "pt": 8,
+         "pb": 8,
+         "gap": 4,
+         "r": 8,
+         "dir": "HORIZONTAL",
+         "justify": "CENTER",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/100",
+          "paddingLeft": "Spacing/200",
+          "paddingTop": "Spacing/200",
+          "paddingRight": "Spacing/200",
+          "paddingBottom": "Spacing/200",
+          "topLeftRadius": "Radius/200",
+          "topRightRadius": "Radius/200",
+          "bottomLeftRadius": "Radius/200",
+          "bottomRightRadius": "Radius/200"
+         },
+         "variant": {
+          "Leading icon swap#133:10": "1084:414",
+          "Trailing icon#105:4": false,
+          "Trailing icon swap#133:12": "133:3719",
+          "Leading icon#105:2": true,
+          "Button text#1153:0": false,
+          "Text#105:0": "Button",
+          "State": "Default",
+          "Size": "md"
+         },
+         "component": "Tertiary button [State=Default, Size=md]",
+         "kids": [
+          {
+           "name": "close-24-300-round",
+           "type": "INSTANCE",
+           "w": 20,
+           "h": 20,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "component": "close-24-300-round"
+          },
+          {
+           "name": "Text",
+           "type": "TEXT",
+           "visible": false,
+           "w": 47,
+           "h": 21,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "fill": [
+            "#475467"
+           ],
+           "sw": 1,
+           "strokeAlign": "OUTSIDE",
+           "vars": {
+            "fills": "Color/component/button/tertiary/text",
+            "letterSpacing": "IBM/Label/03/letter-spacing",
+            "fontSize": "IBM/Label/03/font-size",
+            "fontFamily": "IBM/Label/03/font-family",
+            "paragraphSpacing": "IBM/Label/03/letter-spacing",
+            "fontWeight": "IBM/Label/03/font-weight"
+           },
+           "font": {
+            "fam": "IBM Plex Sans Thai",
+            "style": "SemiBold",
+            "size": 14,
+            "lh": null,
+            "ls": -0.20000000298023224
+           },
+           "text": "Button"
+          },
+          {
+           "name": "crop_free-20-400-round",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 20,
+           "h": 20,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "component": "crop_free-20-400-round"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Form",
+       "type": "FRAME",
+       "w": 500,
+       "h": 40,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pl": 24,
+       "pr": 24,
+       "gap": 12,
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "itemSpacing": "Spacing/300",
+        "paddingLeft": "Spacing/600",
+        "paddingTop": "Spacing/none",
+        "paddingRight": "Spacing/600",
+        "paddingBottom": "Spacing/none"
+       },
+       "kids": [
+        {
+         "name": "Card form row",
+         "type": "INSTANCE",
+         "w": 452,
+         "h": 40,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Input 2 swap#2499:5": "26:65",
+          "Input 1 swap#2499:3": "26:65",
+          "Input 2#2499:4": false,
+          "Width": "Full"
+         },
+         "component": "Card form row [Width=Full]",
+         "kids": [
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "w": 452,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Leading icon swap#33:3": "476:1742",
+            "Optional#1105:0": true,
+            "Show Placeholder#3747:0": true,
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "โปรดระบุเหตุผลที่ตีกลับคำขอ",
+            "Label text#265:7": "Label",
+            "Label#265:0": false,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Text input [State=Default, Size=md]"
+          },
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 232,
+           "h": 72,
+           "sizing": [
+            "FIXED",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Leading icon swap#33:3": "476:1742",
+            "Optional#1105:0": true,
+            "Show Placeholder#3747:0": true,
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "Text input",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Text input [State=Default, Size=md]"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal footer",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 88,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pb": 24,
+       "r": [
+        0,
+        0,
+        12,
+        12
+       ],
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "fill": [
+        "#FFFFFF"
+       ],
+       "sws": [
+        1,
+        0,
+        0,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingBottom": "Spacing/600",
+        "bottomLeftRadius": "Radius/300",
+        "bottomRightRadius": "Radius/300",
+        "fills": "Color/surface/primary"
+       },
+       "variant": {
+        "Primary action#2505:14": true,
+        "Padding top#2487:4": true,
+        "Divider#2487:0": false,
+        "Tertiary action#2560:61": true,
+        "Secondary action#106:3": true,
+        "Alignment": "Horizontal fill"
+       },
+       "component": "Modal footer [Alignment=Horizontal fill]",
+       "kids": [
+        {
+         "name": "Padding top",
+         "type": "FRAME",
+         "w": 500,
+         "h": 24,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "visible": false,
+         "w": 560,
+         "h": 21,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "pb": 20,
+         "gap": 8,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingBottom": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 560,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Actions",
+         "type": "FRAME",
+         "w": 500,
+         "h": 40,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Secondary button",
+           "type": "INSTANCE",
+           "w": 220,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "FIXED"
+           ],
+           "pl": 12,
+           "pr": 12,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#FFFFFF"
+           ],
+           "stroke": [
+            "#D0D5DD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/300",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/300",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200",
+            "fills": "Color/component/button/secondary/surface",
+            "strokes": "Color/border/primary"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "133:3719",
+            "Button text#1246:27": true,
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": false,
+            "Text#105:0": "ไม่ใช่ตอนนี้",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Secondary button [State=Default, Size=md]"
+          },
+          {
+           "name": "Primary button",
+           "type": "INSTANCE",
+           "w": 220,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "FIXED"
+           ],
+           "pl": 12,
+           "pr": 12,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#A80689"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/300",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/300",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200",
+            "fills": "Color/component/button/primary/surface"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "133:3719",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": false,
+            "Button text#1246:11": true,
+            "Text#105:0": "ตีกลับคำขอ",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Primary button [State=Default, Size=md]"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Type=Destructive centered image with input, Size=md",
+   "type": "COMPONENT",
+   "w": 1440,
+   "h": 1024,
+   "sizing": [
+    "FIXED",
+    "FIXED"
+   ],
+   "r": 0,
+   "justify": "MIN",
+   "align": "MIN",
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "variant": {
+    "Type": "Destructive centered image with input",
+    "Size": "md"
+   },
+   "kids": [
+    {
+     "name": "Background overlay",
+     "type": "INSTANCE",
+     "w": 1440,
+     "h": 1024,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "Background overlay",
+     "kids": [
+      {
+       "name": "Background overlay",
+       "type": "RECTANGLE",
+       "w": 1440,
+       "h": 1024,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#000000"
+       ],
+       "paint": [
+        "#00000066"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/background/overlay"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Modal",
+     "type": "FRAME",
+     "w": 500,
+     "h": 490,
+     "sizing": [
+      "FIXED",
+      "HUG"
+     ],
+     "r": 12,
+     "dir": "VERTICAL",
+     "justify": "MIN",
+     "align": "MIN",
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "vars": {
+      "topLeftRadius": "Radius/300",
+      "topRightRadius": "Radius/300",
+      "bottomLeftRadius": "Radius/300",
+      "bottomRightRadius": "Radius/300",
+      "fills": "Color/surface/primary"
+     },
+     "kids": [
+      {
+       "name": "Content",
+       "type": "FRAME",
+       "w": 500,
+       "h": 264,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pl": 24,
+       "pr": 24,
+       "pt": 24,
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingLeft": "Spacing/600",
+        "paddingTop": "Spacing/600",
+        "paddingRight": "Spacing/600",
+        "paddingBottom": "Spacing/none"
+       },
+       "kids": [
+        {
+         "name": "Images",
+         "type": "INSTANCE",
+         "w": 452,
+         "h": 240,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 8,
+         "justify": "MIN",
+         "align": "MIN",
+         "paint": [
+          "image"
+         ],
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "topLeftRadius": "Radius/200",
+          "topRightRadius": "Radius/200",
+          "bottomLeftRadius": "Radius/200",
+          "bottomRightRadius": "Radius/200"
+         },
+         "variant": {
+          "Buttons#2635:15": true,
+          "Indicator pagination#2635:14": false,
+          "Size": "sm",
+          "Type": "Image"
+         },
+         "component": "Images [Size=sm, Type=Image]",
+         "kids": [
+          {
+           "name": "Indicator pagination",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 56,
+           "h": 8,
+           "sizing": [
+            "HUG",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Indicator 5#2714:2": true,
+            "Indicator 4#2714:1": true,
+            "Indicator 3#2714:0": true
+           },
+           "component": "Indicator pagination"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal header",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 98,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "sws": [
+        0,
+        0,
+        1,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "variant": {
+        "Divider#1278:0": false,
+        "Supporting text#2486:2": "ยานพาหนะและพนักงานขับรถที่จองไว้จะถูกยกเลิก",
+        "Back icon#2633:8": true,
+        "Supporting#2485:0": true,
+        "Padding bottom#2491:0": true,
+        "Featured icon#2487:8": false,
+        "Title#1276:1": "ยืนยันยกเลิกคำขอ",
+        "Close icon#1276:2": false,
+        "Alignment": "Center"
+       },
+       "component": "Modal header [Alignment=Center]",
+       "kids": [
+        {
+         "name": "Content",
+         "type": "FRAME",
+         "w": 500,
+         "h": 82,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "pt": 24,
+         "gap": 16,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/400",
+          "paddingLeft": "Spacing/600",
+          "paddingTop": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Featured icon",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 48,
+           "h": 48,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 9999,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#FFF5FD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "topLeftRadius": "Radius/full",
+            "topRightRadius": "Radius/full",
+            "bottomLeftRadius": "Radius/full",
+            "bottomRightRadius": "Radius/full",
+            "fills": "Color/component/utility/brand/50"
+           },
+           "variant": {
+            "Icon swap#2032:0": "522:18597",
+            "Color": "Brand",
+            "Size": "md"
+           },
+           "component": "Featured icon [Color=Brand, Size=md]"
+          },
+          {
+           "name": "Text and supporting text",
+           "type": "FRAME",
+           "w": 452,
+           "h": 58,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           }
+          }
+         ]
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "visible": false,
+         "w": 560,
+         "h": 21,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "pt": 20,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingTop": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 560,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Padding bottom",
+         "type": "FRAME",
+         "w": 500,
+         "h": 16,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Tertiary button",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 40,
+         "h": 40,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "pl": 8,
+         "pr": 8,
+         "pt": 8,
+         "pb": 8,
+         "gap": 4,
+         "r": 8,
+         "dir": "HORIZONTAL",
+         "justify": "CENTER",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/100",
+          "paddingLeft": "Spacing/200",
+          "paddingTop": "Spacing/200",
+          "paddingRight": "Spacing/200",
+          "paddingBottom": "Spacing/200",
+          "topLeftRadius": "Radius/200",
+          "topRightRadius": "Radius/200",
+          "bottomLeftRadius": "Radius/200",
+          "bottomRightRadius": "Radius/200"
+         },
+         "variant": {
+          "Leading icon swap#133:10": "1084:414",
+          "Trailing icon#105:4": false,
+          "Trailing icon swap#133:12": "133:3719",
+          "Leading icon#105:2": true,
+          "Button text#1153:0": false,
+          "Text#105:0": "Button",
+          "State": "Default",
+          "Size": "md"
+         },
+         "component": "Tertiary button [State=Default, Size=md]",
+         "kids": [
+          {
+           "name": "close-24-300-round",
+           "type": "INSTANCE",
+           "w": 20,
+           "h": 20,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "component": "close-24-300-round"
+          },
+          {
+           "name": "Text",
+           "type": "TEXT",
+           "visible": false,
+           "w": 47,
+           "h": 21,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "fill": [
+            "#475467"
+           ],
+           "sw": 1,
+           "strokeAlign": "OUTSIDE",
+           "vars": {
+            "fills": "Color/component/button/tertiary/text",
+            "letterSpacing": "IBM/Label/03/letter-spacing",
+            "fontSize": "IBM/Label/03/font-size",
+            "fontFamily": "IBM/Label/03/font-family",
+            "paragraphSpacing": "IBM/Label/03/letter-spacing",
+            "fontWeight": "IBM/Label/03/font-weight"
+           },
+           "font": {
+            "fam": "IBM Plex Sans Thai",
+            "style": "SemiBold",
+            "size": 14,
+            "lh": null,
+            "ls": -0.20000000298023224
+           },
+           "text": "Button"
+          },
+          {
+           "name": "crop_free-20-400-round",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 20,
+           "h": 20,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "component": "crop_free-20-400-round"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Form",
+       "type": "FRAME",
+       "w": 500,
+       "h": 40,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pl": 24,
+       "pr": 24,
+       "gap": 12,
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "itemSpacing": "Spacing/300",
+        "paddingLeft": "Spacing/600",
+        "paddingTop": "Spacing/none",
+        "paddingRight": "Spacing/600",
+        "paddingBottom": "Spacing/none"
+       },
+       "kids": [
+        {
+         "name": "Card form row",
+         "type": "INSTANCE",
+         "w": 452,
+         "h": 40,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Input 2 swap#2499:5": "26:65",
+          "Input 1 swap#2499:3": "26:65",
+          "Input 2#2499:4": false,
+          "Width": "Full"
+         },
+         "component": "Card form row [Width=Full]",
+         "kids": [
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "w": 452,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Leading icon swap#33:3": "476:1742",
+            "Optional#1105:0": true,
+            "Show Placeholder#3747:0": true,
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "โปรดระบุเหตุผลที่ยกเลิกคำขอ",
+            "Label text#265:7": "Label",
+            "Label#265:0": false,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Text input [State=Default, Size=md]"
+          },
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 232,
+           "h": 72,
+           "sizing": [
+            "FIXED",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Leading icon swap#33:3": "476:1742",
+            "Optional#1105:0": true,
+            "Show Placeholder#3747:0": true,
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "Text input",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Text input [State=Default, Size=md]"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal footer",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 88,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pb": 24,
+       "r": [
+        0,
+        0,
+        12,
+        12
+       ],
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "fill": [
+        "#FFFFFF"
+       ],
+       "sws": [
+        1,
+        0,
+        0,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingBottom": "Spacing/600",
+        "bottomLeftRadius": "Radius/300",
+        "bottomRightRadius": "Radius/300",
+        "fills": "Color/surface/primary"
+       },
+       "variant": {
+        "Primary action#2505:14": true,
+        "Padding top#2487:4": true,
+        "Divider#2487:0": false,
+        "Tertiary action#2560:61": true,
+        "Secondary action#106:3": true,
+        "Alignment": "Horizontal fill"
+       },
+       "component": "Modal footer [Alignment=Horizontal fill]",
+       "kids": [
+        {
+         "name": "Padding top",
+         "type": "FRAME",
+         "w": 500,
+         "h": 24,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "visible": false,
+         "w": 560,
+         "h": 21,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "pb": 20,
+         "gap": 8,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingBottom": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 560,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Actions",
+         "type": "FRAME",
+         "w": 500,
+         "h": 40,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Secondary button",
+           "type": "INSTANCE",
+           "w": 220,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "FIXED"
+           ],
+           "pl": 12,
+           "pr": 12,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#FFFFFF"
+           ],
+           "stroke": [
+            "#D0D5DD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/300",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/300",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200",
+            "fills": "Color/component/button/secondary/surface",
+            "strokes": "Color/border/primary"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "133:3719",
+            "Button text#1246:27": true,
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": false,
+            "Text#105:0": "ไม่ใช่ตอนนี้",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Secondary button [State=Default, Size=md]"
+          },
+          {
+           "name": "Primary danger button",
+           "type": "INSTANCE",
+           "w": 220,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "FIXED"
+           ],
+           "pl": 12,
+           "pr": 12,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#D92D20"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/300",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/300",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200",
+            "fills": "Color/component/button/primary-danger/surface"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "133:3719",
+            "Button text#1246:33": true,
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": false,
+            "Text#105:0": "ยกเลิกคำขอ",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Primary danger button [State=Default, Size=md]"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Type=Centered image carousel, Size=md",
+   "type": "COMPONENT",
+   "w": 1440,
+   "h": 1024,
+   "sizing": [
+    "FIXED",
+    "FIXED"
+   ],
+   "r": 0,
+   "justify": "MIN",
+   "align": "MIN",
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "variant": {
+    "Type": "Centered image carousel",
+    "Size": "md"
+   },
+   "kids": [
+    {
+     "name": "Background overlay",
+     "type": "INSTANCE",
+     "w": 1440,
+     "h": 1024,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "Background overlay",
+     "kids": [
+      {
+       "name": "Background overlay",
+       "type": "RECTANGLE",
+       "w": 1440,
+       "h": 1024,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#000000"
+       ],
+       "paint": [
+        "#00000066"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/background/overlay"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Modal",
+     "type": "FRAME",
+     "w": 500,
+     "h": 482,
+     "sizing": [
+      "FIXED",
+      "HUG"
+     ],
+     "r": 12,
+     "dir": "VERTICAL",
+     "justify": "MIN",
+     "align": "CENTER",
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "vars": {
+      "topLeftRadius": "Radius/300",
+      "topRightRadius": "Radius/300",
+      "bottomLeftRadius": "Radius/300",
+      "bottomRightRadius": "Radius/300",
+      "fills": "Color/surface/primary"
+     },
+     "kids": [
+      {
+       "name": "Content",
+       "type": "FRAME",
+       "w": 500,
+       "h": 264,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pl": 24,
+       "pr": 24,
+       "pt": 24,
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingLeft": "Spacing/600",
+        "paddingTop": "Spacing/600",
+        "paddingRight": "Spacing/600",
+        "paddingBottom": "Spacing/none"
+       },
+       "kids": [
+        {
+         "name": "Images",
+         "type": "INSTANCE",
+         "w": 452,
+         "h": 240,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 8,
+         "justify": "MIN",
+         "align": "MIN",
+         "paint": [
+          "image"
+         ],
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "topLeftRadius": "Radius/200",
+          "topRightRadius": "Radius/200",
+          "bottomLeftRadius": "Radius/200",
+          "bottomRightRadius": "Radius/200"
+         },
+         "variant": {
+          "Buttons#2635:15": true,
+          "Indicator pagination#2635:14": false,
+          "Size": "sm",
+          "Type": "Image"
+         },
+         "component": "Images [Size=sm, Type=Image]",
+         "kids": [
+          {
+           "name": "Indicator pagination",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 56,
+           "h": 8,
+           "sizing": [
+            "HUG",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Indicator 5#2714:2": true,
+            "Indicator 4#2714:1": true,
+            "Indicator 3#2714:0": true
+           },
+           "component": "Indicator pagination"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal header",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 122,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "sws": [
+        0,
+        0,
+        1,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "variant": {
+        "Divider#1278:0": false,
+        "Supporting text#2486:2": "คุณสามารถคัดลอกเลขที่คำขอไปใช้อ้างอิง ในการขออนุมัติเดินทางไปปฏิบัติงานต่างพื้นที่ได้",
+        "Back icon#2633:8": true,
+        "Supporting#2485:0": true,
+        "Padding bottom#2491:0": true,
+        "Featured icon#2487:8": false,
+        "Title#1276:1": "คำขอใช้ยานพาหนะได้รับการอนุมัติแล้ว",
+        "Close icon#1276:2": false,
+        "Alignment": "Center"
+       },
+       "component": "Modal header [Alignment=Center]",
+       "kids": [
+        {
+         "name": "Content",
+         "type": "FRAME",
+         "w": 500,
+         "h": 106,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "pt": 24,
+         "gap": 16,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/400",
+          "paddingLeft": "Spacing/600",
+          "paddingTop": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Featured icon",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 48,
+           "h": 48,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 9999,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#FFF5FD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "topLeftRadius": "Radius/full",
+            "topRightRadius": "Radius/full",
+            "bottomLeftRadius": "Radius/full",
+            "bottomRightRadius": "Radius/full",
+            "fills": "Color/component/utility/brand/50"
+           },
+           "variant": {
+            "Icon swap#2032:0": "522:18597",
+            "Color": "Brand",
+            "Size": "md"
+           },
+           "component": "Featured icon [Color=Brand, Size=md]"
+          },
+          {
+           "name": "Text and supporting text",
+           "type": "FRAME",
+           "w": 452,
+           "h": 82,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           }
+          }
+         ]
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "visible": false,
+         "w": 560,
+         "h": 21,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "pt": 20,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingTop": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 560,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Padding bottom",
+         "type": "FRAME",
+         "w": 500,
+         "h": 16,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Tertiary button",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 40,
+         "h": 40,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "pl": 8,
+         "pr": 8,
+         "pt": 8,
+         "pb": 8,
+         "gap": 4,
+         "r": 8,
+         "dir": "HORIZONTAL",
+         "justify": "CENTER",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/100",
+          "paddingLeft": "Spacing/200",
+          "paddingTop": "Spacing/200",
+          "paddingRight": "Spacing/200",
+          "paddingBottom": "Spacing/200",
+          "topLeftRadius": "Radius/200",
+          "topRightRadius": "Radius/200",
+          "bottomLeftRadius": "Radius/200",
+          "bottomRightRadius": "Radius/200"
+         },
+         "variant": {
+          "Leading icon swap#133:10": "1084:414",
+          "Trailing icon#105:4": false,
+          "Trailing icon swap#133:12": "133:3719",
+          "Leading icon#105:2": true,
+          "Button text#1153:0": false,
+          "Text#105:0": "Button",
+          "State": "Default",
+          "Size": "md"
+         },
+         "component": "Tertiary button [State=Default, Size=md]",
+         "kids": [
+          {
+           "name": "close-24-300-round",
+           "type": "INSTANCE",
+           "w": 20,
+           "h": 20,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "component": "close-24-300-round"
+          },
+          {
+           "name": "Text",
+           "type": "TEXT",
+           "visible": false,
+           "w": 47,
+           "h": 21,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "fill": [
+            "#475467"
+           ],
+           "sw": 1,
+           "strokeAlign": "OUTSIDE",
+           "vars": {
+            "fills": "Color/component/button/tertiary/text",
+            "letterSpacing": "IBM/Label/03/letter-spacing",
+            "fontSize": "IBM/Label/03/font-size",
+            "fontFamily": "IBM/Label/03/font-family",
+            "paragraphSpacing": "IBM/Label/03/letter-spacing",
+            "fontWeight": "IBM/Label/03/font-weight"
+           },
+           "font": {
+            "fam": "IBM Plex Sans Thai",
+            "style": "SemiBold",
+            "size": 14,
+            "lh": null,
+            "ls": -0.20000000298023224
+           },
+           "text": "Button"
+          },
+          {
+           "name": "crop_free-20-400-round",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 20,
+           "h": 20,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "component": "crop_free-20-400-round"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Indicator pagination",
+       "type": "INSTANCE",
+       "w": 56,
+       "h": 8,
+       "sizing": [
+        "HUG",
+        "HUG"
+       ],
+       "gap": 4,
+       "r": 0,
+       "dir": "HORIZONTAL",
+       "justify": "MIN",
+       "align": "CENTER",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "itemSpacing": "Spacing/100"
+       },
+       "variant": {
+        "Indicator 5#2714:2": true,
+        "Indicator 4#2714:1": true,
+        "Indicator 3#2714:0": true
+       },
+       "component": "Indicator pagination",
+       "kids": [
+        {
+         "name": "_Indicator pagination item",
+         "type": "INSTANCE",
+         "w": 8,
+         "h": 8,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 0,
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "variant": {
+          "Current": "True"
+         },
+         "component": "_Indicator pagination item [Current=True]",
+         "kids": [
+          {
+           "name": "Indicator",
+           "type": "ELLIPSE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "fill": [
+            "#A80689"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "fills": "Color/icon/brand"
+           }
+          }
+         ]
+        },
+        {
+         "name": "_Indicator pagination item",
+         "type": "INSTANCE",
+         "w": 8,
+         "h": 8,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 0,
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "variant": {
+          "Current": "False"
+         },
+         "component": "_Indicator pagination item [Current=False]",
+         "kids": [
+          {
+           "name": "Indicator",
+           "type": "ELLIPSE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "fill": [
+            "#D0D5DD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "fills": "Color/icon/tertiary"
+           }
+          }
+         ]
+        },
+        {
+         "name": "_Indicator pagination item",
+         "type": "INSTANCE",
+         "w": 8,
+         "h": 8,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 0,
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "variant": {
+          "Current": "False"
+         },
+         "component": "_Indicator pagination item [Current=False]",
+         "kids": [
+          {
+           "name": "Indicator",
+           "type": "ELLIPSE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "fill": [
+            "#D0D5DD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "fills": "Color/icon/tertiary"
+           }
+          }
+         ]
+        },
+        {
+         "name": "_Indicator pagination item",
+         "type": "INSTANCE",
+         "w": 8,
+         "h": 8,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 0,
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "variant": {
+          "Current": "False"
+         },
+         "component": "_Indicator pagination item [Current=False]",
+         "kids": [
+          {
+           "name": "Indicator",
+           "type": "ELLIPSE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "fill": [
+            "#D0D5DD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "fills": "Color/icon/tertiary"
+           }
+          }
+         ]
+        },
+        {
+         "name": "_Indicator pagination item",
+         "type": "INSTANCE",
+         "w": 8,
+         "h": 8,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 0,
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "variant": {
+          "Current": "False"
+         },
+         "component": "_Indicator pagination item [Current=False]",
+         "kids": [
+          {
+           "name": "Indicator",
+           "type": "ELLIPSE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "fill": [
+            "#D0D5DD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "fills": "Color/icon/tertiary"
+           }
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal footer",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 88,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pb": 24,
+       "r": [
+        0,
+        0,
+        12,
+        12
+       ],
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "fill": [
+        "#FFFFFF"
+       ],
+       "sws": [
+        1,
+        0,
+        0,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingBottom": "Spacing/600",
+        "bottomLeftRadius": "Radius/300",
+        "bottomRightRadius": "Radius/300",
+        "fills": "Color/surface/primary"
+       },
+       "variant": {
+        "Primary action#2505:14": true,
+        "Padding top#2487:4": true,
+        "Divider#2487:0": false,
+        "Tertiary action#2560:61": true,
+        "Secondary action#106:3": true,
+        "Alignment": "Horizontal fill"
+       },
+       "component": "Modal footer [Alignment=Horizontal fill]",
+       "kids": [
+        {
+         "name": "Padding top",
+         "type": "FRAME",
+         "w": 500,
+         "h": 24,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "visible": false,
+         "w": 560,
+         "h": 21,
+         "sizing": [
+          "FIXED",
+          "HUG"
+         ],
+         "pb": 20,
+         "gap": 8,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingBottom": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 560,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Actions",
+         "type": "FRAME",
+         "w": 500,
+         "h": 40,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Secondary button",
+           "type": "INSTANCE",
+           "w": 220,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "FIXED"
+           ],
+           "pl": 12,
+           "pr": 12,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#FFFFFF"
+           ],
+           "stroke": [
+            "#D0D5DD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/300",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/300",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200",
+            "fills": "Color/component/button/secondary/surface",
+            "strokes": "Color/border/primary"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "133:3719",
+            "Button text#1246:27": true,
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": false,
+            "Text#105:0": "ข้าม",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Secondary button [State=Default, Size=md]"
+          },
+          {
+           "name": "Primary button",
+           "type": "INSTANCE",
+           "w": 220,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "FIXED"
+           ],
+           "pl": 12,
+           "pr": 12,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#A80689"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/300",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/300",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200",
+            "fills": "Color/component/button/primary/surface"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "133:3719",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": false,
+            "Button text#1246:11": true,
+            "Text#105:0": "ถัดไป",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Primary button [State=Default, Size=md]"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Type=Form, Size=md",
+   "type": "COMPONENT",
+   "w": 1440,
+   "h": 1024,
+   "sizing": [
+    "FIXED",
+    "FIXED"
+   ],
+   "r": 0,
+   "justify": "MIN",
+   "align": "MIN",
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "variant": {
+    "Type": "Form",
+    "Size": "md"
+   },
+   "kids": [
+    {
+     "name": "Background overlay",
+     "type": "INSTANCE",
+     "w": 1440,
+     "h": 1024,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "Background overlay",
+     "kids": [
+      {
+       "name": "Background overlay",
+       "type": "RECTANGLE",
+       "w": 1440,
+       "h": 1024,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#000000"
+       ],
+       "paint": [
+        "#00000066"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/background/overlay"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Modal",
+     "type": "FRAME",
+     "w": 500,
+     "h": 450,
+     "sizing": [
+      "FIXED",
+      "HUG"
+     ],
+     "r": 12,
+     "dir": "VERTICAL",
+     "justify": "MIN",
+     "align": "MIN",
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "vars": {
+      "topLeftRadius": "Radius/300",
+      "topRightRadius": "Radius/300",
+      "bottomLeftRadius": "Radius/300",
+      "bottomRightRadius": "Radius/300",
+      "fills": "Color/surface/primary"
+     },
+     "kids": [
+      {
+       "name": "Modal header",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 101,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "sws": [
+        0,
+        0,
+        1,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "variant": {
+        "Back icon#2633:8": false,
+        "Padding bottom#2491:0": true,
+        "Divider#1278:0": true,
+        "Supporting text#2486:2": "Description",
+        "Supporting#2485:0": false,
+        "Featured icon#2487:8": false,
+        "Title#1276:1": "แก้ไขข้อมูลผู้ใช้ยานพาหนะ",
+        "Close icon#1276:2": true,
+        "Alignment": "Left"
+       },
+       "component": "Modal header [Alignment=Left]",
+       "kids": [
+        {
+         "name": "Content",
+         "type": "FRAME",
+         "w": 500,
+         "h": 64,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "pt": 24,
+         "gap": 8,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/200",
+          "paddingLeft": "Spacing/600",
+          "paddingTop": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Tertiary button",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "HUG",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "1885:5296",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": true,
+            "Button text#1153:0": false,
+            "Text#105:0": "Button",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Tertiary button [State=Default, Size=md]"
+          },
+          {
+           "name": "Title and icon",
+           "type": "FRAME",
+           "w": 404,
+           "h": 30,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 16,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/400"
+           }
+          },
+          {
+           "name": "Tertiary button",
+           "type": "INSTANCE",
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "1084:414",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": true,
+            "Button text#1153:0": false,
+            "Text#105:0": "Button",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Tertiary button [State=Default, Size=md]"
+          }
+         ]
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "w": 500,
+         "h": 21,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pt": 20,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingTop": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 500,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Padding bottom",
+         "type": "FRAME",
+         "w": 500,
+         "h": 16,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        }
+       ]
+      },
+      {
+       "name": "Form",
+       "type": "FRAME",
+       "w": 500,
+       "h": 240,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pl": 24,
+       "pr": 24,
+       "gap": 12,
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "itemSpacing": "Spacing/300",
+        "paddingLeft": "Spacing/600",
+        "paddingTop": "Spacing/none",
+        "paddingRight": "Spacing/600",
+        "paddingBottom": "Spacing/none"
+       },
+       "kids": [
+        {
+         "name": "Card form row",
+         "type": "INSTANCE",
+         "w": 452,
+         "h": 72,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Input 2 swap#2499:5": "26:65",
+          "Input 1 swap#2499:3": "33:2835",
+          "Input 2#2499:4": false,
+          "Width": "Full"
+         },
+         "component": "Card form row [Width=Full]",
+         "kids": [
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "w": 452,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Trailing icon swap#33:6": "22:133",
+            "Leading icon swap#33:3": "476:1742",
+            "Show Placeholder#3747:0": true,
+            "Optional#1105:0": true,
+            "Info icon#522:0": true,
+            "Label#265:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Label text#265:7": "Label",
+            "Text#33:0": "สมคิด จงจองหอ",
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Readonly",
+            "Size": "md"
+           },
+           "component": "Text input [State=Readonly, Size=md]"
+          },
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 232,
+           "h": 72,
+           "sizing": [
+            "FIXED",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Leading icon swap#33:3": "476:1742",
+            "Optional#1105:0": true,
+            "Show Placeholder#3747:0": true,
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "Text input",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Text input [State=Default, Size=md]"
+          }
+         ]
+        },
+        {
+         "name": "Card form row",
+         "type": "INSTANCE",
+         "w": 452,
+         "h": 72,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Input 2 swap#2499:5": "26:65",
+          "Input 1 swap#2499:3": "33:2835",
+          "Input 2#2499:4": false,
+          "Width": "Full"
+         },
+         "component": "Card form row [Width=Full]",
+         "kids": [
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "w": 452,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Trailing icon swap#33:6": "22:133",
+            "Leading icon swap#33:3": "476:1742",
+            "Show Placeholder#3747:0": true,
+            "Optional#1105:0": true,
+            "Info icon#522:0": true,
+            "Label#265:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Label text#265:7": "Label",
+            "Text#33:0": "นรค.6 กอพ.1 ฝพจ.",
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Readonly",
+            "Size": "md"
+           },
+           "component": "Text input [State=Readonly, Size=md]"
+          },
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 232,
+           "h": 72,
+           "sizing": [
+            "FIXED",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Leading icon swap#33:3": "476:1742",
+            "Optional#1105:0": true,
+            "Show Placeholder#3747:0": true,
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "Text input",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Text input [State=Default, Size=md]"
+          }
+         ]
+        },
+        {
+         "name": "Card form row",
+         "type": "INSTANCE",
+         "w": 452,
+         "h": 72,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Input 2 swap#2499:5": "761:8704",
+          "Input 1 swap#2499:3": "761:8704",
+          "Input 2#2499:4": true,
+          "Width": "Full"
+         },
+         "component": "Card form row [Width=Full]",
+         "kids": [
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "w": 220,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Show Placeholder#3747:0": true,
+            "Leading icon swap#33:3": "476:1742",
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "6892",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Optional#1105:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Filled",
+            "Size": "md"
+           },
+           "component": "Text input [State=Filled, Size=md]"
+          },
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "w": 220,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Show Placeholder#3747:0": true,
+            "Leading icon swap#33:3": "476:1742",
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "091-234-5678",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Optional#1105:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Filled",
+            "Size": "md"
+           },
+           "component": "Text input [State=Filled, Size=md]"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal footer",
+       "type": "INSTANCE",
+       "w": 500,
+       "h": 109,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pb": 24,
+       "r": [
+        0,
+        0,
+        12,
+        12
+       ],
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "fill": [
+        "#FFFFFF"
+       ],
+       "sws": [
+        1,
+        0,
+        0,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingBottom": "Spacing/600",
+        "bottomLeftRadius": "Radius/300",
+        "bottomRightRadius": "Radius/300",
+        "fills": "Color/surface/primary"
+       },
+       "variant": {
+        "Tertiary action#2560:61": false,
+        "Divider#2487:0": true,
+        "Primary action#2505:14": true,
+        "Padding top#2487:4": true,
+        "Secondary action#106:3": true,
+        "Alignment": "Horizontal right"
+       },
+       "component": "Modal footer [Alignment=Horizontal right]",
+       "kids": [
+        {
+         "name": "Padding top",
+         "type": "FRAME",
+         "w": 500,
+         "h": 24,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "w": 500,
+         "h": 21,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pb": 20,
+         "gap": 8,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingBottom": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 500,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Actions",
+         "type": "FRAME",
+         "w": 500,
+         "h": 40,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MAX",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Tertiary brand button",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 59,
+           "h": 40,
+           "sizing": [
+            "HUG",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "133:3719",
+            "Button text#1153:12": true,
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": false,
+            "Text#105:0": "Button",
+            "State": "Default"
+           },
+           "component": "Tertiary brand button [State=Default]"
+          },
+          {
+           "name": "Primary and secondary actions",
+           "type": "FRAME",
+           "w": 452,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 12,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MAX",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/300"
+           }
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Type=Form, Size=lg",
+   "type": "COMPONENT",
+   "w": 1440,
+   "h": 1024,
+   "sizing": [
+    "FIXED",
+    "FIXED"
+   ],
+   "r": 0,
+   "justify": "MIN",
+   "align": "MIN",
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "variant": {
+    "Type": "Form",
+    "Size": "lg"
+   },
+   "kids": [
+    {
+     "name": "Background overlay",
+     "type": "INSTANCE",
+     "w": 1440,
+     "h": 1024,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "Background overlay",
+     "kids": [
+      {
+       "name": "Background overlay",
+       "type": "RECTANGLE",
+       "w": 1440,
+       "h": 1024,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#000000"
+       ],
+       "paint": [
+        "#00000066"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/background/overlay"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Modal",
+     "type": "FRAME",
+     "w": 800,
+     "h": 702,
+     "sizing": [
+      "FIXED",
+      "HUG"
+     ],
+     "r": 12,
+     "dir": "VERTICAL",
+     "justify": "MIN",
+     "align": "MIN",
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "vars": {
+      "topLeftRadius": "Radius/300",
+      "topRightRadius": "Radius/300",
+      "bottomLeftRadius": "Radius/300",
+      "bottomRightRadius": "Radius/300",
+      "fills": "Color/surface/primary"
+     },
+     "kids": [
+      {
+       "name": "Modal header",
+       "type": "INSTANCE",
+       "w": 800,
+       "h": 101,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "sws": [
+        0,
+        0,
+        1,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "variant": {
+        "Back icon#2633:8": false,
+        "Padding bottom#2491:0": true,
+        "Divider#1278:0": true,
+        "Supporting text#2486:2": "Description",
+        "Supporting#2485:0": false,
+        "Featured icon#2487:8": false,
+        "Title#1276:1": "แก้ไขรายละเอียดการเดินทาง",
+        "Close icon#1276:2": true,
+        "Alignment": "Left"
+       },
+       "component": "Modal header [Alignment=Left]",
+       "kids": [
+        {
+         "name": "Content",
+         "type": "FRAME",
+         "w": 800,
+         "h": 64,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "pt": 24,
+         "gap": 8,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/200",
+          "paddingLeft": "Spacing/600",
+          "paddingTop": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Tertiary button",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "HUG",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "1885:5296",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": true,
+            "Button text#1153:0": false,
+            "Text#105:0": "Button",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Tertiary button [State=Default, Size=md]"
+          },
+          {
+           "name": "Title and icon",
+           "type": "FRAME",
+           "w": 704,
+           "h": 30,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 16,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/400"
+           }
+          },
+          {
+           "name": "Tertiary button",
+           "type": "INSTANCE",
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "1084:414",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": true,
+            "Button text#1153:0": false,
+            "Text#105:0": "Button",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Tertiary button [State=Default, Size=md]"
+          }
+         ]
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "w": 800,
+         "h": 21,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pt": 20,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingTop": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 800,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Padding bottom",
+         "type": "FRAME",
+         "w": 800,
+         "h": 16,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        }
+       ]
+      },
+      {
+       "name": "Form",
+       "type": "FRAME",
+       "w": 800,
+       "h": 492,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pl": 24,
+       "pr": 24,
+       "gap": 12,
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "itemSpacing": "Spacing/300",
+        "paddingLeft": "Spacing/600",
+        "paddingTop": "Spacing/none",
+        "paddingRight": "Spacing/600",
+        "paddingBottom": "Spacing/none"
+       },
+       "kids": [
+        {
+         "name": "Card form row",
+         "type": "INSTANCE",
+         "w": 752,
+         "h": 72,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Input 2 swap#2499:5": "33:2835",
+          "Input 1 swap#2499:3": "33:2835",
+          "Input 2#2499:4": true,
+          "Width": "Full"
+         },
+         "component": "Card form row [Width=Full]",
+         "kids": [
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "w": 370,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Trailing icon swap#33:6": "22:133",
+            "Leading icon swap#33:3": "476:1742",
+            "Show Placeholder#3747:0": true,
+            "Optional#1105:0": true,
+            "Info icon#522:0": true,
+            "Label#265:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Label text#265:7": "Label",
+            "Text#33:0": "01/01/2567",
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Readonly",
+            "Size": "md"
+           },
+           "component": "Text input [State=Readonly, Size=md]"
+          },
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "w": 370,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Trailing icon swap#33:6": "22:133",
+            "Leading icon swap#33:3": "476:1742",
+            "Show Placeholder#3747:0": true,
+            "Optional#1105:0": true,
+            "Info icon#522:0": true,
+            "Label#265:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Label text#265:7": "Label",
+            "Text#33:0": "07/01/2567",
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Readonly",
+            "Size": "md"
+           },
+           "component": "Text input [State=Readonly, Size=md]"
+          }
+         ]
+        },
+        {
+         "name": "Card form row",
+         "type": "INSTANCE",
+         "w": 752,
+         "h": 72,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Input 2 swap#2499:5": "29:219",
+          "Input 1 swap#2499:3": "29:219",
+          "Input 2#2499:4": true,
+          "Width": "Full"
+         },
+         "component": "Card form row [Width=Full]",
+         "kids": [
+          {
+           "name": "Horizontal radio groups",
+           "type": "INSTANCE",
+           "w": 370,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "CENTER",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Leading icon swap#2159:1": "476:1742",
+            "Leading icon#2159:0": false,
+            "Radio 3#1231:3": true,
+            "Info icon#1733:1": false,
+            "Helper#1701:5": false,
+            "Radio 4#1231:5": false,
+            "Helper text#1701:3": "Helper",
+            "Radio text 1#1152:9": "เต็มวัน",
+            "Radio text 4#1152:17": "Option",
+            "Radio text 2#1152:13": "ครึ่งวันเช้า",
+            "Radio text 3#1152:15": "ครึ่งวันบ่าย",
+            "Label#1152:5": true,
+            "Label text#1152:1": "ช่วงเวลาการเดินทาง"
+           },
+           "component": "Horizontal radio groups"
+          },
+          {
+           "name": "Horizontal radio groups",
+           "type": "INSTANCE",
+           "w": 370,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "CENTER",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Leading icon swap#2159:1": "476:1742",
+            "Leading icon#2159:0": false,
+            "Radio 3#1231:3": false,
+            "Info icon#1733:1": false,
+            "Helper#1701:5": false,
+            "Radio 4#1231:5": false,
+            "Helper text#1701:3": "Helper",
+            "Radio text 1#1152:9": "ไป-กลับ",
+            "Radio text 4#1152:17": "Option",
+            "Radio text 2#1152:13": "ค้างแรม",
+            "Radio text 3#1152:15": "Option",
+            "Label#1152:5": true,
+            "Label text#1152:1": "ประเภทการเดินทาง"
+           },
+           "component": "Horizontal radio groups"
+          }
+         ]
+        },
+        {
+         "name": "Card form row",
+         "type": "INSTANCE",
+         "w": 752,
+         "h": 72,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Input 2 swap#2499:5": "26:65",
+          "Input 1 swap#2499:3": "761:8704",
+          "Input 2#2499:4": false,
+          "Width": "Full"
+         },
+         "component": "Card form row [Width=Full]",
+         "kids": [
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "w": 752,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Show Placeholder#3747:0": true,
+            "Leading icon swap#33:3": "476:1742",
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "การไฟฟ้าเขต ฉ.1 และ กฟฟ. ในสังกัด",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Optional#1105:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Filled",
+            "Size": "md"
+           },
+           "component": "Text input [State=Filled, Size=md]"
+          },
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 232,
+           "h": 72,
+           "sizing": [
+            "FIXED",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Leading icon swap#33:3": "476:1742",
+            "Optional#1105:0": true,
+            "Show Placeholder#3747:0": true,
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "Text input",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Text input [State=Default, Size=md]"
+          }
+         ]
+        },
+        {
+         "name": "Card form row",
+         "type": "INSTANCE",
+         "w": 752,
+         "h": 72,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Input 2 swap#2499:5": "26:65",
+          "Input 1 swap#2499:3": "761:8704",
+          "Input 2#2499:4": false,
+          "Width": "Full"
+         },
+         "component": "Card form row [Width=Full]",
+         "kids": [
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "w": 752,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Show Placeholder#3747:0": true,
+            "Leading icon swap#33:3": "476:1742",
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "เพื่อเก็บรวบรวมข้อมูลการใช้งานระบบ VMS Plus ขอบเขตงานบริการเช่าชุดเครื่องยนต์กำเนิดไฟฟ้าของ กฟภ. และงานบริหารจัดการยานพาหนะขนาดใหญ่",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Optional#1105:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Filled",
+            "Size": "md"
+           },
+           "component": "Text input [State=Filled, Size=md]"
+          },
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 232,
+           "h": 72,
+           "sizing": [
+            "FIXED",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Leading icon swap#33:3": "476:1742",
+            "Optional#1105:0": true,
+            "Show Placeholder#3747:0": true,
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "Text input",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Text input [State=Default, Size=md]"
+          }
+         ]
+        },
+        {
+         "name": "Card form row",
+         "type": "INSTANCE",
+         "w": 752,
+         "h": 72,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Input 2 swap#2499:5": "26:65",
+          "Input 1 swap#2499:3": "761:8704",
+          "Input 2#2499:4": false,
+          "Width": "Full"
+         },
+         "component": "Card form row [Width=Full]",
+         "kids": [
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "w": 752,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Show Placeholder#3747:0": true,
+            "Leading icon swap#33:3": "476:1742",
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "รายละเอียดแผนและรายชื่อพนักงานตามเอกสารแนบ",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Optional#1105:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Filled",
+            "Size": "md"
+           },
+           "component": "Text input [State=Filled, Size=md]"
+          },
+          {
+           "name": "Text input",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 232,
+           "h": 72,
+           "sizing": [
+            "FIXED",
+            "HUG"
+           ],
+           "gap": 8,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/200",
+            "paddingLeft": "Spacing/none",
+            "paddingTop": "Spacing/none",
+            "paddingRight": "Spacing/none",
+            "paddingBottom": "Spacing/none"
+           },
+           "variant": {
+            "Leading icon swap#33:3": "476:1742",
+            "Optional#1105:0": true,
+            "Show Placeholder#3747:0": true,
+            "Trailing icon swap#33:6": "22:133",
+            "Info icon#522:0": true,
+            "Text#33:0": "Text input",
+            "Label text#265:7": "Label",
+            "Label#265:0": true,
+            "Leading icon#33:9": false,
+            "Helper#33:19": false,
+            "Helper text#33:15": "Helper",
+            "Trailing icon#33:12": false,
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Text input [State=Default, Size=md]"
+          }
+         ]
+        },
+        {
+         "name": "Card form row",
+         "type": "INSTANCE",
+         "w": 752,
+         "h": 72,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Input 2 swap#2499:5": "26:65",
+          "Input 2#2499:4": false,
+          "Input 1 swap#2499:3": "391:10249",
+          "Width": "25%"
+         },
+         "component": "Card form row [Width=25%]",
+         "kids": [
+          {
+           "name": "Input",
+           "type": "FRAME",
+           "w": 370,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 12,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/300"
+           }
+          },
+          {
+           "name": "Spacing",
+           "type": "FRAME",
+           "w": 370,
+           "h": 72,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal footer",
+       "type": "INSTANCE",
+       "w": 800,
+       "h": 109,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pb": 24,
+       "r": [
+        0,
+        0,
+        12,
+        12
+       ],
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "fill": [
+        "#FFFFFF"
+       ],
+       "sws": [
+        1,
+        0,
+        0,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingBottom": "Spacing/600",
+        "bottomLeftRadius": "Radius/300",
+        "bottomRightRadius": "Radius/300",
+        "fills": "Color/surface/primary"
+       },
+       "variant": {
+        "Tertiary action#2560:61": false,
+        "Divider#2487:0": true,
+        "Primary action#2505:14": true,
+        "Padding top#2487:4": true,
+        "Secondary action#106:3": true,
+        "Alignment": "Horizontal right"
+       },
+       "component": "Modal footer [Alignment=Horizontal right]",
+       "kids": [
+        {
+         "name": "Padding top",
+         "type": "FRAME",
+         "w": 800,
+         "h": 24,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "w": 800,
+         "h": 21,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pb": 20,
+         "gap": 8,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingBottom": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 800,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Actions",
+         "type": "FRAME",
+         "w": 800,
+         "h": 40,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MAX",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Tertiary brand button",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 59,
+           "h": 40,
+           "sizing": [
+            "HUG",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "133:3719",
+            "Button text#1153:12": true,
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": false,
+            "Text#105:0": "Button",
+            "State": "Default"
+           },
+           "component": "Tertiary brand button [State=Default]"
+          },
+          {
+           "name": "Primary and secondary actions",
+           "type": "FRAME",
+           "w": 752,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 12,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MAX",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/300"
+           }
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Type=Card list, Size=xl",
+   "type": "COMPONENT",
+   "w": 1440,
+   "h": 1024,
+   "sizing": [
+    "FIXED",
+    "FIXED"
+   ],
+   "r": 0,
+   "justify": "MIN",
+   "align": "MIN",
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "variant": {
+    "Type": "Card list",
+    "Size": "xl"
+   },
+   "kids": [
+    {
+     "name": "Background overlay",
+     "type": "INSTANCE",
+     "w": 1440,
+     "h": 1024,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "Background overlay",
+     "kids": [
+      {
+       "name": "Background overlay",
+       "type": "RECTANGLE",
+       "w": 1440,
+       "h": 1024,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#000000"
+       ],
+       "paint": [
+        "#00000066"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/background/overlay"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Modal",
+     "type": "FRAME",
+     "w": 1140,
+     "h": 646,
+     "sizing": [
+      "FIXED",
+      "HUG"
+     ],
+     "r": 12,
+     "dir": "VERTICAL",
+     "justify": "MIN",
+     "align": "MIN",
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "vars": {
+      "topLeftRadius": "Radius/300",
+      "topRightRadius": "Radius/300",
+      "bottomLeftRadius": "Radius/300",
+      "bottomRightRadius": "Radius/300",
+      "fills": "Color/surface/primary"
+     },
+     "kids": [
+      {
+       "name": "Modal header",
+       "type": "INSTANCE",
+       "w": 1140,
+       "h": 101,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "sws": [
+        0,
+        0,
+        1,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "variant": {
+        "Back icon#2633:8": false,
+        "Padding bottom#2491:0": true,
+        "Divider#1278:0": true,
+        "Supporting text#2486:2": "Description",
+        "Supporting#2485:0": false,
+        "Featured icon#2487:8": false,
+        "Title#1276:1": "เลือกยานพาหนะ",
+        "Close icon#1276:2": true,
+        "Alignment": "Left"
+       },
+       "component": "Modal header [Alignment=Left]",
+       "kids": [
+        {
+         "name": "Content",
+         "type": "FRAME",
+         "w": 1140,
+         "h": 64,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "pt": 24,
+         "gap": 8,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/200",
+          "paddingLeft": "Spacing/600",
+          "paddingTop": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Tertiary button",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "HUG",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "1885:5296",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": true,
+            "Button text#1153:0": false,
+            "Text#105:0": "Button",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Tertiary button [State=Default, Size=md]"
+          },
+          {
+           "name": "Title and icon",
+           "type": "FRAME",
+           "w": 1044,
+           "h": 30,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 16,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/400"
+           }
+          },
+          {
+           "name": "Tertiary button",
+           "type": "INSTANCE",
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "1084:414",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": true,
+            "Button text#1153:0": false,
+            "Text#105:0": "Button",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Tertiary button [State=Default, Size=md]"
+          }
+         ]
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "w": 1140,
+         "h": 21,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pt": 20,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingTop": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 1140,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Padding bottom",
+         "type": "FRAME",
+         "w": 1140,
+         "h": 16,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        }
+       ]
+      },
+      {
+       "name": "Content",
+       "type": "FRAME",
+       "w": 1140,
+       "h": 545,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pl": 24,
+       "pr": 24,
+       "pb": 24,
+       "gap": 24,
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "MIN",
+       "align": "CENTER",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "itemSpacing": "Spacing/600",
+        "paddingLeft": "Spacing/600",
+        "paddingTop": "Spacing/none",
+        "paddingRight": "Spacing/600",
+        "paddingBottom": "Spacing/600"
+       },
+       "kids": [
+        {
+         "name": "Table header",
+         "type": "INSTANCE",
+         "w": 1092,
+         "h": 90,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 20,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sws": [
+          1,
+          0,
+          0,
+          0
+         ],
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/500",
+          "paddingLeft": "Spacing/none",
+          "paddingTop": "Spacing/none",
+          "paddingRight": "Spacing/none",
+          "paddingBottom": "Spacing/none"
+         },
+         "variant": {
+          "Action 2 swap#2558:3": "810:28820",
+          "Action 1 swap#2558:0": "810:28820",
+          "Action 3 swap#2558:6": "133:5270",
+          "Filters#2043:0": false,
+          "More actions#2004:0": false,
+          "Badge#1985:2": true,
+          "Divider#1985:5": false,
+          "Actions#1985:4": true,
+          "Table title#2009:0": true,
+          "Supporting text#1985:3": false,
+          "Title#1985:6": "ผลการค้นหา",
+          "Breakpoint": "Desktop"
+         },
+         "component": "Table header [Breakpoint=Desktop]",
+         "kids": [
+          {
+           "name": "Content",
+           "type": "FRAME",
+           "w": 1092,
+           "h": 90,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 20,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/500"
+           }
+          },
+          {
+           "name": "Divider",
+           "type": "VECTOR",
+           "visible": false,
+           "w": 1440,
+           "h": 1,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "fill": [
+            "#D0D5DD"
+           ],
+           "sw": 1,
+           "strokeAlign": "CENTER",
+           "vars": {
+            "fills": "Color/icon/tertiary"
+           }
+          }
+         ]
+        },
+        {
+         "name": "Cards",
+         "type": "FRAME",
+         "w": 1092,
+         "h": 375,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "gap": 24,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "SPACE_BETWEEN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "kids": [
+          {
+           "name": "Icon button",
+           "type": "INSTANCE",
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "r": 9999,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#F2F4F7"
+           ],
+           "stroke": [
+            "#EAECF0"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/full",
+            "topRightRadius": "Radius/full",
+            "bottomLeftRadius": "Radius/full",
+            "bottomRightRadius": "Radius/full",
+            "fills": "Color/surface/disabled",
+            "strokes": "Color/border/disabled-subtle"
+           },
+           "variant": {
+            "Icon swap#133:10": "1885:5296",
+            "State": "Disabled"
+           },
+           "component": "Icon button [State=Disabled]"
+          },
+          {
+           "name": "Card",
+           "type": "INSTANCE",
+           "w": 306,
+           "h": 375,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 16,
+           "pr": 16,
+           "pt": 16,
+           "pb": 16,
+           "gap": 16,
+           "r": 16,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "fill": [
+            "#FFFFFF"
+           ],
+           "stroke": [
+            "#EAECF0"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/400",
+            "paddingLeft": "Spacing/400",
+            "paddingTop": "Spacing/400",
+            "paddingRight": "Spacing/400",
+            "paddingBottom": "Spacing/400",
+            "topLeftRadius": "Radius/400",
+            "topRightRadius": "Radius/400",
+            "bottomLeftRadius": "Radius/400",
+            "bottomRightRadius": "Radius/400",
+            "fills": "Color/surface/primary",
+            "strokes": "Color/border/secondary"
+           },
+           "variant": {
+            "Tertiary action#2531:0": true,
+            "Primary action#2508:9": true,
+            "Supporting#2508:3": true,
+            "Secondary action#2508:0": true,
+            "Supporting 2#2508:2": true,
+            "Actions#2508:15": true,
+            "Subtitle#2508:6": true,
+            "Supporting text 2#2508:4": "สายงานดิจิทัล",
+            "Supporting text#2508:5": "รถแวนตรวจการ",
+            "Card item#2508:1": true,
+            "Subtitle text#2508:7": "5กก 1234 กรุงเทพมหานคร",
+            "Title#2508:8": "Totoya Fortuner",
+            "State": "Default",
+            "Type": "Centered image"
+           },
+           "component": "Card [State=Default, Type=Centered image]"
+          },
+          {
+           "name": "Card",
+           "type": "INSTANCE",
+           "w": 306,
+           "h": 375,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 16,
+           "pr": 16,
+           "pt": 16,
+           "pb": 16,
+           "gap": 16,
+           "r": 16,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "fill": [
+            "#FFFFFF"
+           ],
+           "stroke": [
+            "#EAECF0"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/400",
+            "paddingLeft": "Spacing/400",
+            "paddingTop": "Spacing/400",
+            "paddingRight": "Spacing/400",
+            "paddingBottom": "Spacing/400",
+            "topLeftRadius": "Radius/400",
+            "topRightRadius": "Radius/400",
+            "bottomLeftRadius": "Radius/400",
+            "bottomRightRadius": "Radius/400",
+            "fills": "Color/surface/primary",
+            "strokes": "Color/border/secondary"
+           },
+           "variant": {
+            "Tertiary action#2531:0": true,
+            "Primary action#2508:9": true,
+            "Supporting#2508:3": true,
+            "Secondary action#2508:0": true,
+            "Supporting 2#2508:2": true,
+            "Actions#2508:15": true,
+            "Subtitle#2508:6": true,
+            "Supporting text 2#2508:4": "สายงานดิจิทัล",
+            "Supporting text#2508:5": "รถแวนตรวจการ",
+            "Card item#2508:1": true,
+            "Subtitle text#2508:7": "5กก 6789 กรุงเทพมหานคร",
+            "Title#2508:8": "Isuzu MU-X",
+            "State": "Default",
+            "Type": "Centered image"
+           },
+           "component": "Card [State=Default, Type=Centered image]"
+          },
+          {
+           "name": "Card",
+           "type": "INSTANCE",
+           "w": 306,
+           "h": 375,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 16,
+           "pr": 16,
+           "pt": 16,
+           "pb": 16,
+           "gap": 16,
+           "r": 16,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "fill": [
+            "#FFFFFF"
+           ],
+           "stroke": [
+            "#EAECF0"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/400",
+            "paddingLeft": "Spacing/400",
+            "paddingTop": "Spacing/400",
+            "paddingRight": "Spacing/400",
+            "paddingBottom": "Spacing/400",
+            "topLeftRadius": "Radius/400",
+            "topRightRadius": "Radius/400",
+            "bottomLeftRadius": "Radius/400",
+            "bottomRightRadius": "Radius/400",
+            "fills": "Color/surface/primary",
+            "strokes": "Color/border/secondary"
+           },
+           "variant": {
+            "Tertiary action#2531:0": true,
+            "Primary action#2508:9": true,
+            "Supporting#2508:3": true,
+            "Secondary action#2508:0": true,
+            "Supporting 2#2508:2": true,
+            "Actions#2508:15": true,
+            "Subtitle#2508:6": true,
+            "Supporting text 2#2508:4": "สายงานดิจิทัล",
+            "Supporting text#2508:5": "รถแวนตรวจการ",
+            "Card item#2508:1": true,
+            "Subtitle text#2508:7": "5กก 8888 กรุงเทพมหานคร",
+            "Title#2508:8": "Tesla Model Y",
+            "State": "Default",
+            "Type": "Centered image"
+           },
+           "component": "Card [State=Default, Type=Centered image]"
+          },
+          {
+           "name": "Icon button",
+           "type": "INSTANCE",
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "r": 9999,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#FFFFFF"
+           ],
+           "stroke": [
+            "#D0D5DD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/full",
+            "topRightRadius": "Radius/full",
+            "bottomLeftRadius": "Radius/full",
+            "bottomRightRadius": "Radius/full",
+            "fills": "Color/component/button/secondary/surface",
+            "strokes": "Color/border/primary"
+           },
+           "variant": {
+            "Icon swap#133:10": "1885:5297",
+            "State": "Default"
+           },
+           "component": "Icon button [State=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Indicator pagination",
+         "type": "INSTANCE",
+         "w": 56,
+         "h": 8,
+         "sizing": [
+          "HUG",
+          "HUG"
+         ],
+         "gap": 4,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/100"
+         },
+         "variant": {
+          "Indicator 5#2714:2": true,
+          "Indicator 4#2714:1": true,
+          "Indicator 3#2714:0": true
+         },
+         "component": "Indicator pagination",
+         "kids": [
+          {
+           "name": "_Indicator pagination item",
+           "type": "INSTANCE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "variant": {
+            "Current": "True"
+           },
+           "component": "_Indicator pagination item [Current=True]"
+          },
+          {
+           "name": "_Indicator pagination item",
+           "type": "INSTANCE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "variant": {
+            "Current": "False"
+           },
+           "component": "_Indicator pagination item [Current=False]"
+          },
+          {
+           "name": "_Indicator pagination item",
+           "type": "INSTANCE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "variant": {
+            "Current": "False"
+           },
+           "component": "_Indicator pagination item [Current=False]"
+          },
+          {
+           "name": "_Indicator pagination item",
+           "type": "INSTANCE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "variant": {
+            "Current": "False"
+           },
+           "component": "_Indicator pagination item [Current=False]"
+          },
+          {
+           "name": "_Indicator pagination item",
+           "type": "INSTANCE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "variant": {
+            "Current": "False"
+           },
+           "component": "_Indicator pagination item [Current=False]"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Type=Left aligned image, Size=xl",
+   "type": "COMPONENT",
+   "w": 1440,
+   "h": 1024,
+   "sizing": [
+    "FIXED",
+    "FIXED"
+   ],
+   "r": 0,
+   "justify": "MIN",
+   "align": "MIN",
+   "sw": 1,
+   "strokeAlign": "INSIDE",
+   "variant": {
+    "Type": "Left aligned image",
+    "Size": "xl"
+   },
+   "kids": [
+    {
+     "name": "Background overlay",
+     "type": "INSTANCE",
+     "w": 1440,
+     "h": 1024,
+     "sizing": [
+      "FIXED",
+      "FIXED"
+     ],
+     "r": 0,
+     "justify": "MIN",
+     "align": "MIN",
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "component": "Background overlay",
+     "kids": [
+      {
+       "name": "Background overlay",
+       "type": "RECTANGLE",
+       "w": 1440,
+       "h": 1024,
+       "sizing": [
+        "FIXED",
+        "FIXED"
+       ],
+       "r": 0,
+       "fill": [
+        "#000000"
+       ],
+       "paint": [
+        "#00000066"
+       ],
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "fills": "Color/background/overlay"
+       }
+      }
+     ]
+    },
+    {
+     "name": "Modal",
+     "type": "FRAME",
+     "w": 1140,
+     "h": 647,
+     "sizing": [
+      "FIXED",
+      "HUG"
+     ],
+     "r": 12,
+     "dir": "VERTICAL",
+     "justify": "MIN",
+     "align": "MIN",
+     "fill": [
+      "#FFFFFF"
+     ],
+     "sw": 1,
+     "strokeAlign": "INSIDE",
+     "vars": {
+      "topLeftRadius": "Radius/300",
+      "topRightRadius": "Radius/300",
+      "bottomLeftRadius": "Radius/300",
+      "bottomRightRadius": "Radius/300",
+      "fills": "Color/surface/primary"
+     },
+     "kids": [
+      {
+       "name": "Modal header",
+       "type": "INSTANCE",
+       "w": 1140,
+       "h": 101,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "r": 0,
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "sws": [
+        0,
+        0,
+        1,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "variant": {
+        "Back icon#2633:8": true,
+        "Padding bottom#2491:0": true,
+        "Divider#1278:0": true,
+        "Supporting text#2486:2": "Description",
+        "Supporting#2485:0": false,
+        "Featured icon#2487:8": false,
+        "Title#1276:1": "รายละเอียด",
+        "Close icon#1276:2": true,
+        "Alignment": "Left"
+       },
+       "component": "Modal header [Alignment=Left]",
+       "kids": [
+        {
+         "name": "Content",
+         "type": "FRAME",
+         "w": 1140,
+         "h": 64,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "pt": 24,
+         "gap": 8,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/200",
+          "paddingLeft": "Spacing/600",
+          "paddingTop": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Tertiary button",
+           "type": "INSTANCE",
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "HUG",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "1885:5296",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": true,
+            "Button text#1153:0": false,
+            "Text#105:0": "Button",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Tertiary button [State=Default, Size=md]"
+          },
+          {
+           "name": "Title and icon",
+           "type": "FRAME",
+           "w": 996,
+           "h": 30,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 16,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/400"
+           }
+          },
+          {
+           "name": "Tertiary button",
+           "type": "INSTANCE",
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "1084:414",
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": true,
+            "Button text#1153:0": false,
+            "Text#105:0": "Button",
+            "State": "Default",
+            "Size": "md"
+           },
+           "component": "Tertiary button [State=Default, Size=md]"
+          }
+         ]
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "w": 1140,
+         "h": 21,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pt": 20,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingTop": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 1140,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Padding bottom",
+         "type": "FRAME",
+         "w": 1140,
+         "h": 16,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        }
+       ]
+      },
+      {
+       "name": "Content",
+       "type": "FRAME",
+       "w": 1140,
+       "h": 437,
+       "sizing": [
+        "FILL",
+        "FIXED"
+       ],
+       "pl": 24,
+       "pr": 24,
+       "gap": 24,
+       "r": 0,
+       "dir": "HORIZONTAL",
+       "justify": "MIN",
+       "align": "MIN",
+       "sw": 1,
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "itemSpacing": "Spacing/600",
+        "paddingLeft": "Spacing/600",
+        "paddingTop": "Spacing/none",
+        "paddingRight": "Spacing/600",
+        "paddingBottom": "Spacing/none"
+       },
+       "kids": [
+        {
+         "name": "Image",
+         "type": "RECTANGLE",
+         "visible": false,
+         "w": 534,
+         "h": 437,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "r": 12,
+         "paint": [
+          "image"
+         ],
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "topLeftRadius": "Radius/300",
+          "topRightRadius": "Radius/300",
+          "bottomLeftRadius": "Radius/300",
+          "bottomRightRadius": "Radius/300"
+         }
+        },
+        {
+         "name": "Images",
+         "type": "INSTANCE",
+         "w": 534,
+         "h": 437,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 12,
+         "justify": "MIN",
+         "align": "MIN",
+         "paint": [
+          "image"
+         ],
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "topLeftRadius": "Radius/300",
+          "topRightRadius": "Radius/300",
+          "bottomLeftRadius": "Radius/300",
+          "bottomRightRadius": "Radius/300"
+         },
+         "variant": {
+          "Indicator pagination#2635:14": true,
+          "Buttons#2635:15": true,
+          "Size": "md",
+          "Type": "Image"
+         },
+         "component": "Images [Size=md, Type=Image]",
+         "kids": [
+          {
+           "name": "Indicator pagination",
+           "type": "INSTANCE",
+           "w": 56,
+           "h": 8,
+           "sizing": [
+            "HUG",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Indicator 5#2714:2": true,
+            "Indicator 4#2714:1": true,
+            "Indicator 3#2714:0": true
+           },
+           "component": "Indicator pagination"
+          },
+          {
+           "name": "Icon button",
+           "type": "INSTANCE",
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "r": 9999,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#F2F4F7"
+           ],
+           "stroke": [
+            "#EAECF0"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/full",
+            "topRightRadius": "Radius/full",
+            "bottomLeftRadius": "Radius/full",
+            "bottomRightRadius": "Radius/full",
+            "fills": "Color/surface/disabled",
+            "strokes": "Color/border/disabled-subtle"
+           },
+           "variant": {
+            "Icon swap#133:10": "1885:5296",
+            "State": "Disabled"
+           },
+           "component": "Icon button [State=Disabled]"
+          },
+          {
+           "name": "Icon button",
+           "type": "INSTANCE",
+           "w": 40,
+           "h": 40,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "r": 9999,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "fill": [
+            "#FFFFFF"
+           ],
+           "stroke": [
+            "#D0D5DD"
+           ],
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/full",
+            "topRightRadius": "Radius/full",
+            "bottomLeftRadius": "Radius/full",
+            "bottomRightRadius": "Radius/full",
+            "fills": "Color/component/button/secondary/surface",
+            "strokes": "Color/border/primary"
+           },
+           "variant": {
+            "Icon swap#133:10": "1885:5297",
+            "State": "Default"
+           },
+           "component": "Icon button [State=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Scrollable section",
+         "type": "FRAME",
+         "w": 534,
+         "h": 437,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "kids": [
+          {
+           "name": "Section",
+           "type": "FRAME",
+           "w": 534,
+           "h": 633,
+           "sizing": [
+            "FIXED",
+            "HUG"
+           ],
+           "gap": 16,
+           "r": 0,
+           "dir": "VERTICAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/400"
+           }
+          },
+          {
+           "name": "Vertical scrollbar",
+           "type": "INSTANCE",
+           "w": 16,
+           "h": 405,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "pl": 4,
+           "pr": 4,
+           "pt": 4,
+           "pb": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "paddingLeft": "Spacing/100",
+            "paddingTop": "Spacing/100",
+            "paddingRight": "Spacing/100",
+            "paddingBottom": "Spacing/100"
+           },
+           "variant": {
+            "Length": "75%",
+            "Position": "Top"
+           },
+           "component": "Vertical scrollbar [Length=75%, Position=Top]"
+          }
+         ]
+        },
+        {
+         "name": "Icon button",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 40,
+         "h": 40,
+         "sizing": [
+          "FIXED",
+          "FIXED"
+         ],
+         "pl": 8,
+         "pr": 8,
+         "pt": 8,
+         "pb": 8,
+         "r": 9999,
+         "dir": "HORIZONTAL",
+         "justify": "CENTER",
+         "align": "CENTER",
+         "fill": [
+          "#FFFFFF"
+         ],
+         "stroke": [
+          "#D0D5DD"
+         ],
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingLeft": "Spacing/200",
+          "paddingTop": "Spacing/200",
+          "paddingRight": "Spacing/200",
+          "paddingBottom": "Spacing/200",
+          "topLeftRadius": "Radius/full",
+          "topRightRadius": "Radius/full",
+          "bottomLeftRadius": "Radius/full",
+          "bottomRightRadius": "Radius/full",
+          "fills": "Color/component/button/secondary/surface",
+          "strokes": "Color/border/primary"
+         },
+         "variant": {
+          "Icon swap#133:10": "1885:5297",
+          "State": "Default"
+         },
+         "component": "Icon button [State=Default]",
+         "kids": [
+          {
+           "name": "keyboard_arrow_right-20-400-round",
+           "type": "INSTANCE",
+           "w": 20,
+           "h": 20,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "component": "keyboard_arrow_right-20-400-round"
+          }
+         ]
+        },
+        {
+         "name": "Indicator pagination",
+         "type": "INSTANCE",
+         "visible": false,
+         "w": 56,
+         "h": 8,
+         "sizing": [
+          "HUG",
+          "HUG"
+         ],
+         "gap": 4,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MIN",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/100"
+         },
+         "variant": {
+          "Indicator 5#2714:2": true,
+          "Indicator 4#2714:1": true,
+          "Indicator 3#2714:0": true
+         },
+         "component": "Indicator pagination",
+         "kids": [
+          {
+           "name": "_Indicator pagination item",
+           "type": "INSTANCE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "variant": {
+            "Current": "True"
+           },
+           "component": "_Indicator pagination item [Current=True]"
+          },
+          {
+           "name": "_Indicator pagination item",
+           "type": "INSTANCE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "variant": {
+            "Current": "False"
+           },
+           "component": "_Indicator pagination item [Current=False]"
+          },
+          {
+           "name": "_Indicator pagination item",
+           "type": "INSTANCE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "variant": {
+            "Current": "False"
+           },
+           "component": "_Indicator pagination item [Current=False]"
+          },
+          {
+           "name": "_Indicator pagination item",
+           "type": "INSTANCE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "variant": {
+            "Current": "False"
+           },
+           "component": "_Indicator pagination item [Current=False]"
+          },
+          {
+           "name": "_Indicator pagination item",
+           "type": "INSTANCE",
+           "w": 8,
+           "h": 8,
+           "sizing": [
+            "FIXED",
+            "FIXED"
+           ],
+           "r": 0,
+           "justify": "MIN",
+           "align": "MIN",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "variant": {
+            "Current": "False"
+           },
+           "component": "_Indicator pagination item [Current=False]"
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "name": "Modal footer",
+       "type": "INSTANCE",
+       "w": 1140,
+       "h": 109,
+       "sizing": [
+        "FILL",
+        "HUG"
+       ],
+       "pb": 24,
+       "r": [
+        0,
+        0,
+        12,
+        12
+       ],
+       "dir": "VERTICAL",
+       "justify": "CENTER",
+       "align": "MAX",
+       "fill": [
+        "#FFFFFF"
+       ],
+       "sws": [
+        1,
+        0,
+        0,
+        0
+       ],
+       "strokeAlign": "INSIDE",
+       "vars": {
+        "paddingBottom": "Spacing/600",
+        "bottomLeftRadius": "Radius/300",
+        "bottomRightRadius": "Radius/300",
+        "fills": "Color/surface/primary"
+       },
+       "variant": {
+        "Tertiary action#2560:61": false,
+        "Divider#2487:0": true,
+        "Primary action#2505:14": true,
+        "Padding top#2487:4": true,
+        "Secondary action#106:3": false,
+        "Alignment": "Horizontal right"
+       },
+       "component": "Modal footer [Alignment=Horizontal right]",
+       "kids": [
+        {
+         "name": "Padding top",
+         "type": "FRAME",
+         "w": 1140,
+         "h": 24,
+         "sizing": [
+          "FILL",
+          "FIXED"
+         ],
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE"
+        },
+        {
+         "name": "Divider",
+         "type": "FRAME",
+         "w": 1140,
+         "h": 21,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pb": 20,
+         "gap": 8,
+         "r": 0,
+         "dir": "VERTICAL",
+         "justify": "MIN",
+         "align": "MIN",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "paddingBottom": "Spacing/500"
+         },
+         "kids": [
+          {
+           "name": "Content divider",
+           "type": "INSTANCE",
+           "w": 1140,
+           "h": 1,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 4,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100"
+           },
+           "variant": {
+            "Text#2631:0": "หรือ",
+            "Type": "Default"
+           },
+           "component": "Content divider [Type=Default]"
+          }
+         ]
+        },
+        {
+         "name": "Actions",
+         "type": "FRAME",
+         "w": 1140,
+         "h": 40,
+         "sizing": [
+          "FILL",
+          "HUG"
+         ],
+         "pl": 24,
+         "pr": 24,
+         "gap": 12,
+         "r": 0,
+         "dir": "HORIZONTAL",
+         "justify": "MAX",
+         "align": "CENTER",
+         "sw": 1,
+         "strokeAlign": "INSIDE",
+         "vars": {
+          "itemSpacing": "Spacing/300",
+          "paddingLeft": "Spacing/600",
+          "paddingRight": "Spacing/600"
+         },
+         "kids": [
+          {
+           "name": "Tertiary brand button",
+           "type": "INSTANCE",
+           "visible": false,
+           "w": 59,
+           "h": 40,
+           "sizing": [
+            "HUG",
+            "FIXED"
+           ],
+           "pl": 8,
+           "pr": 8,
+           "pt": 8,
+           "pb": 8,
+           "gap": 4,
+           "r": 8,
+           "dir": "HORIZONTAL",
+           "justify": "CENTER",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/100",
+            "paddingLeft": "Spacing/200",
+            "paddingTop": "Spacing/200",
+            "paddingRight": "Spacing/200",
+            "paddingBottom": "Spacing/200",
+            "topLeftRadius": "Radius/200",
+            "topRightRadius": "Radius/200",
+            "bottomLeftRadius": "Radius/200",
+            "bottomRightRadius": "Radius/200"
+           },
+           "variant": {
+            "Leading icon swap#133:10": "133:3719",
+            "Button text#1153:12": true,
+            "Trailing icon#105:4": false,
+            "Trailing icon swap#133:12": "133:3719",
+            "Leading icon#105:2": false,
+            "Text#105:0": "Button",
+            "State": "Default"
+           },
+           "component": "Tertiary brand button [State=Default]"
+          },
+          {
+           "name": "Primary and secondary actions",
+           "type": "FRAME",
+           "w": 1092,
+           "h": 40,
+           "sizing": [
+            "FILL",
+            "HUG"
+           ],
+           "gap": 12,
+           "r": 0,
+           "dir": "HORIZONTAL",
+           "justify": "MAX",
+           "align": "CENTER",
+           "sw": 1,
+           "strokeAlign": "INSIDE",
+           "vars": {
+            "itemSpacing": "Spacing/300"
+           }
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
