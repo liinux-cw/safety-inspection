@@ -1,6 +1,6 @@
 "use client";
 /* ทะเบียน ปจ.2 — ประวัติการตรวจรายคัน + วันครบกำหนดปัจจุบัน
-   อัปเดตเองเมื่อหัวหน้า กบค. อนุมัติปิดงานแผน (ผลที่ กบค. อนุมัติแล้วของทุกคันในแผน) · กบค. อัปโหลดผลนอกแผนได้เฉพาะคันที่ไม่อยู่ในแผนที่ยังไม่ปิด
+   อัปเดตเองเมื่อ กบค. อนุมัติปิดงานแผนเดินทาง (ผลที่ กบค. อนุมัติแล้วของทุกคันในแผนเดินทาง · ไม่มีปิดแผนหลัก 20 พ.ย. 2569) · กบค. อัปโหลดผลนอกแผนได้เฉพาะคันที่ไม่อยู่ในแผนที่ยังไม่ปิด
    วันครบกำหนดถัดไป: ผ่าน = วันที่ตรวจ + วาระ · ไม่ผ่าน / ระงับ / ตรวจไม่ได้ = คงวันครบกำหนดเดิม (ต้องตรวจใหม่) */
 import { VEHICLES, VEHICLE_BY_ID, addMonths, type InspectResult, type Plan, type RegEntry, type RegistryState, type Vehicle } from "./data";
 import { setMock, type MockState } from "./store";
@@ -18,8 +18,8 @@ export const nextDue = (v: Vehicle, result: InspectResult, date: string, prevDue
 /** แผนที่ยังไม่ปิดที่ยานพาหนะคันนี้อยู่ (null = ไม่อยู่ในแผนใด → อัปโหลดผลนอกแผนได้) */
 export const openPlanOf = (s: MockState, id: string): string | null => s.plans.find((p) => p.status !== "closed" && p.cars.includes(id))?.mr ?? null;
 
-/** บันทึกผลของแผนที่ปิดงานลงทะเบียน (เฉพาะคันที่ กบค. อนุมัติผลแล้ว) — เรียกตอนหัวหน้า กบค. อนุมัติปิดงาน */
-export function entriesFromPlan(s: MockState, p: Plan): RegistryState {
+/** บันทึกผลของแผนเดินทางที่ปิดงานลงทะเบียน (เฉพาะคันที่ กบค. อนุมัติผลแล้ว) — เรียกตอน กบค. อนุมัติปิดงานแผนเดินทาง */
+export function entriesFromPlan(s: MockState, p: Pick<Plan, "mr" | "cars">): RegistryState {
   const reg: RegistryState = { ...s.registry };
   for (const id of p.cars) {
     const d = s.docs[p.mr]?.[id];

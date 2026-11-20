@@ -101,7 +101,7 @@ export default function Registry() {
   return (
     <AppFrame>
       <RoleGate kbk>
-        <PageHeader Title="ทะเบียน ปจ.2" SupportingText="ผลตรวจล่าสุดและวันครบกำหนดของยานพาหนะประเภท 09 · อัปเดตเองเมื่อแผนปิดงาน"
+        <PageHeader Title="ทะเบียน ปจ.2" SupportingText="ผลตรวจล่าสุดและวันครบกำหนดของยานพาหนะประเภท 09 · อัปเดตเองเมื่อแผนเดินทางปิดงาน"
           crumbs={[{ Text: "Safety Inspection" }, { Text: "ทะเบียน ปจ.2" }]} />
         <section className="flex flex-col gap-6">
           <TableHeader Placeholder="ค้นหาทะเบียน, รหัส, สังกัด, ผู้ครอบครอง" query={query} onQuery={(v) => { setQuery(v); setPage(1); }}

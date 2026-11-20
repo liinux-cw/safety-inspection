@@ -37,7 +37,7 @@ export function AppFrame({ children }: { children: ReactNode }) {
   /* เมนูตามบทบาท: กบค. = แผนตรวจ ปจ.2 · หัวหน้า กบค. = แผนรออนุมัติ (Badge = จำนวนที่รอ) · ผู้รับจ้าง = เอกสาร ปจ.2 */
   const head = headOf(role);
   const own = vendorOf(role) ? DOCS_LABEL : head ? APPROVE_LABEL : MT_LABEL;
-  const nWait = head ? mock.plans.filter((p) => p.status === "review" || (p.status === "closeReview" && p.closeApprover === head)).length : 0;
+  const nWait = head ? mock.plans.filter((p) => p.status === "review").length + mock.trips.filter((t) => t.status === "review").length : 0;
   const menu = SIDEBAR_MENU.map((g) => (g.items ? { ...g, items: g.items.filter((s) => ![MT_LABEL, APPROVE_LABEL, DOCS_LABEL, REG_LABEL].includes(s.Text) || s.Text === own || (s.Text === REG_LABEL && own === MT_LABEL))
     .map((s) => (s.Text === APPROVE_LABEL && nWait ? { ...s, badge: String(nWait) } : s)) } : g));
 
