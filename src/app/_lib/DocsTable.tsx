@@ -143,13 +143,6 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const decided = decision === "approve" || (decision === "return" && !!reason.trim());
   const differs = costDiffers(plan, c, car);
 
-  const setCost = (t: string) => {
-    const clean = t.replace(/[^\d.]/g, "");
-    setCostText(clean);
-    const n = Number(clean);
-    /* B: เท่ากับสัญญา = ไม่เก็บค่า (ใช้ค่าตามสัญญา) · ว่าง = 0 (ต้องกรอก) */
-    put({ cost: !clean || Number.isNaN(n) ? 0 : n === contract ? undefined : n });
-  };
   const sample = () => {
     if (!carCost(plan, c, car)) setCostText(String(contract));
     put({
@@ -242,9 +235,8 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
                 onClick={() => setCal(true)} />
               {cal && (mob ? <div className="flex justify-center">{picker}</div> : <div className="absolute top-full left-0 z-30 mt-1">{picker}</div>)}
             </div>
-            <TextInput className="min-w-0 flex-1" LabelText="ค่าจ้างตรวจคันนี้ (บาท)" Text={costText} Placeholder="0.00" inputMode="decimal" onChange={setCost} onBlur={() => touch("cost")}
-              State={touched.cost && !carCost(plan, c, car) ? "Error" : undefined}
-              HelperText={touched.cost && !carCost(plan, c, car) ? "กรุณาระบุค่าจ้างตรวจ" : differs ? "ต่างจากสัญญา (" + bahtText(contract) + ") ต้องระบุเหตุผล" : "ตามสัญญา แก้ได้ถ้าจำเป็น"} />
+            <TextInput className="min-w-0 flex-1" LabelText="ค่าจ้างตรวจคันนี้ (บาท)" Text={costText} Placeholder="0.00" State="Disabled" disabled
+              HelperText="ตามสัญญา กำหนดตอนสร้างแผน" />
           </div>
           {differs && <TextArea LabelText="เหตุผลที่ค่าจ้างต่างจากสัญญา" Text={c.costReason ?? ""} Placeholder="เช่น ต้องใช้อุปกรณ์เสริม" onChange={(x) => put({ costReason: x })}
             onBlur={() => touch("costReason")} State={touched.costReason && !c.costReason?.trim() ? "Error" : undefined} HelperText={touched.costReason && !c.costReason?.trim() ? "กรุณาระบุเหตุผล" : undefined} />}
