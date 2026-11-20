@@ -9,8 +9,8 @@ export const draftOf = (p: Plan): Draft => ({ name: p.name, fy: p.fy, from: p.fr
 
 /** แก้ไข/ลบได้เฉพาะแผนที่ยังไม่อนุมัติ (รออนุมัติ · ส่งกลับแก้ไข) */
 export const editable = (p: Plan) => p.status === "review" || p.status === "returned";
-/** ผู้รับจ้างบันทึก/ส่งผลได้เมื่อแผนอนุมัติแล้วและยังไม่ปิด (ก่อนหน้านั้นดูได้อย่างเดียว) */
-export const vendorCanWork = (p: Plan) => p.status === "approved";
+/** ผู้รับจ้างบันทึก/ส่งผลได้ทันทีหลัง กบค. สร้างแผน จนกว่าแผนจะปิด (เจ้าของงาน 20 พ.ย. 2569: ไม่ต้องรอแผนอนุมัติ) */
+export const vendorCanWork = (p: Plan) => p.status !== "closed";
 /** คันที่ผู้รับจ้างเริ่มกรอกผลแล้ว — เอาออกจากแผนไม่ได้ */
 export const hasWork = (s: MockState, mr: string, car: string) => { const d = s.docs[mr]?.[car]; return !!d && !!(d.date || d.result || d.files.length || d.sentAt || d.approvedAt); };
 /** ค่าจ้างของคัน (ไม่ระบุ = ตามสัญญา) */

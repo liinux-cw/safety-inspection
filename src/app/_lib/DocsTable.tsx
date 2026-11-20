@@ -49,7 +49,7 @@ const toDate = (iso: string) => { const [y, m, d] = iso.split("-").map(Number); 
 const toIso = (d: Date) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
 const docLabel = (c: CarDocs) => (c.result === "ตรวจไม่ได้" ? "หนังสือรับรองจากผู้แทนหน่วยงาน" : "เอกสารการตรวจ ปจ.2");
 
-/** canEdit = บทบาทผู้รับจ้าง (แก้ได้จริงเมื่อแผนอนุมัติแล้ว) · ticked/onTicked = กบค. ติ๊กหลายคันที่รออนุมัติเพื่ออนุมัติพร้อมกัน */
+/** canEdit = บทบาทผู้รับจ้าง (แก้ได้จนกว่าแผนจะปิด) · ticked/onTicked = กบค. ติ๊กหลายคันที่รออนุมัติเพื่ออนุมัติพร้อมกัน */
 export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan: Plan; canEdit: boolean; canReview?: boolean; ticked?: string[]; onTicked?: (next: string[]) => void }) {
   const mob = useBreakpoint() === "Mobile";
   const mock = useMock();
@@ -114,7 +114,6 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const c = carDocs(mock, plan.mr, car);
   const st = docState(c, plan, car);
   const contract = contractCost(plan, car);
-  const waitPlan = canEdit && !vendorCanWork(plan) && plan.status !== "closed";
   const ro = !canEdit || !vendorCanWork(plan) || !vendorCanEdit(c);
   const review = canReview && st === "sent";
   const [error, setError] = useState<string | null>(null);
@@ -193,7 +192,6 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
         {st === "sent" && <Alert Color="Info" Text={"ส่งอนุมัติแล้วเมื่อ " + dateText(c.sentAt!) + " · รอ กบค. อนุมัติ"} SupportingText={canEdit ? "ระหว่างรออนุมัติแก้ไขหรือลบไม่ได้ ดูและดาวน์โหลดได้" : undefined} />}
         {st === "returned" && <Alert Color="Error" Text="กบค. ส่งกลับแก้ไข" SupportingText={c.returnReason + (canEdit ? " · แก้ไขแล้วกดส่งอนุมัติอีกครั้ง" : "")} />}
         {!canEdit && !c.sentAt && !c.approvedAt && st !== "none" && <Alert Color="Warning" Text="ผู้รับจ้างยังไม่ส่งอนุมัติ" SupportingText="ข้อมูลอาจเปลี่ยนแปลงจนกว่าผู้รับจ้างจะส่ง" />}
-        {waitPlan && <Alert Color="Warning" Text="แผนยังไม่อนุมัติ" SupportingText="ดูรายละเอียดได้ก่อน บันทึกและส่งผลตรวจได้เมื่อแผนอนุมัติแล้ว" />}
 
         {ro ? (
           <DisplayBox perRow={2} pairs={[

@@ -33,9 +33,8 @@ export default function VendorPlan() {
   const [ask, setAsk] = useState(false);
   const plan = mock.plans.find((p) => p.mr === mr && p.vendor === vendor);
   const ready = plan ? readyCars(mock, plan) : [];
-  /* A: ผู้รับจ้างเห็นแผนทันที แต่บันทึก/ส่งผลได้เมื่อแผนอนุมัติแล้ว */
+  /* ผู้รับจ้างบันทึก/ส่งผลได้ทันทีหลังสร้างแผน จนกว่าแผนจะปิด */
   const open = !!plan && vendorCanWork(plan);
-  const waiting = !!plan && (plan.status === "review" || plan.status === "returned");
   /* ต้นแบบ: กรอกข้อมูลตัวอย่าง = กรอกผลผ่าน + ค่าจ้าง + ไฟล์ตัวอย่างให้ทุกคันที่ยังแก้ได้และยังไม่ครบ · ล้างค่า = ล้างผลและไฟล์ของคันที่ยังแก้ได้ */
   const editableCars = plan && open ? plan.cars.filter((c) => vendorCanEdit(carDocs(mock, plan.mr, c))) : [];
   useProtoForm(plan && open ? {
@@ -63,9 +62,7 @@ export default function VendorPlan() {
                 {returnedCount(mock, plan) > 0 && <Alert Color="Error" Text={"กบค. ส่งกลับแก้ไข " + returnedCount(mock, plan) + " คัน"} SupportingText="เปิดคันที่ถูกส่งกลับเพื่อดูเหตุผล แก้ไขผลหรือเอกสาร แล้วกดส่งอนุมัติอีกครั้ง" />}
                 <Alert Color="Info" Text="บันทึกผลตรวจ ปจ.2 รายคันแล้วกดส่งอนุมัติให้ กบค." SupportingText={"ต่อคัน: วันที่ตรวจ · ค่าจ้างตรวจ (ตั้งต้นตามสัญญาของคันนั้น) · ผลการตรวจ · เอกสาร ปจ.2 (" + UPLOAD_HINT + ", อย่างน้อย 1 ไฟล์) · ตรวจไม่ได้ = เหตุผล + หนังสือรับรองจากผู้แทนหน่วยงาน · ส่งแล้วแก้ไขไม่ได้ระหว่างรอ กบค. อนุมัติ"} />
               </>
-              : waiting
-                ? <Alert Color="Warning" Text="แผนนี้ยังไม่อนุมัติ" SupportingText="ดูรายละเอียดแผนและยานพาหนะเพื่อเตรียมงานได้ บันทึกและส่งผลตรวจได้เมื่อแผนอนุมัติแล้ว" />
-                : <Alert Color="Gray" Text="แผนนี้ปิดงานแล้ว" SupportingText="ดูและดาวน์โหลดเอกสารที่ส่งไปแล้วได้อย่างเดียว" />}
+              : <Alert Color="Gray" Text="แผนนี้ปิดงานแล้ว" SupportingText="ดูและดาวน์โหลดเอกสารที่ส่งไปแล้วได้อย่างเดียว" />}
             <PlanInfo plan={plan} />
             <section className="flex flex-col gap-4">
               <SectionHeader Title="ผลการตรวจ ปจ.2 รายคัน" Badge={"อนุมัติแล้ว " + approvedCount(mock, plan) + "/" + plan.cars.length + " คัน"} />
