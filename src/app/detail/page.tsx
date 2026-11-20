@@ -25,6 +25,7 @@ import { DOC_TEXT, approvedCount, canCreateTrip, carDocs, deletePlan, docState, 
 import { notify, useHydrated, useMock, useQuery } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 import { tripWork } from "@/app/_lib/TripForm";
+import { withDue } from "@/lib/mock/registry";
 
 const TRIP_COLS: TableColumn[] = [
   { head: "ชื่อแผนเดินทาง", Style: "Lead text" },
@@ -74,7 +75,7 @@ export default function PlanDetail() {
           ]);
           const last = Math.max(1, Math.ceil(plan.cars.length / PER)), pg = Math.min(page, last);
           const carRows: TableValue[][] = plan.cars.slice((pg - 1) * PER, pg * PER).map((id) => {
-            const v = VEHICLE_BY_ID[id], t = tripOfCar(mock, plan.mr, id);
+            const v = withDue(mock, VEHICLE_BY_ID[id]), t = tripOfCar(mock, plan.mr, id);
             const w = t ? tripWork(t, id) : null;
             return [{ text: v.plate, sub: v.code + " · " + v.type }, v.org, { text: v.cycle + " เดือน", sub: v.cycleSub }, { text: dateText(v.due), sub: dueSub(v.due) },
               t && w ? { text: t.name, sub: "วันดำเนินการ " + dayRange(w[0], w[1]) } : { pills: [["ยังไม่มีแผนเดินทาง", "Gray"]] },

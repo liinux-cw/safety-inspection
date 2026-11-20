@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { BackgroundOverlay } from "@/components/vms/BackgroundOverlay";
 import { HeaderNavigation } from "@/components/vms/HeaderNavigation";
-import { APPROVE_LABEL, DOCS_LABEL, MT_LABEL, SIDEBAR_MENU, SidebarNavigation } from "@/components/vms/SidebarNavigation";
+import { APPROVE_LABEL, DOCS_LABEL, MT_LABEL, REG_LABEL, SIDEBAR_MENU, SidebarNavigation } from "@/components/vms/SidebarNavigation";
 import { headOf, useMock, useRole, vendorOf } from "@/lib/mock/store";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 import { useOutside } from "@/lib/useOutside";
@@ -31,14 +31,14 @@ export function AppFrame({ children }: { children: ReactNode }) {
   useEffect(() => { if (!mob) setDrawer(false); }, [mob]);
 
   const path = (usePathname() || "/").replace(/\/$/, "");
-  const active = path.startsWith("/docs") ? DOCS_LABEL : path.startsWith("/approvals") ? APPROVE_LABEL : MT_LABEL;
+  const active = path.startsWith("/docs") ? DOCS_LABEL : path.startsWith("/approvals") ? APPROVE_LABEL : path.startsWith("/registry") ? REG_LABEL : MT_LABEL;
   const role = useRole();
   const mock = useMock();
   /* เมนูตามบทบาท: กบค. = แผนตรวจ ปจ.2 · หัวหน้า กบค. = แผนรออนุมัติ (Badge = จำนวนที่รอ) · ผู้รับจ้าง = เอกสาร ปจ.2 */
   const head = headOf(role);
   const own = vendorOf(role) ? DOCS_LABEL : head ? APPROVE_LABEL : MT_LABEL;
   const nWait = head ? mock.plans.filter((p) => p.status === "review").length + mock.trips.filter((t) => t.status === "review").length : 0;
-  const menu = SIDEBAR_MENU.map((g) => (g.items ? { ...g, items: g.items.filter((s) => ![MT_LABEL, APPROVE_LABEL, DOCS_LABEL].includes(s.Text) || s.Text === own)
+  const menu = SIDEBAR_MENU.map((g) => (g.items ? { ...g, items: g.items.filter((s) => ![MT_LABEL, APPROVE_LABEL, DOCS_LABEL, REG_LABEL].includes(s.Text) || s.Text === own || (s.Text === REG_LABEL && own === MT_LABEL))
     .map((s) => (s.Text === APPROVE_LABEL && nWait ? { ...s, badge: String(nWait) } : s)) } : g));
 
   const expanded = pinned || hover;

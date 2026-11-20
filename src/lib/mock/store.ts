@@ -2,12 +2,12 @@
 /* ที่เก็บข้อมูลจำลอง — localStorage คีย์ si-next-v1 · บทบาทเก็บแยกคีย์ si-next-v1:role
    อ่านด้วย useMock() · เขียนด้วย setMock() · ล้างด้วย resetMock() */
 import { useSyncExternalStore } from "react";
-import { DOCS, HEADS, PLANS, TRIPS, VENDORS, type DocsState, type Plan, type Trip } from "./data";
+import { DOCS, HEADS, PLANS, REGISTRY_SEED, TRIPS, VENDORS, type DocsState, type Plan, type RegistryState, type Trip } from "./data";
 
 export const KEY = "si-next-v1";
 export const ROLE_KEY = "si-next-v1:role";
 /** รุ่นข้อมูลจำลอง — รุ่นไม่ตรง = เริ่มจากค่าตั้งต้นใหม่ */
-export const MOCK_V = 11;   // 11 = แผนเดินทางต้องให้หัวหน้า กบค. อนุมัติ ·   // 10 = แผนเดินทาง (ผู้รับจ้าง ค่าจ้าง ปิดงาน ย้ายจากแผนไปแผนเดินทาง) ·   // 9 = ปิดงาน 3 ขั้น (closing = ผู้รับจ้างขอปิด · closeReview = รอหัวหน้า กบค.) ·   // 8 = หัวหน้า กบค. อนุมัติแผน/ปิดงาน (สถานะ closing) ·   // 7 = ค่าจ้างตามสัญญารายคัน (costs) แทนค่าเดียวทั้งแผน ·   // 6 = ค่าจ้างต่อคันตามสัญญา (unitCost) + เหตุผลค่าจ้างต่างจากสัญญา ·   // 3 = กบค. อนุมัติ/ส่งกลับ · 4 = เอาประเภทงานออก · 5 = ผลตรวจรายคัน (วันที่ ค่าจ้าง ผล เหตุผล) + เบอร์/เลขที่สัญญาผู้รับจ้าง
+export const MOCK_V = 11;   // 11 = แผนเดินทาง (หัวหน้า กบค. อนุมัติ · ผู้รับจ้าง ค่าจ้าง ปิดงานอยู่ที่แผนเดินทาง) + ทะเบียน ปจ.2 (registry) ·   // 10 = แผนเดินทาง (ผู้รับจ้าง ค่าจ้าง ปิดงาน ย้ายจากแผนไปแผนเดินทาง) ·   // 9 = ปิดงาน 3 ขั้น (closing = ผู้รับจ้างขอปิด · closeReview = รอหัวหน้า กบค.) ·   // 8 = หัวหน้า กบค. อนุมัติแผน/ปิดงาน (สถานะ closing) ·   // 7 = ค่าจ้างตามสัญญารายคัน (costs) แทนค่าเดียวทั้งแผน ·   // 6 = ค่าจ้างต่อคันตามสัญญา (unitCost) + เหตุผลค่าจ้างต่างจากสัญญา ·   // 3 = กบค. อนุมัติ/ส่งกลับ · 4 = เอาประเภทงานออก · 5 = ผลตรวจรายคัน (วันที่ ค่าจ้าง ผล เหตุผล) + เบอร์/เลขที่สัญญาผู้รับจ้าง
 
 export interface MockState {
   v: typeof MOCK_V;
@@ -16,6 +16,8 @@ export interface MockState {
   docs: DocsState;
   /** เลขที่ MR ล่าสุดที่ออกไปแล้ว (ไม่นำเลขของแผนที่ลบกลับมาใช้) */
   lastMr: number;
+  /** ทะเบียน ปจ.2: ประวัติการตรวจรายคัน */
+  registry: RegistryState;
 }
 
 const initial = (): MockState => ({
@@ -24,6 +26,7 @@ const initial = (): MockState => ({
   trips: JSON.parse(JSON.stringify(TRIPS)) as Trip[],
   docs: JSON.parse(JSON.stringify(DOCS)) as DocsState,
   lastMr: 7000012,
+  registry: JSON.parse(JSON.stringify(REGISTRY_SEED)) as RegistryState,
 });
 
 let state: MockState | null = null;

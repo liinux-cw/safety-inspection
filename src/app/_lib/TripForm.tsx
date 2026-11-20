@@ -26,6 +26,7 @@ import { TextInput } from "@/components/vms/TextInput";
 import { cx } from "@/lib/cx";
 import { TODAY, VEHICLE_BY_ID, VENDORS, VENDOR_BY_ID, bahtText, dateText, dayRange, moneyInput, moneyText, moneyValue, type Plan, type Trip, type Vehicle } from "@/lib/mock/data";
 import { EMPTY_TRIP, budget, contractCost, createTrip, freeCars, hasWork, tripDraftOf, updateTrip, type TripDraft } from "@/lib/mock/plan";
+import { withDue } from "@/lib/mock/registry";
 import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
 import { TH_PICKER } from "@/lib/thaiDate";
@@ -95,7 +96,7 @@ export function TripForm({ plan, trip }: { plan: Plan; trip?: Trip }) {
   const worked = (id: string) => !!trip && hasWork(mock, plan.mr, id);
   const vendorLocked = !!trip && trip.cars.some(worked);
 
-  const pool = freeCars(mock, plan, trip?.id).filter((id) => !d.cars.includes(id)).map((id) => VEHICLE_BY_ID[id]);
+  const pool = freeCars(mock, plan, trip?.id).filter((id) => !d.cars.includes(id)).map((id) => withDue(mock, VEHICLE_BY_ID[id]));
   const dirty = JSON.stringify(d) !== JSON.stringify(start);
   const noCost = d.cars.filter((id) => !(contractCost(d, id) > 0));
   const err = {

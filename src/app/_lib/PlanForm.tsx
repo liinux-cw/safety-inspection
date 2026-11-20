@@ -25,6 +25,7 @@ import { cx } from "@/lib/cx";
 import { MONTH_OPTIONS, VEHICLES, VEHICLE_BY_ID, dateText, dueSub, fiscalYearOf, monthText, rangeText, type Plan } from "@/lib/mock/data";
 import { EMPTY_DRAFT, createPlan, draftOf, takenMap, updatePlan, type Draft } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
+import { vehiclesNow, withDue } from "@/lib/mock/registry";
 import { useProtoForm } from "@/lib/protoForm";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 import { VehiclePicker } from "./VehiclePicker";
@@ -101,7 +102,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
     }
   };
 
-  const cars = d.cars.map((id) => VEHICLE_BY_ID[id]).filter(Boolean);
+  const cars = d.cars.map((id) => VEHICLE_BY_ID[id]).filter(Boolean).map((v) => withDue(mock, v));   /* ครบกำหนดปัจจุบันจากทะเบียน ปจ.2 */
   const k = query.trim();
   const shownCars = cars.filter((v) => !k || v.plate.includes(k) || v.code.includes(k) || v.org.includes(k));
   const last = Math.max(1, Math.ceil(shownCars.length / PER)), pg = Math.min(page, last);
@@ -157,7 +158,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
           <PrimaryButton Text="บันทึกและส่งอนุมัติ" Size="lg" State={complete ? "Default" : "Disabled"} onClick={save} />
         </div>
       </div>
-      <VehiclePicker open={picker} from={d.from} to={d.to} pool={VEHICLES.filter((v) => !d.cars.includes(v.id))} taken={taken} onCancel={() => setPicker(false)}
+      <VehiclePicker open={picker} from={d.from} to={d.to} pool={vehiclesNow(mock).filter((v) => !d.cars.includes(v.id))} taken={taken} onCancel={() => setPicker(false)}
         onAdd={(ids) => { put({ cars: [...d.cars, ...ids] }); setPicker(false); notify("เพิ่มยานพาหนะเข้าแผน " + ids.length + " คันแล้ว"); }} />
       <ConfirmDialog spec={leaving ? LEAVE : null} onCancel={() => setLeaving(false)} onOk={() => { setLeaving(false); router.push(plan ? "/detail/?mr=" + plan.mr : "/"); }} />
     </>

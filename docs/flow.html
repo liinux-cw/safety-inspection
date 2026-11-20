@@ -1,0 +1,320 @@
+<title>Flow แผนตรวจ ปจ.2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: horizontal swimlane — lanes are rows (กบค. · หัวหน้า กบค. · ผู้รับจ้าง · ระบบ), steps flow left→right in 8 columns inside a scrollable frame; phones get one ordered column. Palette follows VMS Plus brand tokens. */
+:root {
+  --bg: #ffffff;
+  --surface: #f9fafb;
+  --lane-a: #ffffff;
+  --lane-b: #fbf7fa;
+  --line: #e4e0e6;
+  --fg: #161b26;
+  --muted: #5b6474;
+  --brand: #a80689;
+  --brand-soft: #fff5fd;
+  --brand-line: #fed8f6;
+  --ok: #067647;
+  --ok-soft: #ecfdf3;
+  --warn: #b54708;
+  --warn-soft: #fffaeb;
+  --err: #b42318;
+  --err-soft: #fef3f2;
+  --info: #3538cd;
+  --info-soft: #eef4ff;
+  --violet: #6927da;
+  --violet-soft: #f5f3ff;
+  --arrow: #8a93a3;
+  --font: "IBM Plex Sans Thai", "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12111a; --surface: #1a1922; --lane-a: #15141c; --lane-b: #1c1820; --line: #332e3a; --fg: #f1eff4; --muted: #a7a2b2;
+    --brand: #f27bd9; --brand-soft: #2c1428; --brand-line: #5c2a52;
+    --ok: #75e0a7; --ok-soft: #10261b; --warn: #fdb022; --warn-soft: #2a1f0c; --err: #f97066; --err-soft: #2d1513;
+    --info: #a4bcfd; --info-soft: #161c33; --violet: #bdb4fe; --violet-soft: #1f1933; --arrow: #7b7488;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12111a; --surface: #1a1922; --lane-a: #15141c; --lane-b: #1c1820; --line: #332e3a; --fg: #f1eff4; --muted: #a7a2b2;
+  --brand: #f27bd9; --brand-soft: #2c1428; --brand-line: #5c2a52;
+  --ok: #75e0a7; --ok-soft: #10261b; --warn: #fdb022; --warn-soft: #2a1f0c; --err: #f97066; --err-soft: #2d1513;
+  --info: #a4bcfd; --info-soft: #161c33; --violet: #bdb4fe; --violet-soft: #1f1933; --arrow: #7b7488;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 15px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+}
+.wrap { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+header { display: flex; flex-direction: column; gap: 10px; max-width: 72ch; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--brand); }
+h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.2; margin: 0; font-weight: 700; text-wrap: balance; }
+h2 { font-size: 20px; margin: 0; font-weight: 600; text-wrap: balance; }
+h3 { margin: 0; font-size: 15px; font-weight: 600; }
+p { margin: 0; }
+.lead { color: var(--muted); font-size: 16px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 18px; height: 0; border-top: 2px solid var(--arrow); }
+.sw.back { border-top: 2px dashed var(--err); }
+.dia { width: 12px; height: 12px; transform: rotate(45deg); border: 2px solid var(--brand); border-radius: 2px; }
+section { display: flex; flex-direction: column; gap: 16px; }
+.hint { font-size: 13px; color: var(--muted); }
+
+/* ---------- horizontal swimlane ---------- */
+.chart-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.chart {
+  position: relative; display: grid; min-width: 1820px;
+  grid-template-columns: 132px repeat(8, minmax(196px, 1fr));
+  grid-template-rows: repeat(4, minmax(220px, auto));
+}
+.band { grid-column: 1 / -1; border-top: 1px solid var(--line); }
+.band:first-of-type { border-top: 0; }
+.band.a { background: var(--lane-a); } .band.b { background: var(--lane-b); }
+.lane {
+  grid-column: 1; position: sticky; left: 0; z-index: 3; align-self: stretch;
+  display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 12px 14px;
+  font-weight: 600; font-size: 14px; border-right: 1px solid var(--line); background: inherit;
+}
+.lane small { font-weight: 400; color: var(--muted); font-size: 12px; line-height: 1.4; }
+.lane.a { background: var(--lane-a); } .lane.b { background: var(--lane-b); }
+.r1 { grid-row: 1; } .r2 { grid-row: 2; } .r3 { grid-row: 3; } .r4 { grid-row: 4; }
+.c1 { grid-column: 2; } .c2 { grid-column: 3; } .c3 { grid-column: 4; } .c4 { grid-column: 5; }
+.c5 { grid-column: 6; } .c6 { grid-column: 7; } .c7 { grid-column: 8; } .c8 { grid-column: 9; }
+.slot { padding: 22px 14px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+.node {
+  width: 100%; max-width: 230px; background: var(--bg); border: 1.5px solid var(--line);
+  border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 1px 2px rgba(16,24,40,.05);
+}
+.node .n { font-family: var(--mono); font-size: 12px; color: var(--brand); }
+.node b { font-size: 14.5px; line-height: 1.35; }
+.node ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+.node.decision { border-color: var(--brand); background: var(--brand-soft); }
+.node.decision .n::after { content: " · จุดตัดสินใจ"; color: var(--muted); font-family: var(--font); }
+.node.end { border-color: var(--ok); background: var(--ok-soft); }
+.node .tag { align-self: flex-start; font-size: 11px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--info-soft); color: var(--info); }
+.node .loop { font-size: 12px; color: var(--err); line-height: 1.45; }
+.lane-chip { display: none; }
+svg.edges { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 2; }
+svg.edges path { fill: none; stroke: var(--arrow); stroke-width: 2; }
+svg.edges path.back { stroke: var(--err); stroke-dasharray: 6 5; }
+svg.edges .lbl rect { fill: var(--bg); stroke: var(--line); }
+svg.edges .lbl text { fill: var(--fg); font-family: var(--font); font-size: 12px; }
+svg.edges .lbl.back text { fill: var(--err); }
+svg.edges .lbl.back rect { stroke: var(--err); stroke-opacity: .35; }
+
+@media (max-width: 760px) {
+  .hint.wide { display: none; }
+  .chart-scroll { overflow: visible; border: 0; background: transparent; }
+  .chart { display: flex; flex-direction: column; min-width: 0; }
+  .band, .lane, svg.edges { display: none; }
+  .slot { padding: 0 0 26px 0; justify-content: flex-start; }
+  .slot::before { content: ""; position: absolute; left: 18px; top: 0; bottom: 0; border-left: 2px solid var(--line); z-index: -1; }
+  .slot.last::before { display: none; }
+  .node { max-width: none; }
+  .lane-chip { display: inline-block; align-self: flex-start; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--brand-soft); color: var(--brand); border: 1px solid var(--brand-line); }
+}
+
+/* ---------- status + rules ---------- */
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
+.panel { border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.ladder { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.pill { font-size: 13px; font-weight: 600; padding: 3px 12px; border-radius: 999px; border: 1px solid transparent; white-space: nowrap; }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.info { background: var(--info-soft); color: var(--info); }
+.pill.violet { background: var(--violet-soft); color: var(--violet); }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.err { background: var(--err-soft); color: var(--err); }
+.pill.gray { background: var(--surface); color: var(--muted); border-color: var(--line); }
+.to { color: var(--arrow); font-size: 14px; }
+.note { font-size: 13px; color: var(--muted); }
+.rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 960px) { .rules { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .rules { grid-template-columns: 1fr; } }
+.rule { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.rule ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: flex; flex-direction: column; gap: 4px; }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+@media (prefers-reduced-motion: no-preference) { .node { transition: border-color .15s; } .node:hover { border-color: var(--brand); } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Safety Inspection · prototype</span>
+    <h1>ขั้นตอนแผนตรวจ ปจ.2</h1>
+    <p class="lead">ตั้งแต่ กบค. สร้างแผน จนถึงปิดงานแผน แบ่งตามผู้ที่ทำแต่ละขั้น ใช้สำหรับยืนยัน flow และขอบเขตของระบบ</p>
+    <div class="legend">
+      <span><i class="sw"></i>ขั้นถัดไป</span>
+      <span><i class="sw back"></i>ส่งกลับแก้ไข (วนจนกว่าจะอนุมัติ)</span>
+      <span><i class="dia"></i>จุดตัดสินใจ</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>ภาพรวมขั้นตอน</h2>
+    <p class="hint wide">เลื่อนซ้าย–ขวาในกรอบเพื่อดูครบทั้ง 8 ขั้น</p>
+    <div class="chart-scroll">
+      <div class="chart" id="chart">
+        <div class="band a r1"></div><div class="band b r2"></div><div class="band a r3"></div><div class="band b r4"></div>
+        <div class="lane a r1">กบค.<small>สร้างแผน · พิจารณาผล · ขอปิดงาน</small></div>
+        <div class="lane b r2">หัวหน้า กบค.<small>อนุมัติแผน · อนุมัติปิดงาน</small></div>
+        <div class="lane a r3">ผู้รับจ้าง<small>บันทึกผล · ขอปิดงาน</small></div>
+        <div class="lane b r4">ระบบ<small>ทำให้อัตโนมัติ</small></div>
+
+        <div class="slot r1 c1"><div class="node" id="n1"><span class="lane-chip">กบค.</span><span class="n">1</span><b>สร้างแผนตรวจ ปจ.2 และส่งอนุมัติ</b>
+          <ul><li>ชื่อแผน · รอบตรวจ (เดือน ถึง เดือน)</li><li>ผู้รับจ้าง · เบอร์โทร · เลขที่สัญญา</li><li>เลือกยานพาหนะประเภท 09 (ห้ามซ้อนแผน)</li><li>ค่าจ้างตรวจรายคัน</li></ul></div></div>
+
+        <div class="slot r2 c2"><div class="node decision" id="n2"><span class="lane-chip">หัวหน้า กบค.</span><span class="n">2</span><b>พิจารณาแผน</b>
+          <ul><li>อนุมัติทีละแผน หรือหลายแผนพร้อมกัน</li></ul>
+          <span class="loop">ส่งกลับแก้ไข (ระบุเหตุผล) → กลับไปขั้น 1</span></div></div>
+
+        <div class="slot r3 c3"><div class="node" id="n3"><span class="lane-chip">ผู้รับจ้าง</span><span class="n">3</span><b>บันทึกผลรายคัน แล้วส่งอนุมัติทีละคัน</b>
+          <ul><li>เห็นแผนหลังหัวหน้า กบค. อนุมัติเท่านั้น</li><li>วันที่ตรวจ · ผล (ผ่าน / ไม่ผ่าน / ระงับ / ตรวจไม่ได้)</li><li>แนบเอกสาร ปจ.2 หรือหนังสือรับรอง</li></ul></div></div>
+
+        <div class="slot r1 c4"><div class="node decision" id="n4"><span class="lane-chip">กบค.</span><span class="n">4</span><b>พิจารณาผลตรวจรายคัน</b>
+          <ul><li>อนุมัติทีละคัน หรือหลายคันพร้อมกัน</li><li>อนุมัติแล้ว = ล็อก แก้ไม่ได้</li></ul>
+          <span class="loop">ส่งกลับแก้ไข (ระบุเหตุผล) → กลับไปขั้น 3</span></div></div>
+
+        <div class="slot r3 c5"><div class="node" id="n5"><span class="lane-chip">ผู้รับจ้าง</span><span class="n">5</span><b>ส่งอนุมัติปิดงาน</b>
+          <ul><li>กดได้เมื่อผลตรวจอนุมัติครบทุกคัน</li></ul></div></div>
+
+        <div class="slot r1 c6"><div class="node decision" id="n6"><span class="lane-chip">กบค.</span><span class="n">6</span><b>ตรวจคำขอปิดงาน และขออนุมัติปิดงาน</b>
+          <ul><li>ดูสรุปผล + ค่าจ้างรวมเทียบงบ</li><li>เลือกหัวหน้า กบค. ผู้อนุมัติ (ไม่จำเป็นต้องคนเดิม)</li></ul>
+          <span class="loop">ส่งกลับให้ผู้รับจ้าง (ระบุเหตุผล) → กลับไปขั้น 5</span></div></div>
+
+        <div class="slot r2 c7"><div class="node decision" id="n7"><span class="lane-chip">หัวหน้า กบค.</span><span class="n">7</span><b>พิจารณาปิดงาน</b>
+          <ul><li>เฉพาะหัวหน้า กบค. ที่ถูกเลือก</li></ul>
+          <span class="loop">ส่งกลับ (ระบุเหตุผล) → กลับไปขั้น 6</span></div></div>
+
+        <div class="slot r4 c8 last"><div class="node end" id="n8"><span class="lane-chip">ระบบ</span><span class="n">8</span><b>ปิดงานแผน และอัปเดตทะเบียน ปจ.2</b>
+          <ul><li>ผ่าน: ครบกำหนดถัดไป = วันที่ตรวจ + วาระ</li><li>ตรวจไม่ได้: คงวันครบกำหนดเดิม</li></ul>
+          <span class="tag">ทะเบียน ปจ.2 อยู่ระหว่างออกแบบ</span></div></div>
+
+        <svg class="edges" id="edges" aria-hidden="true"></svg>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>สถานะ</h2>
+    <div class="grid2">
+      <div class="panel">
+        <h3>สถานะของแผน</h3>
+        <div class="ladder">
+          <span class="pill warn">รออนุมัติ</span><span class="to">→</span>
+          <span class="pill info">อนุมัติแล้ว</span><span class="to">→</span>
+          <span class="pill warn">ผู้รับจ้างขอปิดงาน</span><span class="to">→</span>
+          <span class="pill violet">รออนุมัติปิดงาน</span><span class="to">→</span>
+          <span class="pill gray">ปิดงานแล้ว</span>
+        </div>
+        <p class="note"><span class="pill err">ส่งกลับแก้ไข</span>&nbsp; หัวหน้า กบค. ไม่อนุมัติแผน · กบค. แก้แล้วส่งใหม่ · กบค. แก้ไขหรือลบแผนได้เฉพาะตอนรออนุมัติหรือถูกส่งกลับ</p>
+      </div>
+      <div class="panel">
+        <h3>สถานะงานรายคัน</h3>
+        <div class="ladder">
+          <span class="pill gray">รอดำเนินการ</span><span class="to">→</span>
+          <span class="pill info">กำลังดำเนินการ</span><span class="to">→</span>
+          <span class="pill warn">รออนุมัติ</span><span class="to">→</span>
+          <span class="pill ok">เสร็จสิ้น</span>
+        </div>
+        <p class="note"><span class="pill err">ส่งกลับแก้ไข</span>&nbsp; ผู้รับจ้างแก้แล้วส่งใหม่ วนจนกว่า กบค. จะอนุมัติ · ระหว่างรออนุมัติแก้ไม่ได้ แต่ดูได้</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>กติกาสำคัญ</h2>
+    <div class="rules">
+      <div class="rule"><h3>เลือกยานพาหนะเข้าแผน</h3><ul>
+        <li>แสดงเฉพาะยานพาหนะประเภท 09</li>
+        <li>คันที่อยู่ในแผนอื่นที่ยังไม่ปิด เลือกไม่ได้</li>
+        <li>กรองตาม สังกัด · ครบกำหนดตรวจ · วาระ · ประเภท</li>
+        <li>ตั้งตัวกรอง "ครบกำหนดในรอบนี้ + เกินกำหนด" ให้อัตโนมัติ</li></ul></div>
+      <div class="rule"><h3>ค่าจ้างตรวจ</h3><ul>
+        <li>กบค. กำหนดรายคันตอนสร้างแผน</li>
+        <li>ผู้รับจ้างเห็นค่าตามสัญญา แก้ไม่ได้</li>
+        <li>แสดงเป็น 9,000.00 (ทศนิยม 2 ตำแหน่ง)</li></ul></div>
+      <div class="rule"><h3>เอกสาร</h3><ul>
+        <li>PDF, PNG, JPG · ไฟล์ละไม่เกิน 10 MB</li>
+        <li>1–10 ไฟล์ต่อคัน</li>
+        <li>ตรวจไม่ได้: ต้องมีเหตุผล + หนังสือรับรองจากผู้แทนหน่วยงาน</li></ul></div>
+      <div class="rule"><h3>ผู้รับจ้าง</h3><ul>
+        <li>1 แผน = ผู้รับจ้าง 1 ราย</li>
+        <li>เห็นเฉพาะแผนของตัวเอง หลังแผนอนุมัติ</li>
+        <li>ส่งผลทีละคัน · ขอปิดงานเมื่อผลอนุมัติครบ</li></ul></div>
+      <div class="rule"><h3>ผู้อนุมัติ</h3><ul>
+        <li>หัวหน้า กบค. อนุมัติแผน (หลายแผนพร้อมกันได้)</li>
+        <li>ผู้อนุมัติปิดงานเลือกใหม่ได้ เฉพาะหัวหน้า กบค.</li></ul></div>
+      <div class="rule"><h3>ยังไม่อยู่ในรอบนี้</h3><ul>
+        <li>การแจ้งเตือน (notification)</li>
+        <li>แผนเดินทาง (feature นี้ไม่ผูก)</li>
+        <li>ทะเบียน ปจ.2 อยู่ระหว่างออกแบบ</li></ul></div>
+    </div>
+  </section>
+
+  <footer>อัปเดต 20 พ.ย. 2569 · เอกสารประกอบ prototype แผนตรวจ ปจ.2 (Safety Inspection)</footer>
+</div>
+
+<script>
+(function () {
+  var chart = document.getElementById("chart"), svg = document.getElementById("edges");
+  var NS = "http://www.w3.org/2000/svg";
+  /* [from, to, label, back?] */
+  var EDGES = [
+    ["n1", "n2", "ส่งอนุมัติแผน"], ["n2", "n3", "อนุมัติ"], ["n3", "n4", "ส่งผลตรวจ"], ["n4", "n5", "อนุมัติครบทุกคัน"],
+    ["n5", "n6", "ส่งอนุมัติปิดงาน"], ["n6", "n7", "ขออนุมัติปิดงาน"], ["n7", "n8", "อนุมัติ"],
+    ["n2", "n1", "ส่งกลับแก้ไข", 1], ["n4", "n3", "ส่งกลับแก้ไข", 1], ["n6", "n5", "ส่งกลับ", 1], ["n7", "n6", "ส่งกลับ", 1]
+  ];
+  function el(tag, attrs) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+  function box(id) {
+    var r = document.getElementById(id).getBoundingClientRect(), c = chart.getBoundingClientRect();
+    return { l: r.left - c.left, r: r.right - c.left, t: r.top - c.top, b: r.bottom - c.top, cx: (r.left + r.right) / 2 - c.left, cy: (r.top + r.bottom) / 2 - c.top };
+  }
+  function label(x, y, text, back) {
+    var g = el("g", { "class": "lbl" + (back ? " back" : "") });
+    var t = el("text", { x: x, y: y + 4, "text-anchor": "middle" }); t.textContent = text; g.appendChild(t);
+    svg.appendChild(g);
+    var w = t.getComputedTextLength() + 14;
+    g.insertBefore(el("rect", { x: x - w / 2, y: y - 10, width: w, height: 20, rx: 10 }), t);
+  }
+  function draw() {
+    if (getComputedStyle(svg).display === "none") return;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var defs = el("defs", {});
+    [["a", "var(--arrow)"], ["ab", "var(--err)"]].forEach(function (m) {
+      var mk = el("marker", { id: m[0], viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: "auto-start-reverse" });
+      var p = el("path", { d: "M0,0 L10,5 L0,10 z" }); p.style.fill = m[1]; mk.appendChild(p); defs.appendChild(mk);
+    });
+    svg.appendChild(defs);
+    var labels = [];
+    EDGES.forEach(function (e) {
+      var a = box(e[0]), b = box(e[1]), back = !!e[3], d, lx, ly;
+      if (!back) {
+        /* ไปข้างหน้า: ออกด้านขวา → เลี้ยวที่กึ่งกลางช่องว่าง → เข้าด้านซ้าย */
+        var x1 = a.r, y1 = a.cy, x2 = b.l, y2 = b.cy, mx = (x1 + x2) / 2;
+        d = "M" + x1 + "," + y1 + " H" + mx + " V" + y2 + " H" + (x2 - 2);
+        lx = mx; ly = y1 + (y2 - y1) * 0.72;   /* ป้ายค่อนไปทางปลายทาง ไม่ชนเส้นส่งกลับ */
+      } else {
+        /* ส่งกลับ: ออกขอบบน/ล่างของจุดตัดสินใจ → วิ่งในช่องว่างระหว่างแถว → เข้าขอบล่าง/บนของขั้นเดิม */
+        var up = b.cy < a.cy, sx = a.cx - 24, sy = up ? a.t : a.b, tx = b.cx + 24, ty = up ? b.b : b.t;
+        var my = up ? b.b + 26 : b.t - 26;   /* วิ่งชิดขั้นปลายทาง ไม่ทับป้ายของเส้นหลัก */
+        d = "M" + sx + "," + sy + " V" + my + " H" + tx + " V" + (up ? ty + 2 : ty - 2);
+        lx = tx + 46; ly = my;
+      }
+      svg.appendChild(el("path", { d: d, "class": back ? "back" : "", "marker-end": "url(#" + (back ? "ab" : "a") + ")" }));
+      labels.push([lx, ly, e[2], back]);
+    });
+    labels.forEach(function (l) { label(l[0], l[1], l[2], l[3]); });
+  }
+  window.addEventListener("resize", draw);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+  draw();
+})();
+</script>

@@ -23,6 +23,7 @@ import { cx } from "@/lib/cx";
 import { VEHICLE_BY_ID, dateText, dueSub } from "@/lib/mock/data";
 import { approvePlans, returnPlan } from "@/lib/mock/plan";
 import { headOf, notify, useHydrated, useMock, useQuery, useRole } from "@/lib/mock/store";
+import { withDue } from "@/lib/mock/registry";
 import { useBreakpoint } from "@/lib/useBreakpoint";
 
 const COLS: TableColumn[] = [
@@ -55,7 +56,7 @@ export default function ApprovalDetail() {
   };
 
   const rows: TableValue[][] = plan ? plan.cars.map((id) => {
-    const v = VEHICLE_BY_ID[id];
+    const v = withDue(mock, VEHICLE_BY_ID[id]);
     return [{ text: v.plate, sub: v.code + " · " + v.type }, v.org, { text: v.cycle + " เดือน", sub: v.cycleSub }, { text: dateText(v.due), sub: dueSub(v.due) }];
   }) : [];
   const rowKey = (r: TableValue[]) => { const v = r[0]; return v && typeof v === "object" && "text" in v ? v.text : String(v); };

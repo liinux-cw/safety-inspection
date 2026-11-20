@@ -4,6 +4,7 @@
    → ผู้รับจ้างบันทึกผลรายคัน (popup) → กบค. อนุมัติรายคัน → ผู้รับจ้างขอปิดงานแผนเดินทาง → กบค. อนุมัติปิดงาน · ไม่มีปิดแผนหลัก */
 import { TODAY, VEHICLE_BY_ID, type CarDocs, type DocFile, type Plan, type Trip } from "./data";
 import { getMock, setMock, type MockState } from "./store";
+import { entriesFromPlan } from "./registry";
 
 export interface Draft { name: string; fy: string; from: string; to: string; cars: string[] }
 export const EMPTY_DRAFT: Draft = { name: "", fy: "", from: "", to: "", cars: [] };
@@ -90,13 +91,17 @@ export const returnTrip = (id: string, reason: string) => setTrip(id, (t) => (t.
 export const requestCloseTrip = (id: string) => setTrip(id, (t) => (t.status === "active" ? { ...t, status: "closing", closeRequestedAt: TODAY, closeReturnReason: undefined } : t));
 /** กบค. ส่งกลับคำขอปิดงาน → ผู้รับจ้างแก้แล้วขอปิดใหม่ */
 export const returnCloseTrip = (id: string, reason: string) => setTrip(id, (t) => (t.status === "closing" ? { ...t, status: "active", closeReturnReason: reason } : t));
-/** กบค. อนุมัติปิดงานแผนเดินทาง · ทุกคันของแผนอยู่ในแผนเดินทางที่ปิดแล้ว = แผนเสร็จสิ้น (ระบบตั้งเอง) */
+/** กบค. อนุมัติปิดงานแผนเดินทาง → ทะเบียน ปจ.2 อัปเดตเองจากผลที่อนุมัติแล้วของทุกคันในแผนเดินทาง
+    ทุกคันของแผนอยู่ในแผนเดินทางที่ปิดแล้ว = แผนเสร็จสิ้น (ระบบตั้งเอง) */
 export const approveCloseTrip = (id: string) => setMock((x) => {
-  const trips = x.trips.map((t) => (t.id === id && t.status === "closing" ? { ...t, status: "closed" as const, closedAt: TODAY } : t));
+  const closing = x.trips.find((t) => t.id === id && t.status === "closing");
+  if (!closing) return x;
+  const registry = entriesFromPlan(x, closing);
+  const trips = x.trips.map((t) => (t.id === id ? { ...t, status: "closed" as const, closedAt: TODAY } : t));
   const mr = trips.find((t) => t.id === id)?.mr;
   const plans = x.plans.map((p) => (p.mr === mr && p.cars.length > 0 && p.cars.every((c) => trips.some((t) => t.mr === p.mr && t.status === "closed" && t.cars.includes(c)))
     ? { ...p, status: "closed" as const, closedAt: TODAY } : p));
-  return { ...x, trips, plans };
+  return { ...x, registry, trips, plans };
 });
 
 /* ---------- ค่าจ้าง (ตามสัญญาของแผนเดินทาง) ---------- */
