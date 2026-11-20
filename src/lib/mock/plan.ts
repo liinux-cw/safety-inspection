@@ -2,6 +2,7 @@
 /* ตัวช่วยของแผนตรวจ ปจ.2 — สร้าง/แก้ไข/ลบ · กฎห้ามซ้อนแผน · เอกสารของผู้รับจ้าง */
 import { TODAY, VEHICLE_BY_ID, type CarDocs, type DocFile, type Plan } from "./data";
 import { getMock, setMock, type MockState } from "./store";
+import { entriesFromPlan } from "./registry";
 
 export interface Draft { name: string; fy: string; from: string; to: string; vendor: string; vendorTel: string; contract: string; costs: Record<string, number>; cars: string[] }
 export const EMPTY_DRAFT: Draft = { name: "", fy: "", from: "", to: "", vendor: "", vendorTel: "", contract: "", costs: {}, cars: [] };
@@ -65,7 +66,13 @@ export const kbkRequestClose = (mr: string, head: string, note: string) =>
   setPlan(mr, (p) => (p.status === "closing" ? { ...p, status: "closeReview", closeApprover: head, closeNote: note || undefined, closeRequestedAt: TODAY, headReturnReason: undefined } : p));
 /** หัวหน้า กบค. อนุมัติปิดงาน (หลายแผนพร้อมกันได้) */
 export const headApproveClose = (mrs: string[]) =>
-  setMock((x) => ({ ...x, plans: x.plans.map((p) => (mrs.includes(p.mr) && p.status === "closeReview" ? { ...p, status: "closed", closedAt: TODAY } : p)) }));
+  setMock((x) => {
+    const closing = x.plans.filter((p) => mrs.includes(p.mr) && p.status === "closeReview");
+    /* ทะเบียน ปจ.2 อัปเดตเองจากผลที่อนุมัติแล้วของทุกคันในแผนที่ปิด */
+    let reg = x.registry;
+    for (const p of closing) reg = entriesFromPlan({ ...x, registry: reg }, p);
+    return { ...x, registry: reg, plans: x.plans.map((p) => (closing.includes(p) ? { ...p, status: "closed", closedAt: TODAY } : p)) };
+  });
 /** หัวหน้า กบค. ไม่อนุมัติปิดงาน → กลับไปให้ กบค. ตรวจสอบ (สถานะผู้รับจ้างขอปิดงาน) พร้อมเหตุผล */
 export const headReturnClose = (mr: string, reason: string) => setPlan(mr, (p) => (p.status === "closeReview" ? { ...p, status: "closing", headReturnReason: reason } : p));
 /** สรุปผลตรวจของแผน */
