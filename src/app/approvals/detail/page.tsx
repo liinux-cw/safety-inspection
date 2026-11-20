@@ -2,7 +2,7 @@
 /* หัวหน้า กบค. · รายละเอียดเพื่ออนุมัติ — /approvals/detail/?mr=
    แผนรออนุมัติ: ข้อมูลแผน + ผู้รับจ้าง + ยานพาหนะและค่าจ้าง (อ่านอย่างเดียว) → อนุมัติ (ผู้รับจ้างเห็นแผน) / ส่งกลับแก้ไข (ต้องมีเหตุผล)
    คำขอปิดงาน (เฉพาะหัวหน้าที่ กบค. เลือก): + สรุปผลตรวจ + ผลรายคัน → อนุมัติ (ปิดงาน) / ส่งกลับ (แผนกลับเป็นอนุมัติแล้ว)
-   ผลการพิจารณา = Section label + Radio text card ×2 + Text area แบบหน้าอนุมัติของต้นแบบบำรุงรักษา */
+   ผลการพิจารณา = Section label + Radio text card ×2 + Text area อยู่บนสุดของเนื้อหา ใต้ Page header (เจ้าของงาน 20 พ.ย. 2569 · แบบหน้าอนุมัติของต้นแบบบำรุงรักษา) */
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CloseSummary } from "@/app/_lib/CloseSummary";
@@ -76,6 +76,18 @@ export default function ApprovalDetail() {
           <PageHeader Title={plan.name} SupportingText={plan.mr + (isClose ? " · คำขอปิดงาน" : "")} onBack={back}
             crumbs={[{ Text: "Safety Inspection" }, { Text: "แผนรออนุมัติ", href: "/approvals/" }, { Text: plan.mr }]} />
           <div className="flex flex-col gap-8">
+            {canAct && (
+              <section className="flex flex-col gap-4">
+                <SectionLabel Title="ผลการพิจารณา" />
+                <RadioTextCards options={[
+                  { Text: "อนุมัติ", SupportingText: isClose ? "ปิดงานแผนนี้ แก้ไขไม่ได้อีก" : "ผู้รับจ้างเห็นแผนและเริ่มบันทึกผลตรวจได้" },
+                  { Text: "ส่งกลับแก้ไข", SupportingText: isClose ? "แผนกลับไปให้ กบค. ตรวจสอบแล้วขอปิดงานใหม่" : "กบค. แก้ไขแผนแล้วส่งอนุมัติใหม่" },
+                ]} value={decision === "approve" ? "อนุมัติ" : decision === "return" ? "ส่งกลับแก้ไข" : null}
+                  onChange={(x) => { setDecision(x === "อนุมัติ" ? "approve" : "return"); setTouched(false); }} />
+                {decision === "return" && <TextArea LabelText="เหตุผลที่ส่งกลับ" Text={reason} Placeholder="ระบุเหตุผลที่ส่งกลับ" onChange={setReason} onBlur={() => setTouched(true)}
+                  State={touched && !reason.trim() ? "Error" : undefined} HelperText={touched && !reason.trim() ? "กรุณาระบุเหตุผลที่ส่งกลับ" : undefined} />}
+              </section>
+            )}
             {isClose && <Alert Color="Info" Text={"กบค. ขอปิดงานเมื่อ " + (plan.closeRequestedAt ? dateText(plan.closeRequestedAt) : "-")} SupportingText={plan.closeNote ? "หมายเหตุ: " + plan.closeNote : undefined} />}
             {!canAct && <Alert Color="Gray" Text="แผนนี้ไม่ได้รอการพิจารณาจากคุณ" SupportingText="ดูข้อมูลได้อย่างเดียว" />}
             <PlanInfo plan={plan} />
@@ -89,18 +101,6 @@ export default function ApprovalDetail() {
               <section className="flex flex-col gap-4">
                 <SectionHeader Title="ยานพาหนะในแผน" Badge={plan.cars.length + " คัน · งบรวม " + bahtText(budget(plan))} />
                 {mob ? <MobileCards columns={COLS} rows={rows} rowKey={rowKey} /> : <Table columns={COLS} rows={rows} rowKey={rowKey} />}
-              </section>
-            )}
-            {canAct && (
-              <section className="flex flex-col gap-4">
-                <SectionLabel Title="ผลการพิจารณา" />
-                <RadioTextCards options={[
-                  { Text: "อนุมัติ", SupportingText: isClose ? "ปิดงานแผนนี้ แก้ไขไม่ได้อีก" : "ผู้รับจ้างเห็นแผนและเริ่มบันทึกผลตรวจได้" },
-                  { Text: "ส่งกลับแก้ไข", SupportingText: isClose ? "แผนกลับไปให้ กบค. ตรวจสอบแล้วขอปิดงานใหม่" : "กบค. แก้ไขแผนแล้วส่งอนุมัติใหม่" },
-                ]} value={decision === "approve" ? "อนุมัติ" : decision === "return" ? "ส่งกลับแก้ไข" : null}
-                  onChange={(x) => { setDecision(x === "อนุมัติ" ? "approve" : "return"); setTouched(false); }} />
-                {decision === "return" && <TextArea LabelText="เหตุผลที่ส่งกลับ" Text={reason} Placeholder="ระบุเหตุผลที่ส่งกลับ" onChange={setReason} onBlur={() => setTouched(true)}
-                  State={touched && !reason.trim() ? "Error" : undefined} HelperText={touched && !reason.trim() ? "กรุณาระบุเหตุผลที่ส่งกลับ" : undefined} />}
               </section>
             )}
             <div className={cx("flex", mob ? "gap-4 [&>*]:flex-1 [&>*]:basis-0" : "justify-between gap-3")}>
