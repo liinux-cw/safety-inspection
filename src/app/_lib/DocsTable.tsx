@@ -8,6 +8,7 @@
 import { useCallback, useRef, useState } from "react";
 import { CheckTable } from "@/components/patterns/CheckTable";
 import { DisplayBox } from "@/components/patterns/DisplayBox";
+import { ConfirmDialog } from "@/components/patterns/ConfirmDialog";
 import { PopupModal } from "@/components/patterns/PopupModal";
 import { Alert } from "@/components/vms/Alert";
 import { ContentDivider } from "@/components/vms/ContentDivider";
@@ -28,7 +29,7 @@ import {
   RESULTS, RESULT_COLOR, TODAY, UPLOAD_ACCEPT, UPLOAD_HINT, UPLOAD_MAX_FILES, VEHICLE_BY_ID, bahtText, dateText, dueSub, fileOk, rangeText, sizeText,
   type CarDocs, type InspectResult, type Plan,
 } from "@/lib/mock/data";
-import { DOC_TEXT, approveDocs, carCost, carDocs, contractCost, costDiffers, docState, missing, returnDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
+import { DOC_TEXT, approveDocs, carCost, carDocs, contractCost, costDiffers, docState, missing, returnDocs, submitDocs, updateResult, vendorCanEdit, vendorCanWork } from "@/lib/mock/plan";
 import { notify, useMock } from "@/lib/mock/store";
 import { useProtoForm } from "@/lib/protoForm";
 import { TH_PICKER } from "@/lib/thaiDate";
@@ -72,7 +73,7 @@ export function DocsTable({ plan, canEdit, canReview, ticked, onTicked }: { plan
       c.date ? dateText(c.date) : "-",
       c.result ? { pills: [[c.result, RESULT_COLOR[c.result]]] } : "-",
       { text: bahtText(carCost(plan, c, id)), sub: costDiffers(plan, c, id) ? "ต่างจากสัญญา (" + bahtText(contractCost(plan, id)) + ")" : st === "none" ? "ตามสัญญา" : undefined },
-      st === "draft" ? { text: DOC_TEXT.draft[0], sub: "ยังขาด: " + missing(c, plan, id).join(", ") } : { pills: [DOC_TEXT[st]] },
+      { pills: [DOC_TEXT[st]] },
       { actions: [act], mobileActions: [act] },
     ];
   });
@@ -111,7 +112,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const saved = carDocs(mock, plan.mr, car);
   const st = docState(saved, plan, car);
   const contract = contractCost(plan, car);
-  const waitPlan = canEdit && !vendorCanWork(plan) && plan.status !== "closed";
+  const waitPlan = canEdit && (plan.status === "review" || plan.status === "returned");
   const ro = !canEdit || !vendorCanWork(plan) || !vendorCanEdit(saved);
   /* แก้ในร่างก่อน · ตกลง = บันทึกลงแผน · ยกเลิก = ทิ้งร่าง */
   const [draft, setDraft] = useState<Draft>(() => draftOf(saved));
@@ -120,6 +121,7 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const review = canReview && st === "sent";
   const [error, setError] = useState<string | null>(null);
   const [cal, setCal] = useState(false);
+  const [ask, setAsk] = useState(false);
   const dateRef = useRef<HTMLDivElement>(null);
   const closeCal = useCallback(() => { setCal(false); setTouched((t) => ({ ...t, date: true })); }, []);
   useOutside(dateRef, cal && !mob, closeCal);
@@ -178,6 +180,14 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
     notify(left.length ? "บันทึกผลการตรวจ ปจ.2 ของ " + v.plate + " แล้ว ยังขาด: " + left.join(", ") : "บันทึกผลการตรวจ ปจ.2 ของ " + v.plate + " แล้ว");
     onClose();
   };
+  /* ส่งอนุมัติรายคัน: กรอกครบแล้วเท่านั้น · บันทึกร่างแล้วส่งให้ กบค. */
+  const sendable = !ro && !missing({ ...saved, ...draft }, plan, car).length;
+  const send = () => {
+    updateResult(plan.mr, car, draft);
+    submitDocs(plan, [car]);
+    notify("ส่งผลการตรวจ ปจ.2 ของ " + v.plate + " เพื่ออนุมัติแล้ว");
+    onClose();
+  };
   const confirm = () => {
     if (decision === "approve") { approveDocs(plan.mr, car); notify("อนุมัติผลตรวจ ปจ.2 ของ " + v.plate + " แล้ว"); }
     else { returnDocs(plan.mr, car, reason.trim()); notify("ส่งกลับให้ผู้รับจ้างแก้ไขผลตรวจของ " + v.plate + " แล้ว"); }
@@ -193,9 +203,10 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
   const fileErr = !ro && touched.files && !c.files.length ? "กรุณาแนบ" + docLabel(c) + " อย่างน้อย 1 ไฟล์" : null;
 
   return (
+    <>
     <PopupModal open width={640} title={review ? "พิจารณาผลการตรวจ ปจ.2" : ro ? "ผลการตรวจ ปจ.2" : "บันทึกผลการตรวจ ปจ.2"} sub={summary}
-      showOk={review || !ro} ok={review ? "ยืนยันผลการพิจารณา" : "ตกลง"} okDisabled={review && !decided} onOk={review ? confirm : save}
-      cancel={review || !ro ? "ยกเลิก" : "ปิด"} onCancel={onClose}>
+      showOk={review || !ro} ok={review ? "ยืนยันผลการพิจารณา" : "ส่งอนุมัติ"} okDisabled={review ? !decided : !sendable} onOk={review ? confirm : () => setAsk(true)}
+      extra={!review && !ro ? { text: "บันทึก", onClick: save } : undefined} cancel={review || !ro ? "ยกเลิก" : "ปิด"} onCancel={onClose}>
       <div className="flex flex-col gap-4">
         {mob && <ContentItemRow perRow={2} items={[["ทะเบียน", v.plate], ["รหัส", v.code], ["ประเภทยานพาหนะ", v.type], ["วาระการตรวจ", v.cycle + " เดือน"]]} />}
         {st === "approved" && <Alert Color="Success" Text={"กบค. อนุมัติแล้วเมื่อ " + dateText(c.approvedAt!)} SupportingText="ผลที่อนุมัติแล้วแก้ไขหรือลบไม่ได้ ดูและดาวน์โหลดได้" />}
@@ -259,5 +270,8 @@ function ResultModal({ plan, car, canEdit, canReview, onClose }: { plan: Plan; c
         </>}
       </div>
     </PopupModal>
+    <ConfirmDialog spec={ask ? { title: "ยืนยันส่งผลการตรวจ ปจ.2 เพื่ออนุมัติ", sub: v.plate + " · ระหว่างรอ กบค. อนุมัติจะแก้ไขหรือลบเอกสารไม่ได้ แต่ยังดูได้", cancel: "ยกเลิก", ok: "ส่งอนุมัติ" } : null}
+      onCancel={() => setAsk(false)} onOk={() => { setAsk(false); send(); }} />
+    </>
   );
 }

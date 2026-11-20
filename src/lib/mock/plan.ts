@@ -108,6 +108,15 @@ const countOf = (s: MockState, p: Plan, st: DocState) => p.cars.filter((c) => do
 export const approvedCount = (s: MockState, p: Plan) => countOf(s, p, "approved");
 /** จำนวนคันที่รอ กบค. อนุมัติ */
 export const pendingCount = (s: MockState, p: Plan) => countOf(s, p, "sent");
+/** ทุกคันในแผน กบค. อนุมัติผลแล้ว → ผู้รับจ้างส่งอนุมัติปิดงานได้ */
+export const allApproved = (s: MockState, p: Plan) => p.cars.length > 0 && approvedCount(s, p) === p.cars.length;
+const setPlan = (mr: string, fn: (p: Plan) => Plan) => setMock((x) => ({ ...x, plans: x.plans.map((p) => (p.mr === mr ? fn(p) : p)) }));
+/** ผู้รับจ้างส่งอนุมัติปิดงาน */
+export const requestClose = (mr: string) => setPlan(mr, (p) => (p.status === "approved" ? { ...p, status: "closing", closeReturnReason: undefined } : p));
+/** กบค. อนุมัติปิดงาน */
+export const approveClose = (mr: string) => setPlan(mr, (p) => (p.status === "closing" ? { ...p, status: "closed" } : p));
+/** กบค. ส่งกลับคำขอปิดงาน */
+export const returnClose = (mr: string, reason: string) => setPlan(mr, (p) => (p.status === "closing" ? { ...p, status: "approved", closeReturnReason: reason } : p));
 export const returnedCount = (s: MockState, p: Plan) => countOf(s, p, "returned");
 /** ค่าจ้างตรวจรวมของคันที่ส่งแล้ว/อนุมัติแล้ว */
 export const costTotal = (s: MockState, p: Plan) => p.cars.reduce((a, c) => { const d = carDocs(s, p.mr, c); return a + (d.sentAt || d.approvedAt ? carCost(p, d, c) : 0); }, 0);
